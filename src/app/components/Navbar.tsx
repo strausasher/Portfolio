@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router';
+import logo from 'figma:asset/logo-skinny-65.webp';
 
 interface NavItem {
   name: string;
@@ -74,9 +75,20 @@ export function Navbar() {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }
           }}
-          className={`text-2xl font-bold tracking-tighter ${scrolled || isOnSubpage ? 'text-[#1B2D5B]' : 'text-white'}`}
+          className="flex items-center"
+          aria-label="Asher Straus — back to top"
         >
-          AS
+          {/* The mark is near-black, so over the dark hero it is filtered to solid
+              white; on the light navbar it shows in its own ink. */}
+          <img
+            src={logo}
+            alt="Asher Straus"
+            width={351}
+            height={300}
+            className={`w-auto transition-all duration-300 ${
+              scrolled || isOnSubpage ? 'h-9' : 'h-11 brightness-0 invert'
+            }`}
+          />
         </a>
 
         {/* Desktop Nav */}

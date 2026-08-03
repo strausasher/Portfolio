@@ -1,12 +1,12 @@
 import { Mail, Linkedin, Phone } from 'lucide-react';
-import patternBg from 'figma:asset/ff659488ddca67ce2d2ea51b9e8965e2d85d8a1e.png';
+import patternBg from 'figma:asset/ff659488ddca67ce2d2ea51b9e8965e2d85d8a1e.webp';
 
 export function Contact() {
   return (
     <section id="contact" className="relative py-24 overflow-hidden">
       {/* Pattern Background */}
       <div className="absolute inset-0 z-0">
-        <img src={patternBg} alt="" className="w-full h-full object-cover opacity-[0.15]" />
+        <img src={patternBg} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover opacity-[0.15]" />
         <div className="absolute inset-0 bg-[#1B2D5B]/92" />
       </div>
 

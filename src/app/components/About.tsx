@@ -1,13 +1,14 @@
 import { motion } from 'motion/react';
-import profileImg from 'figma:asset/0da3efe4925c16eb36e4ebf526f92081949c8190.png';
-import patternBg from 'figma:asset/ff659488ddca67ce2d2ea51b9e8965e2d85d8a1e.png';
+import profileImg from 'figma:asset/0da3efe4925c16eb36e4ebf526f92081949c8190.webp';
+import patternBg from 'figma:asset/ff659488ddca67ce2d2ea51b9e8965e2d85d8a1e.webp';
+import { dimsFor } from './imageDimensions';
 
 export function About() {
   return (
     <section id="about" className="relative py-24 overflow-hidden">
       {/* Pattern Background */}
       <div className="absolute inset-0 z-0">
-        <img src={patternBg} alt="" className="w-full h-full object-cover opacity-[0.10]" />
+        <img src={patternBg} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover opacity-[0.10]" />
         <div className="absolute inset-0 bg-[#F7F3ED]/75" />
       </div>
 
@@ -55,9 +56,12 @@ export function About() {
               transition={{ duration: 0.6 }}
               className="relative max-w-sm md:max-w-md"
             >
-              <img 
-                src={profileImg} 
-                alt="Asher Straus" 
+              <img
+                src={profileImg}
+                {...dimsFor(profileImg)}
+                loading="lazy"
+                decoding="async"
+                alt="Asher Straus"
                 className="w-full h-auto object-cover shadow-xl"
               />
             </motion.div>

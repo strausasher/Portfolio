@@ -1,14 +1,16 @@
 import { motion } from 'motion/react';
-import heroBg from 'figma:asset/f87a07df8827e23dba6492bb11aa7487235a03f1.png';
+import heroBg from 'figma:asset/f87a07df8827e23dba6492bb11aa7487235a03f1.webp';
 
 export function Hero() {
   return (
     <section id="home" className="relative h-screen w-full flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <img 
+        {/* Above the fold: load eagerly and at high priority, never lazily. */}
+        <img
           src={heroBg}
-          alt="Workshop Background" 
+          alt="Workshop Background"
+          fetchPriority="high"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40" /> {/* Overlay for readability */}

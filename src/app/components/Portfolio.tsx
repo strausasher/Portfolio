@@ -2,110 +2,111 @@ import { useState, useEffect, forwardRef } from 'react';
 import { useSearchParams } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Calendar, Wrench, ZoomIn, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { dimsFor } from './imageDimensions';
 
 // Import assets
-import extendItThumb from 'figma:asset/baf09441eaec422eef72f951d09ce50d1e0cf702.png';
-import extendItConcept from 'figma:asset/c304c5a140180875ee400ad12926e35368f74a41.png';
-import extendItSketch from 'figma:asset/f232760bcf0145253c281f4b4f1f06048dce537f.png';
-import extendItUserTest from 'figma:asset/72fc3068db2c54d65007e0d0de4e75aa2d7810bc.png';
-import extendItLoadTest from 'figma:asset/61495f2f3972a37806c764376ced254c1023b957.png';
-import extendItHero from 'figma:asset/baf09441eaec422eef72f951d09ce50d1e0cf702.png';
-import extendItHinge from 'figma:asset/d57e0cf4c5c508756bddc826ab9044e1fd9a743e.png';
-import extendItCupHolder from 'figma:asset/4beb1f92bb835754bb2566c92a7370ee22877fbb.png';
-import extendItLoadTestNew from 'figma:asset/1d18a7808e8709de495f1254f14773c637ad686b.png';
-import extendItUserTestNew from 'figma:asset/cd5d7ada40db3d957daea1ac3cff6db6d8e80c86.png';
+import extendItThumb from 'figma:asset/baf09441eaec422eef72f951d09ce50d1e0cf702.webp';
+import extendItConcept from 'figma:asset/c304c5a140180875ee400ad12926e35368f74a41.webp';
+import extendItSketch from 'figma:asset/f232760bcf0145253c281f4b4f1f06048dce537f.webp';
+import extendItUserTest from 'figma:asset/72fc3068db2c54d65007e0d0de4e75aa2d7810bc.webp';
+import extendItLoadTest from 'figma:asset/61495f2f3972a37806c764376ced254c1023b957.webp';
+import extendItHero from 'figma:asset/baf09441eaec422eef72f951d09ce50d1e0cf702.webp';
+import extendItHinge from 'figma:asset/d57e0cf4c5c508756bddc826ab9044e1fd9a743e.webp';
+import extendItCupHolder from 'figma:asset/4beb1f92bb835754bb2566c92a7370ee22877fbb.webp';
+import extendItLoadTestNew from 'figma:asset/1d18a7808e8709de495f1254f14773c637ad686b.webp';
+import extendItUserTestNew from 'figma:asset/cd5d7ada40db3d957daea1ac3cff6db6d8e80c86.webp';
 
-import ctScannerImg from 'figma:asset/4912cd11da20c60b00c965ea83b87634b57600b8.png';
-import ctFrustum from 'figma:asset/3b5611915cfa8c0522559efe6b31ea2a9eb1adc0.png';
-import ctLinerSide from 'figma:asset/d49ce2b4da6a0e33e564535e6cc619d30f5b5dcd.png';
-import ctWeldChart from 'figma:asset/a16c216657da11ee1f80bf06965f4bb55df125c6.png';
-import ctLinerFront from 'figma:asset/75bb6d7fa5b40b10fe624772fa2650c2d6f33de0.png';
-import wgInstalledFront from '../../imports/waterguard/wg-installed-front.jpg';
-import wgInstalledRear from '../../imports/waterguard/wg-installed-rear.jpg';
-import wgRunoffRear from '../../imports/waterguard/wg-runoff-rear.jpg';
-import wgFrontDome from '../../imports/waterguard/wg-front-dome.jpg';
-import wgFrontPanel from '../../imports/waterguard/wg-front-panel.jpg';
-import wgSlopeTest from '../../imports/waterguard/wg-slope-test.jpg';
-import wgWeldLeakTest from '../../imports/waterguard/wg-weld-leak-test.jpg';
-import wgRunoffSketch from '../../imports/waterguard/wg-runoff-sketch.jpg';
+import ctScannerImg from 'figma:asset/4912cd11da20c60b00c965ea83b87634b57600b8.webp';
+import ctFrustum from 'figma:asset/3b5611915cfa8c0522559efe6b31ea2a9eb1adc0.webp';
+import ctLinerSide from 'figma:asset/d49ce2b4da6a0e33e564535e6cc619d30f5b5dcd.webp';
+import ctWeldChart from 'figma:asset/a16c216657da11ee1f80bf06965f4bb55df125c6.webp';
+import ctLinerFront from 'figma:asset/75bb6d7fa5b40b10fe624772fa2650c2d6f33de0.webp';
+import wgInstalledFront from '../../imports/waterguard/wg-installed-front.webp';
+import wgInstalledRear from '../../imports/waterguard/wg-installed-rear.webp';
+import wgRunoffRear from '../../imports/waterguard/wg-runoff-rear.webp';
+import wgFrontDome from '../../imports/waterguard/wg-front-dome.webp';
+import wgFrontPanel from '../../imports/waterguard/wg-front-panel.webp';
+import wgSlopeTest from '../../imports/waterguard/wg-slope-test.webp';
+import wgWeldLeakTest from '../../imports/waterguard/wg-weld-leak-test.webp';
+import wgRunoffSketch from '../../imports/waterguard/wg-runoff-sketch.webp';
 
-import bikeCaliperImg from 'figma:asset/0c930a2a913495aa9b1d94e33057b7d9868884a5.png';
-import bikeInitialFEA from 'figma:asset/95c90a41bda86117a9907b3b13affa564ef736e5.png';
-import bikeNeedsTable from 'figma:asset/67df7d20c56a35cc1886b1a1ac222d25f068f33f.png';
-import bikePrintedCaliper from 'figma:asset/134ccdf2ef97521532df170a438af63ee9c27808.png';
-import bikeFirstFEA from 'figma:asset/7b7a8d330415d2d8c94cdec9942f41b950aefcf0.png';
-import bikeTopoOpt from 'figma:asset/68a526a5c922e5ab9f4266241352abe1973792f8.png';
-import formulaBrakeImg from 'figma:asset/29f7fee3d4abf8c0036a9ec2ed22cb709df1d475.png';
-import brakeMilling from 'figma:asset/7d7800d37d6621032f1d80a4f4b579540d7cac5e.png';
-import brakeGrinding from 'figma:asset/b7ccff613803cc12fb0982f00b28c21d2e99b4c3.png';
-import brakeLineRouting from 'figma:asset/e880e8b1aee3f2d543d70198b331935027f8f808.png';
-import brakeIntegration from 'figma:asset/ef0d378cfbd2332dd42290ab0d7c96abcd9f00b0.png';
-import brakeThermalSim from 'figma:asset/9ca8735e78ca466a53244803b9120e281979b4cc.png';
-import brakeStressFEA from 'figma:asset/96d3b7ea91351b38a4e051cdb802ac4915721f4e.png';
-import brakeRotorCAD1 from 'figma:asset/90db89c8c1d7788fc96270ad95185295051741c8.png';
-import brakeRotorCAD2 from 'figma:asset/f76e05ff05fe1a25986acbf32ad034cd75c5f966.png';
-import brakeFrontRotorDwg from 'figma:asset/3d94ecf2fb9bc0ccd594db6d4135fcb6c4c64658.png';
-import brakeRearRotorDwg from 'figma:asset/fd3705c67233eed8d5e4aaf424c71b24f8685dc1.png';
-import brakePedalForcePlot from 'figma:asset/89f206ac09798ea1c47f84428c7ec369962f1e78.png';
-import brakeWhiteboardCalc from 'figma:asset/c5e02822aa53a05bfacebd326cbc09d041ca0b4d.png';
-import stimSpinImg from 'figma:asset/05b77ea1a86341595dc1893c29562b5cdf00ccdf.png';
-import stimSpinHandle from 'figma:asset/0618a99fac31a4b599e1bd742d40be07567a8984.png';
-import stimSpinScience from 'figma:asset/633353b4b72dc0dbc1d456088ec370adeeb2d911.png';
-import stimSpinDisney from 'figma:asset/b707207661364e701a223bac11e846c5d7451d6c.png';
-import stimSpinInUse from 'figma:asset/796b3fa8b16982c6bbf592edfa22d051d63b3e2d.png';
-import stimSpinTexture from 'figma:asset/393d470593ff653ebfaa60468f1a33d6fdc77742.png';
-import stimSpinSketch from 'figma:asset/05940af68dd4baf865ad8f3c9cf984dd2f00c23d.png';
-import stimSpinClicker from 'figma:asset/bc407c2a561416993c60bb74fbd2163f0984ffc6.png';
-import stimSpinWhiteboard from 'figma:asset/842b7f02835e24e02409becfc9b36ec43e4de781.png';
-import stimSpinKnob from 'figma:asset/6ed8612593887b9aed22bafeb70c6a707ef7b9e3.png';
-import patchworkImg from 'figma:asset/d1b2c94414d2afe52ca117dcc2c5abc3119782e7.png';
-import patchworkMaze from 'figma:asset/e83edb8bb8ec5cb0b40c79e5ae7b8e1359546baf.png';
-import patchworkPillowDim from 'figma:asset/d83342724cbc50b362e5ca9d8593f60f456abcd8.png';
-import patchworkMockup from 'figma:asset/2db359936a3d16f421f5cdfeb24d599ebbb304bb.png';
-import patchworkCrossSection from 'figma:asset/3d1001aaaadf39cac5581426cd1b1ce32f967ffa.png';
-import patchworkSensoryRoom from 'figma:asset/9ef7d8d4e2fe940d318007df98509c59079bb4ca.png';
-import patchworkBookCover from 'figma:asset/b0b82af46ce1e6db6a9a0a3fccd9728443f1195e.png';
-import lampImg from 'figma:asset/6f4325245aa689e63a3b4eb0653b90c207882c29.png';
-import lampHinged from 'figma:asset/04364e8a8e32e2ac680bc5eceae50dae3c413998.png';
-import lampWelding from 'figma:asset/03ed3a93bcfbfaca1b365a293a02bbbc999da73f.png';
-import lampPanelsTable from 'figma:asset/9cd3729e78f71bd38f4585d1bab1cfd08586e862.png';
-import lampLaserCut from 'figma:asset/5e0b5e24d0664f57617d6cecfa722e59f6a3cc65.png';
-import lampPrintFail from 'figma:asset/b279dde34844bf811593002f3c7a9cc64efd09f4.png';
-import lampSlicer from 'figma:asset/74d139f8b070cd88eca71f5874788d4232ca87cf.png';
-import lampCADSketch from 'figma:asset/8245392aa6ee2b4d710b552de641679ad8f4bc12.png';
-import lampAcrylicSheet from 'figma:asset/5ca57543960765bbe4baf8c8a0d5ac7b885bd760.png';
-import portfolioBg from 'figma:asset/8e0e8033d043030122e4156d932b40a343273916.png';
+import bikeCaliperImg from 'figma:asset/0c930a2a913495aa9b1d94e33057b7d9868884a5.webp';
+import bikeInitialFEA from 'figma:asset/95c90a41bda86117a9907b3b13affa564ef736e5.webp';
+import bikeNeedsTable from 'figma:asset/67df7d20c56a35cc1886b1a1ac222d25f068f33f.webp';
+import bikePrintedCaliper from 'figma:asset/134ccdf2ef97521532df170a438af63ee9c27808.webp';
+import bikeFirstFEA from 'figma:asset/7b7a8d330415d2d8c94cdec9942f41b950aefcf0.webp';
+import bikeTopoOpt from 'figma:asset/68a526a5c922e5ab9f4266241352abe1973792f8.webp';
+import formulaBrakeImg from 'figma:asset/29f7fee3d4abf8c0036a9ec2ed22cb709df1d475.webp';
+import brakeMilling from 'figma:asset/7d7800d37d6621032f1d80a4f4b579540d7cac5e.webp';
+import brakeGrinding from 'figma:asset/b7ccff613803cc12fb0982f00b28c21d2e99b4c3.webp';
+import brakeLineRouting from 'figma:asset/e880e8b1aee3f2d543d70198b331935027f8f808.webp';
+import brakeIntegration from 'figma:asset/ef0d378cfbd2332dd42290ab0d7c96abcd9f00b0.webp';
+import brakeThermalSim from 'figma:asset/9ca8735e78ca466a53244803b9120e281979b4cc.webp';
+import brakeStressFEA from 'figma:asset/96d3b7ea91351b38a4e051cdb802ac4915721f4e.webp';
+import brakeRotorCAD1 from 'figma:asset/90db89c8c1d7788fc96270ad95185295051741c8.webp';
+import brakeRotorCAD2 from 'figma:asset/f76e05ff05fe1a25986acbf32ad034cd75c5f966.webp';
+import brakeFrontRotorDwg from 'figma:asset/3d94ecf2fb9bc0ccd594db6d4135fcb6c4c64658.webp';
+import brakeRearRotorDwg from 'figma:asset/fd3705c67233eed8d5e4aaf424c71b24f8685dc1.webp';
+import brakePedalForcePlot from 'figma:asset/89f206ac09798ea1c47f84428c7ec369962f1e78.webp';
+import brakeWhiteboardCalc from 'figma:asset/c5e02822aa53a05bfacebd326cbc09d041ca0b4d.webp';
+import stimSpinImg from 'figma:asset/05b77ea1a86341595dc1893c29562b5cdf00ccdf.webp';
+import stimSpinHandle from 'figma:asset/0618a99fac31a4b599e1bd742d40be07567a8984.webp';
+import stimSpinScience from 'figma:asset/633353b4b72dc0dbc1d456088ec370adeeb2d911.webp';
+import stimSpinDisney from 'figma:asset/b707207661364e701a223bac11e846c5d7451d6c.webp';
+import stimSpinInUse from 'figma:asset/796b3fa8b16982c6bbf592edfa22d051d63b3e2d.webp';
+import stimSpinTexture from 'figma:asset/393d470593ff653ebfaa60468f1a33d6fdc77742.webp';
+import stimSpinSketch from 'figma:asset/05940af68dd4baf865ad8f3c9cf984dd2f00c23d.webp';
+import stimSpinClicker from 'figma:asset/bc407c2a561416993c60bb74fbd2163f0984ffc6.webp';
+import stimSpinWhiteboard from 'figma:asset/842b7f02835e24e02409becfc9b36ec43e4de781.webp';
+import stimSpinKnob from 'figma:asset/6ed8612593887b9aed22bafeb70c6a707ef7b9e3.webp';
+import patchworkImg from 'figma:asset/d1b2c94414d2afe52ca117dcc2c5abc3119782e7.webp';
+import patchworkMaze from 'figma:asset/e83edb8bb8ec5cb0b40c79e5ae7b8e1359546baf.webp';
+import patchworkPillowDim from 'figma:asset/d83342724cbc50b362e5ca9d8593f60f456abcd8.webp';
+import patchworkMockup from 'figma:asset/2db359936a3d16f421f5cdfeb24d599ebbb304bb.webp';
+import patchworkCrossSection from 'figma:asset/3d1001aaaadf39cac5581426cd1b1ce32f967ffa.webp';
+import patchworkSensoryRoom from 'figma:asset/9ef7d8d4e2fe940d318007df98509c59079bb4ca.webp';
+import patchworkBookCover from 'figma:asset/b0b82af46ce1e6db6a9a0a3fccd9728443f1195e.webp';
+import lampImg from 'figma:asset/6f4325245aa689e63a3b4eb0653b90c207882c29.webp';
+import lampHinged from 'figma:asset/04364e8a8e32e2ac680bc5eceae50dae3c413998.webp';
+import lampWelding from 'figma:asset/03ed3a93bcfbfaca1b365a293a02bbbc999da73f.webp';
+import lampPanelsTable from 'figma:asset/9cd3729e78f71bd38f4585d1bab1cfd08586e862.webp';
+import lampLaserCut from 'figma:asset/5e0b5e24d0664f57617d6cecfa722e59f6a3cc65.webp';
+import lampPrintFail from 'figma:asset/b279dde34844bf811593002f3c7a9cc64efd09f4.webp';
+import lampSlicer from 'figma:asset/74d139f8b070cd88eca71f5874788d4232ca87cf.webp';
+import lampCADSketch from 'figma:asset/8245392aa6ee2b4d710b552de641679ad8f4bc12.webp';
+import lampAcrylicSheet from 'figma:asset/5ca57543960765bbe4baf8c8a0d5ac7b885bd760.webp';
+import portfolioBg from 'figma:asset/8e0e8033d043030122e4156d932b40a343273916.webp';
 
 // Bionic Wrench manufacturing project (DSGN 386) — figures extracted from the final report
-import wrenchHero from '../../imports/dsgn386/p01_0.png';
-import wrenchV1TopPlate from '../../imports/dsgn386/p04_0.png';
-import wrenchV1Loaded from '../../imports/dsgn386/p04_1.png';
-import wrenchV1Bare from '../../imports/dsgn386/p04_2.png';
-import wrenchV2Stand from '../../imports/dsgn386/p05_0.png';
-import wrenchV2Back from '../../imports/dsgn386/p06_0.png';
-import wrenchV2InnerTrack from '../../imports/dsgn386/p06_1.png';
-import wrenchV2OuterTrack from '../../imports/dsgn386/p06_2.png';
-import wrenchV3Back from '../../imports/dsgn386/p07_0.png';
-import wrenchV4Track from '../../imports/dsgn386/p07_1.png';
-import wrenchV5Stand from '../../imports/dsgn386/p08_0.png';
-import wrenchV5Track from '../../imports/dsgn386/p08_1.png';
-import wrenchV6 from '../../imports/dsgn386/p09_0.png';
-import wrenchV7Support from '../../imports/dsgn386/p10_0.png';
-import wrenchV7Stand from '../../imports/dsgn386/p10_1.png';
-import wrenchEquipSetup from '../../imports/dsgn386/p12_0.png';
-import wrenchMfgMap from '../../imports/dsgn386/p13_0.png';
-import wrenchAsmMap from '../../imports/dsgn386/p13_1.png';
-import wrenchVSM from '../../imports/dsgn386/p16_0.png';
-import wrenchLineLayout from '../../imports/dsgn386/p21_0.png';
-import wrenchCadOuterPlate from '../../imports/dsgn386/p27_0.png';
-import wrenchCadInnerPlate from '../../imports/dsgn386/p27_1.png';
-import wrenchCadWaterjet from '../../imports/dsgn386/p28_0.png';
-import wrenchCadFixture from '../../imports/dsgn386/p28_1.png';
-import wrenchCadJaw from '../../imports/dsgn386/p29_0.png';
-import wrenchCadStand from '../../imports/dsgn386/p29_1.png';
+import wrenchHero from '../../imports/dsgn386/p01_0.webp';
+import wrenchV1TopPlate from '../../imports/dsgn386/p04_0.webp';
+import wrenchV1Loaded from '../../imports/dsgn386/p04_1.webp';
+import wrenchV1Bare from '../../imports/dsgn386/p04_2.webp';
+import wrenchV2Stand from '../../imports/dsgn386/p05_0.webp';
+import wrenchV2Back from '../../imports/dsgn386/p06_0.webp';
+import wrenchV2InnerTrack from '../../imports/dsgn386/p06_1.webp';
+import wrenchV2OuterTrack from '../../imports/dsgn386/p06_2.webp';
+import wrenchV3Back from '../../imports/dsgn386/p07_0.webp';
+import wrenchV4Track from '../../imports/dsgn386/p07_1.webp';
+import wrenchV5Stand from '../../imports/dsgn386/p08_0.webp';
+import wrenchV5Track from '../../imports/dsgn386/p08_1.webp';
+import wrenchV6 from '../../imports/dsgn386/p09_0.webp';
+import wrenchV7Support from '../../imports/dsgn386/p10_0.webp';
+import wrenchV7Stand from '../../imports/dsgn386/p10_1.webp';
+import wrenchEquipSetup from '../../imports/dsgn386/p12_0.webp';
+import wrenchMfgMap from '../../imports/dsgn386/p13_0.webp';
+import wrenchAsmMap from '../../imports/dsgn386/p13_1.webp';
+import wrenchVSM from '../../imports/dsgn386/p16_0.webp';
+import wrenchLineLayout from '../../imports/dsgn386/p21_0.webp';
+import wrenchCadOuterPlate from '../../imports/dsgn386/p27_0.webp';
+import wrenchCadInnerPlate from '../../imports/dsgn386/p27_1.webp';
+import wrenchCadWaterjet from '../../imports/dsgn386/p28_0.webp';
+import wrenchCadFixture from '../../imports/dsgn386/p28_1.webp';
+import wrenchCadJaw from '../../imports/dsgn386/p29_0.webp';
+import wrenchCadStand from '../../imports/dsgn386/p29_1.webp';
 
 // Smart Sheet Smith — NSF HAMMER research (AIM Lab, Northwestern)
-import sheetSmithPoster from '../../imports/1781900331401__2_.gif';
+import sheetSmithPoster from '../../imports/1781900331401__2_.webp';
 
 export interface ProjectSection {
   heading?: string;
@@ -1425,8 +1426,6 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
   }
 ];
 
-const categories = ['All', 'Design', 'Personal Projects'];
-
 // Helper: collect all unique images from a project (thumbnail + content images)
 export function getAllProjectImages(project: Project): string[] {
   const images: string[] = project.image ? [project.image] : [];
@@ -1465,6 +1464,8 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
               key={imgIndex}
               src={allImages[imgIndex]}
               alt={project.title}
+              loading="lazy"
+              decoding="async"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -1533,14 +1534,9 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
 });
 
 export function Portfolio() {
-  const [activeTab, setActiveTab] = useState('All');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const filteredProjects = activeTab === 'All'
-    ? projects
-    : projects.filter(p => p.filterCategory === activeTab);
 
   const selectedProject = projects.find(p => p.id === selectedId);
 
@@ -1594,30 +1590,13 @@ export function Portfolio() {
           <p className="text-[#1B2D5B]/50 font-light text-lg">Engineering, design, and art</p>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="flex justify-center flex-wrap gap-8 mb-12">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setActiveTab(cat)}
-              className={`text-sm font-bold tracking-widest uppercase pb-2 border-b-2 transition-colors duration-300 ${
-                activeTab === cat 
-                  ? 'border-[#1B2D5B] text-[#1B2D5B]' 
-                  : 'border-transparent text-[#1B2D5B]/40 hover:text-[#1B2D5B]/70'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
         {/* Grid */}
         <motion.div 
           layout
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           <AnimatePresence mode='popLayout'>
-            {filteredProjects.map((project) => (
+            {projects.map((project) => (
               <ProjectCard
                 key={project.id}
                 project={project}
@@ -1693,8 +1672,11 @@ export function Portfolio() {
                                     {section.images.map((img, imgIdx) => (
                                       <div key={imgIdx} className="space-y-3 group cursor-pointer" onClick={() => setZoomedImage(img.url)}>
                                         <div className="relative overflow-hidden rounded-lg bg-[#F0EBE3] border border-[#1B2D5B]/10 shadow-sm">
-                                          <img 
-                                            src={img.url} 
+                                          <img
+                                            src={img.url}
+                                            {...dimsFor(img.url)}
+                                            loading="lazy"
+                                            decoding="async"
                                             alt={img.caption || "Project detail"}
                                             className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300"
                                           />

@@ -3,46 +3,47 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
-import patternBg from 'figma:asset/ff659488ddca67ce2d2ea51b9e8965e2d85d8a1e.png';
+import patternBg from 'figma:asset/ff659488ddca67ce2d2ea51b9e8965e2d85d8a1e.webp';
 import { projects, getAllProjectImages } from './Portfolio';
+import { dimsFor } from './imageDimensions';
 
 // Art Images
-import artCat from 'figma:asset/5cee417e0193e39fee7a6810170438020872701d.png';
-import artField from 'figma:asset/ac51133386d81e89aead318892b53b5efc52cdd1.png';
+import artCat from 'figma:asset/5cee417e0193e39fee7a6810170438020872701d.webp';
+import artField from 'figma:asset/ac51133386d81e89aead318892b53b5efc52cdd1.webp';
 // TODO(missing-asset): this image was not included in the Figma export.
-// To restore it: save the image to src/assets/dd613cd0b0f374337ee6efe762febd776e0f5a7c.png then uncomment the two lines below.
-// import artCampus from 'figma:asset/dd613cd0b0f374337ee6efe762febd776e0f5a7c.png';
-import artTorch from 'figma:asset/b209b20130571e3a9a1d40c13b20aabd60753d7d.png';
-import artCardboardHand from 'figma:asset/8f6f3a36e6bb445ed579fe22534757d7379817a8.png';
-import artHallway from 'figma:asset/5b1ae5f356afbd5aba632c5c944a1bb8a776bbee.png';
-import artHandSketch from 'figma:asset/32f02bacb93f261ec836820c9e1bafe4367f7e6b.png';
+// To restore it: save the image to src/assets/dd613cd0b0f374337ee6efe762febd776e0f5a7c.webp then uncomment the two lines below.
+// import artCampus from 'figma:asset/dd613cd0b0f374337ee6efe762febd776e0f5a7c.webp';
+import artTorch from 'figma:asset/b209b20130571e3a9a1d40c13b20aabd60753d7d.webp';
+import artCardboardHand from 'figma:asset/8f6f3a36e6bb445ed579fe22534757d7379817a8.webp';
+import artHallway from 'figma:asset/5b1ae5f356afbd5aba632c5c944a1bb8a776bbee.webp';
+import artHandSketch from 'figma:asset/32f02bacb93f261ec836820c9e1bafe4367f7e6b.webp';
 
 // New Additions
 // TODO(missing-asset): this image was not included in the Figma export.
-// To restore it: save the image to src/assets/f7db2bcaee0e512d859c06f9a22ecad88ad98ca1.png then uncomment the two lines below.
-// import artPainting from 'figma:asset/f7db2bcaee0e512d859c06f9a22ecad88ad98ca1.png';
-import artLight from 'figma:asset/afe93b8fb36b3a1f176026cfb5f3067d51dfe582.png';
-import artAnvil from 'figma:asset/b611fb7a41cfd7184ddb4f0b6c2291b82a180473.png';
-import artFigures from 'figma:asset/d4d95224e7f5f73b3b2366dadafc6cc9315837ca.png';
+// To restore it: save the image to src/assets/f7db2bcaee0e512d859c06f9a22ecad88ad98ca1.webp then uncomment the two lines below.
+// import artPainting from 'figma:asset/f7db2bcaee0e512d859c06f9a22ecad88ad98ca1.webp';
+import artLight from 'figma:asset/afe93b8fb36b3a1f176026cfb5f3067d51dfe582.webp';
+import artAnvil from 'figma:asset/b611fb7a41cfd7184ddb4f0b6c2291b82a180473.webp';
+import artFigures from 'figma:asset/d4d95224e7f5f73b3b2366dadafc6cc9315837ca.webp';
 
 // New art images
-import artRedPainting from 'figma:asset/1a30b5256c61ddd0c124b6e7f825c1934e09de8d.png';
-import artCeramics from 'figma:asset/7427c8a0ec2a5ca6b54ffd3391bdc25cef6a5940.png';
+import artRedPainting from 'figma:asset/1a30b5256c61ddd0c124b6e7f825c1934e09de8d.webp';
+import artCeramics from 'figma:asset/7427c8a0ec2a5ca6b54ffd3391bdc25cef6a5940.webp';
 // TODO(missing-asset): this image was not included in the Figma export.
-// To restore it: save the image to src/assets/fc304488c3a7f9212c50b49522c344c0400143ed.png then uncomment the two lines below.
-// import artFormulaCar from 'figma:asset/fc304488c3a7f9212c50b49522c344c0400143ed.png';
+// To restore it: save the image to src/assets/fc304488c3a7f9212c50b49522c344c0400143ed.webp then uncomment the two lines below.
+// import artFormulaCar from 'figma:asset/fc304488c3a7f9212c50b49522c344c0400143ed.webp';
 
 // Process images
-import processRobot from 'figma:asset/855c7fe4fa1b4b10045986c1830e5a624914d6fb.png';
-import processElectronics from 'figma:asset/9cfe9259f08f7d6d1896d5f78dec9f9932c1befa.png';
+import processRobot from 'figma:asset/855c7fe4fa1b4b10045986c1830e5a624914d6fb.webp';
+import processElectronics from 'figma:asset/9cfe9259f08f7d6d1896d5f78dec9f9932c1befa.webp';
 // TODO(missing-asset): this image was not included in the Figma export.
-// To restore it: save the image to src/assets/efd9bd591f8ea54056bae4b29bb76fbcabeabb56.png then uncomment the two lines below.
-// import processWhiteboard from 'figma:asset/efd9bd591f8ea54056bae4b29bb76fbcabeabb56.png';
+// To restore it: save the image to src/assets/efd9bd591f8ea54056bae4b29bb76fbcabeabb56.webp then uncomment the two lines below.
+// import processWhiteboard from 'figma:asset/efd9bd591f8ea54056bae4b29bb76fbcabeabb56.webp';
 
 // Additional photos
-import artCtMockup from 'figma:asset/0b7d6aceecd4965ee53ded4f68832dab8a0d08a0.png';
-import artOilPainting from 'figma:asset/341fc91b3513084249553e6967f56281fd6c8645.png';
-import artLaserCut from 'figma:asset/9794f6b646dbc637e8893cf2fc7a0e216b75a36a.png';
+import artCtMockup from 'figma:asset/0b7d6aceecd4965ee53ded4f68832dab8a0d08a0.webp';
+import artOilPainting from 'figma:asset/341fc91b3513084249553e6967f56281fd6c8645.webp';
+import artLaserCut from 'figma:asset/9794f6b646dbc637e8893cf2fc7a0e216b75a36a.webp';
 
 type GalleryCategory = 'Engineering' | 'Art';
 
@@ -152,7 +153,7 @@ export function Gallery() {
     <section className="relative py-12 pb-24 overflow-hidden">
       {/* Pattern Background */}
       <div className="absolute inset-0 z-0">
-        <img src={patternBg} alt="" className="w-full h-full object-cover opacity-[0.15]" />
+        <img src={patternBg} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover opacity-[0.15]" />
         <div className="absolute inset-0 bg-[#F7F3ED]/70" />
       </div>
 
@@ -191,7 +192,10 @@ export function Gallery() {
               >
                 <img
                   src={image.src}
-                  style={{width: "100%", display: "block"}}
+                  {...dimsFor(image.src)}
+                  loading="lazy"
+                  decoding="async"
+                  style={{width: "100%", height: "auto", display: "block"}}
                   alt={image.caption || `Gallery item ${i}`}
                   className="group-hover:scale-105 transition-transform duration-500 ease-in-out"
                 />
