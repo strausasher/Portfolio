@@ -1,0 +1,291 @@
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router';
+import { motion, AnimatePresence } from 'motion/react';
+import { X, ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import patternBg from 'figma:asset/ff659488ddca67ce2d2ea51b9e8965e2d85d8a1e.png';
+import { projects, getAllProjectImages } from './Portfolio';
+
+// Art Images
+import artCat from 'figma:asset/5cee417e0193e39fee7a6810170438020872701d.png';
+import artField from 'figma:asset/ac51133386d81e89aead318892b53b5efc52cdd1.png';
+// TODO(missing-asset): this image was not included in the Figma export.
+// To restore it: save the image to src/assets/dd613cd0b0f374337ee6efe762febd776e0f5a7c.png then uncomment the two lines below.
+// import artCampus from 'figma:asset/dd613cd0b0f374337ee6efe762febd776e0f5a7c.png';
+import artTorch from 'figma:asset/b209b20130571e3a9a1d40c13b20aabd60753d7d.png';
+import artCardboardHand from 'figma:asset/8f6f3a36e6bb445ed579fe22534757d7379817a8.png';
+import artHallway from 'figma:asset/5b1ae5f356afbd5aba632c5c944a1bb8a776bbee.png';
+import artHandSketch from 'figma:asset/32f02bacb93f261ec836820c9e1bafe4367f7e6b.png';
+
+// New Additions
+// TODO(missing-asset): this image was not included in the Figma export.
+// To restore it: save the image to src/assets/f7db2bcaee0e512d859c06f9a22ecad88ad98ca1.png then uncomment the two lines below.
+// import artPainting from 'figma:asset/f7db2bcaee0e512d859c06f9a22ecad88ad98ca1.png';
+import artLight from 'figma:asset/afe93b8fb36b3a1f176026cfb5f3067d51dfe582.png';
+import artAnvil from 'figma:asset/b611fb7a41cfd7184ddb4f0b6c2291b82a180473.png';
+import artFigures from 'figma:asset/d4d95224e7f5f73b3b2366dadafc6cc9315837ca.png';
+
+// New art images
+import artRedPainting from 'figma:asset/1a30b5256c61ddd0c124b6e7f825c1934e09de8d.png';
+import artCeramics from 'figma:asset/7427c8a0ec2a5ca6b54ffd3391bdc25cef6a5940.png';
+// TODO(missing-asset): this image was not included in the Figma export.
+// To restore it: save the image to src/assets/fc304488c3a7f9212c50b49522c344c0400143ed.png then uncomment the two lines below.
+// import artFormulaCar from 'figma:asset/fc304488c3a7f9212c50b49522c344c0400143ed.png';
+
+// Process images
+import processRobot from 'figma:asset/855c7fe4fa1b4b10045986c1830e5a624914d6fb.png';
+import processElectronics from 'figma:asset/9cfe9259f08f7d6d1896d5f78dec9f9932c1befa.png';
+// TODO(missing-asset): this image was not included in the Figma export.
+// To restore it: save the image to src/assets/efd9bd591f8ea54056bae4b29bb76fbcabeabb56.png then uncomment the two lines below.
+// import processWhiteboard from 'figma:asset/efd9bd591f8ea54056bae4b29bb76fbcabeabb56.png';
+
+// Additional photos
+import artCtMockup from 'figma:asset/0b7d6aceecd4965ee53ded4f68832dab8a0d08a0.png';
+import artOilPainting from 'figma:asset/341fc91b3513084249553e6967f56281fd6c8645.png';
+import artLaserCut from 'figma:asset/9794f6b646dbc637e8893cf2fc7a0e216b75a36a.png';
+
+type GalleryCategory = 'Engineering' | 'Art';
+
+interface GalleryItem {
+  src: string;
+  caption?: string;
+  category: GalleryCategory;
+  projectId?: number;
+  projectTitle?: string;
+}
+
+// Standalone art / process photos (not tied to a portfolio project)
+const standaloneImages: GalleryItem[] = [
+    // --- ART ---
+    { src: artTorch, category: 'Art' },
+    { src: artCardboardHand, caption: "Fully Cardboard Hand Sculpture, with Functional Tendon Mechanism", category: 'Art' },
+    { src: artCat, category: 'Art' },
+    { src: artRedPainting, category: 'Art' },
+    { src: artField, category: 'Art' },
+    { src: artHallway, category: 'Art' },
+    { src: artHandSketch, category: 'Art' },
+    { src: artCeramics, category: 'Art' },
+    // { src: artCampus, category: 'Art' },  // TODO(missing-asset): re-enable once image is restored
+    // { src: artPainting, category: 'Art' },  // TODO(missing-asset): re-enable once image is restored
+    { src: artOilPainting, category: 'Art' },
+    { src: artLight, category: 'Art' },
+    { src: artAnvil, category: 'Art' },
+    { src: artFigures, category: 'Art' },
+
+    // --- ENGINEERING ---
+    // { src: processWhiteboard, category: 'Engineering' },  // TODO(missing-asset): re-enable once image is restored
+    { src: processElectronics, category: 'Engineering' },
+    // { src: artFormulaCar, category: 'Engineering' },  // TODO(missing-asset): re-enable once image is restored
+    { src: processRobot, category: 'Engineering' },
+    { src: artCtMockup, category: 'Engineering' },
+    { src: artLaserCut, category: 'Engineering' },
+];
+
+// Look up the caption an image was given inside its project (if any)
+function findCaption(project: (typeof projects)[number], url: string): string | undefined {
+  for (const section of project.content) {
+    const match = section.images?.find(img => img.url === url);
+    if (match?.caption) return match.caption;
+  }
+  return undefined;
+}
+
+// Every image used across the portfolio projects, linked back to its project
+const projectImages: GalleryItem[] = projects.flatMap(project =>
+  getAllProjectImages(project).map(url => ({
+    src: url,
+    caption: findCaption(project, url),
+    category: 'Engineering' as GalleryCategory,
+    projectId: project.id,
+    projectTitle: project.title,
+  }))
+);
+
+const galleryImages: GalleryItem[] = [...standaloneImages, ...projectImages];
+
+const tabs: Array<'All' | GalleryCategory> = ['All', 'Engineering', 'Art'];
+
+export function Gallery() {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<'All' | GalleryCategory>('All');
+  const [zoomedIndex, setZoomedIndex] = useState<number | null>(null);
+
+  const openProject = useCallback((projectId: number) => {
+    navigate(`/?project=${projectId}`);
+  }, [navigate]);
+
+  const filteredImages = useMemo(() => {
+    if (activeTab === 'All') return galleryImages;
+    return galleryImages.filter(img => img.category === activeTab);
+  }, [activeTab]);
+
+  const goNext = useCallback(() => {
+    setZoomedIndex(prev => prev !== null ? (prev + 1) % filteredImages.length : null);
+  }, [filteredImages.length]);
+
+  const goPrev = useCallback(() => {
+    setZoomedIndex(prev => prev !== null ? (prev - 1 + filteredImages.length) % filteredImages.length : null);
+  }, [filteredImages.length]);
+
+  useEffect(() => {
+    if (zoomedIndex === null) return;
+
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') goNext();
+      else if (e.key === 'ArrowLeft') goPrev();
+      else if (e.key === 'Escape') setZoomedIndex(null);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [zoomedIndex, goNext, goPrev]);
+
+  // Close lightbox when switching tabs
+  useEffect(() => {
+    setZoomedIndex(null);
+  }, [activeTab]);
+
+  if (galleryImages.length === 0) return null;
+
+  const currentImage = zoomedIndex !== null ? filteredImages[zoomedIndex] : null;
+
+  return (
+    <section className="relative py-12 pb-24 overflow-hidden">
+      {/* Pattern Background */}
+      <div className="absolute inset-0 z-0">
+        <img src={patternBg} alt="" className="w-full h-full object-cover opacity-[0.15]" />
+        <div className="absolute inset-0 bg-[#F7F3ED]/70" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-[#1B2D5B] mb-4 tracking-wide">PHOTO GALLERY</h2>
+          <p className="text-[#1B2D5B]/50 font-light text-lg">Engineering work, project photos, and artistic explorations</p>
+        </div>
+
+        {/* Filter Tabs */}
+        <div className="flex justify-center flex-wrap gap-8 mb-12">
+          {tabs.map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`text-sm font-bold tracking-widest uppercase pb-2 border-b-2 transition-colors duration-300 ${
+                activeTab === tab
+                  ? 'border-[#1B2D5B] text-[#1B2D5B]'
+                  : 'border-transparent text-[#1B2D5B]/40 hover:text-[#1B2D5B]/70'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+        
+        <ResponsiveMasonry
+          columnsCountBreakPoints={{350: 1, 750: 2, 900: 3}}
+        >
+          <Masonry gutter="24px">
+            {filteredImages.map((image, i) => (
+              <div
+                key={`${activeTab}-${i}`}
+                className="overflow-hidden rounded-sm cursor-zoom-in group relative"
+                onClick={() => setZoomedIndex(i)}
+              >
+                <img
+                  src={image.src}
+                  style={{width: "100%", display: "block"}}
+                  alt={image.caption || `Gallery item ${i}`}
+                  className="group-hover:scale-105 transition-transform duration-500 ease-in-out"
+                />
+                {/* Hover overlay + caption */}
+                <div className="absolute inset-0 bg-[#F0EBE3]/0 group-hover:bg-[#F0EBE3]/40 transition-colors duration-300 flex flex-col items-center justify-end gap-2 p-4 text-center">
+                  {image.caption && (
+                    <p className="text-[#1B2D5B] text-base tracking-wide opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">{image.caption}</p>
+                  )}
+                  {image.projectTitle && (
+                    <span className="inline-flex items-center gap-1 text-[#1B2D5B] text-xs font-bold uppercase tracking-widest bg-[#F7F3ED]/90 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                      {image.projectTitle}
+                      <ArrowUpRight size={12} />
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </Masonry>
+        </ResponsiveMasonry>
+
+        {/* --- LIGHTBOX POPUP --- */}
+        <AnimatePresence>
+          {currentImage && zoomedIndex !== null && (
+            <div
+              className="fixed inset-0 z-[80] flex items-center justify-center p-8"
+              onClick={() => setZoomedIndex(null)}
+            >
+              {/* Semi-transparent backdrop - page still visible */}
+              <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
+
+              {/* Close button */}
+              <button 
+                className="absolute top-6 right-6 z-10 text-white/70 hover:text-white transition-colors bg-black/30 rounded-full p-2"
+                onClick={() => setZoomedIndex(null)}
+              >
+                <X size={24} />
+              </button>
+
+              {/* Left arrow */}
+              <button
+                className="absolute left-4 md:left-8 z-10 text-white/70 hover:text-white transition-colors bg-black/30 hover:bg-black/50 rounded-full p-3"
+                onClick={(e) => { e.stopPropagation(); goPrev(); }}
+              >
+                <ChevronLeft size={28} />
+              </button>
+
+              {/* Right arrow */}
+              <button
+                className="absolute right-4 md:right-8 z-10 text-white/70 hover:text-white transition-colors bg-black/30 hover:bg-black/50 rounded-full p-3"
+                onClick={(e) => { e.stopPropagation(); goNext(); }}
+              >
+                <ChevronRight size={28} />
+              </button>
+
+              {/* Image container - smaller, centered popup */}
+              <motion.div
+                key={`${activeTab}-${zoomedIndex}`}
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.92 }}
+                transition={{ duration: 0.2 }}
+                className="relative z-[5] flex flex-col items-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={currentImage.src}
+                  alt={currentImage.caption || 'Gallery view'}
+                  className="max-w-[90vw] max-h-[70vh] w-auto h-auto object-contain rounded-md shadow-2xl"
+                />
+                {currentImage.caption && (
+                  <div className="mt-3 text-center">
+                    <p className="text-white/80 text-sm tracking-wide">{currentImage.caption}</p>
+                  </div>
+                )}
+                {/* Link back to the source project */}
+                {currentImage.projectId !== undefined && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); openProject(currentImage.projectId!); }}
+                    className="mt-4 inline-flex items-center gap-2 bg-[#F7F3ED] hover:bg-white text-[#1B2D5B] text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full transition-colors shadow-lg"
+                  >
+                    View Project: {currentImage.projectTitle}
+                    <ArrowUpRight size={14} />
+                  </button>
+                )}
+                {/* Image counter */}
+                <div className="mt-3 text-center">
+                  <p className="text-white/40 text-xs">{zoomedIndex + 1} / {filteredImages.length}</p>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+      </div>
+    </section>
+  );
+}
