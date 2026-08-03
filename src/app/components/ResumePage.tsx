@@ -1,7 +1,9 @@
 import { Download, FileText } from 'lucide-react';
 
-// Swap in the new résumé upload here once it's added.
-const resumeImg: string | null = null;
+import resumePdf from '../../assets/Asher_Straus_Resume.pdf';
+
+// Hide the PDF viewer's chrome so the embed reads as a page, not a document viewer.
+const resumeEmbed = `${resumePdf}#toolbar=0&navpanes=0&view=FitH`;
 
 export function ResumePage() {
   return (
@@ -27,50 +29,55 @@ export function ResumePage() {
             </h1>
           </div>
 
-          {resumeImg && (
-            <a
-              href={resumeImg}
-              download="Asher_Straus_Resume.png"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1B2D5B] text-[#F7F3ED] text-sm font-bold tracking-widest uppercase rounded hover:bg-[#2a4080] transition-colors shadow-md"
-            >
-              <Download size={15} />
-              Download
-            </a>
-          )}
+          <a
+            href={resumePdf}
+            download="Asher_Straus_Resume.pdf"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1B2D5B] text-[#F7F3ED] text-sm font-bold tracking-widest uppercase rounded hover:bg-[#2a4080] transition-colors shadow-md"
+          >
+            <Download size={15} />
+            Download
+          </a>
         </div>
 
-        {/* Resume image card */}
+        {/* Resume PDF card */}
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-[#1B2D5B]/10">
-            {resumeImg ? (
-              <img
-                src={resumeImg}
-                alt="Asher Straus resume"
-                className="w-full h-auto block"
-              />
-            ) : (
-              <div className="aspect-[8.5/11] w-full flex flex-col items-center justify-center gap-4 bg-[#1B2D5B]/[0.04] text-[#1B2D5B]/45">
+            <object
+              data={resumeEmbed}
+              type="application/pdf"
+              className="aspect-[8.5/11] w-full block"
+              aria-label="Asher Straus résumé"
+            >
+              {/* Shown where inline PDF rendering is unsupported (most mobile browsers) */}
+              <div className="aspect-[8.5/11] w-full flex flex-col items-center justify-center gap-4 bg-[#1B2D5B]/[0.04] text-[#1B2D5B]/45 px-6 text-center">
                 <FileText size={40} strokeWidth={1.5} />
                 <p className="text-xs font-bold tracking-[0.2em] uppercase">
-                  Résumé coming soon
+                  Preview unavailable on this device
                 </p>
+                <a
+                  href={resumePdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1B2D5B] text-[#F7F3ED] text-sm font-bold tracking-widest uppercase rounded hover:bg-[#2a4080] transition-colors shadow-md"
+                >
+                  <Download size={15} />
+                  Open PDF
+                </a>
               </div>
-            )}
+            </object>
           </div>
 
           {/* Footer download nudge */}
-          {resumeImg && (
-            <div className="mt-6 flex justify-center">
-              <a
-                href={resumeImg}
-                download="Asher_Straus_Resume.png"
-                className="inline-flex items-center gap-2 px-5 py-2.5 border-2 border-[#1B2D5B] text-[#1B2D5B] text-sm font-bold tracking-widest uppercase rounded hover:bg-[#1B2D5B] hover:text-[#F7F3ED] transition-colors"
-              >
-                <Download size={15} />
-                Download PDF
-              </a>
-            </div>
-          )}
+          <div className="mt-6 flex justify-center">
+            <a
+              href={resumePdf}
+              download="Asher_Straus_Resume.pdf"
+              className="inline-flex items-center gap-2 px-5 py-2.5 border-2 border-[#1B2D5B] text-[#1B2D5B] text-sm font-bold tracking-widest uppercase rounded hover:bg-[#1B2D5B] hover:text-[#F7F3ED] transition-colors"
+            >
+              <Download size={15} />
+              Download PDF
+            </a>
+          </div>
         </div>
       </div>
     </div>
