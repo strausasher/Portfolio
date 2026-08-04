@@ -67,6 +67,8 @@ import patchworkCrossSection from 'figma:asset/3d1001aaaadf39cac5581426cd1b1ce32
 import patchworkSensoryRoom from 'figma:asset/9ef7d8d4e2fe940d318007df98509c59079bb4ca.webp';
 import patchworkBookCover from 'figma:asset/b0b82af46ce1e6db6a9a0a3fccd9728443f1195e.webp';
 import lampImg from 'figma:asset/6f4325245aa689e63a3b4eb0653b90c207882c29.webp';
+import lampLitGlow from 'figma:asset/lamp-lit-glow.webp';
+import lampHanging from 'figma:asset/lamp-hanging.webp';
 import lampHinged from 'figma:asset/04364e8a8e32e2ac680bc5eceae50dae3c413998.webp';
 import lampWelding from 'figma:asset/03ed3a93bcfbfaca1b365a293a02bbbc999da73f.webp';
 import lampPanelsTable from 'figma:asset/9cd3729e78f71bd38f4585d1bab1cfd08586e862.webp';
@@ -76,6 +78,27 @@ import lampSlicer from 'figma:asset/74d139f8b070cd88eca71f5874788d4232ca87cf.web
 import lampCADSketch from 'figma:asset/8245392aa6ee2b4d710b552de641679ad8f4bc12.webp';
 import lampAcrylicSheet from 'figma:asset/5ca57543960765bbe4baf8c8a0d5ac7b885bd760.webp';
 import portfolioBg from 'figma:asset/8e0e8033d043030122e4156d932b40a343273916.webp';
+import drivetrainBajaCar from 'figma:asset/eng-baja-car.webp';
+import projPlacementIdea from 'figma:asset/proj-placement-idea.webp';
+import projConceptSketch from 'figma:asset/proj-concept-sketch.webp';
+import projAngleSketch from 'figma:asset/proj-angle-sketch.webp';
+import projCadBedClip from 'figma:asset/proj-cad-bed-clip.webp';
+import projWoodMockup from 'figma:asset/proj-wood-mockup.webp';
+import projMockupVsPrint from 'figma:asset/proj-mockup-vs-print.webp';
+import projBedClipFinished from 'figma:asset/proj-bed-clip-finished.webp';
+import projCadTableClamp from 'figma:asset/proj-cad-table-clamp.webp';
+import castFurnaceHero from 'figma:asset/cast-furnace-hero.webp';
+import castFurnaceScaffold from 'figma:asset/cast-furnace-scaffold.webp';
+import castPourCloseup from 'figma:asset/cast-pour-closeup.webp';
+import castTeamMolds from 'figma:asset/cast-team-molds.webp';
+import castNameplateFinished from 'figma:asset/cast-nameplate-finished.webp';
+import castMoldsCooling from 'figma:asset/cast-molds-cooling.webp';
+import turntableCadRender from 'figma:asset/turntable-cad-render.webp';
+import turntablePracticeKerfs from 'figma:asset/turntable-practice-kerfs.webp';
+import turntableBom from 'figma:asset/turntable-bom.webp';
+import tracingBoardInUse from 'figma:asset/tracing-board-in-use.webp';
+import tracingBoardLit from 'figma:asset/tracing-board-lit.webp';
+import tracingBoardElevated from 'figma:asset/tracing-board-elevated.webp';
 
 // Bionic Wrench manufacturing project (DSGN 386) — figures extracted from the final report
 import wrenchHero from '../../imports/dsgn386/p01_0.webp';
@@ -911,7 +934,7 @@ Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northweste
     id: 17,
     title: 'Drivetrain Efficiency Test Rig',
     category: 'Drivetrain Testing · Instrumentation & DAQ · Baja SAE · Mechanical Design',
-    image: '',
+    image: drivetrainBajaCar,
     description: 'A bench-top drivetrain efficiency test rig for Baja SAE, designed to measure power losses across individual components — CVT and gearbox — under repeatable, controlled-load conditions using torque sensors and a Teensy 4.1 DAQ.',
     filterCategory: 'Personal Projects',
     date: '2025–2026',
@@ -1419,7 +1442,143 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
         heading: 'Completed Lamp & Lessons Learned',
         text: `Created a structurally accurate modular lamp integrating geometry, fabrication constraints, and functional access.`,
         images: [
-            { url: lampHinged }
+            { url: lampHinged },
+            { url: lampLitGlow, caption: 'Lit from within, string lights diffused through the mirrored acrylic panels' },
+            { url: lampHanging }
+        ]
+      }
+    ]
+  },
+  {
+    id: 21,
+    title: 'Iron Sand Casting',
+    category: 'Metal Casting · Furnace Fabrication · Foundry Practice',
+    image: castFurnaceHero,
+    description: "Built a coke-fired furnace to cast iron, and hand-embossed a nameplate in sand when a binder-jet mold order didn't arrive in time.",
+    filterCategory: 'Personal Projects',
+    date: '2026',
+    tools: ['Furnace Fabrication', 'Iron Casting', 'Sand Mold Casting', 'Onshape', 'Forced-Air Combustion', 'Foundry Safety'],
+    content: [
+      {
+        text: `Built a coke-fired furnace — forced air supplied by a leaf blower — to melt and pour iron. In parallel, I modeled a bacteriophage in Onshape to be cast from a binder-jet-printed sand mold I ordered out, aiming to pour it in late March.`,
+        images: [
+            { url: castFurnaceHero, caption: 'The coke-fired furnace, forced air supplied by a leaf blower' },
+            { url: castFurnaceScaffold, caption: 'Tending the furnace from the scaffold' }
+        ]
+      },
+      {
+        heading: "When the Mold Didn't Arrive",
+        text: `The binder-jet sand mold for the bacteriophage didn't ship in time for pour day. Rather than skip the pour, I fell back to a blank plaque mold and hammered a 3D-printed pattern of my name and major directly into the sand by hand to emboss the impression, then poured molten iron into it.`,
+        images: [
+            { url: castPourCloseup, caption: 'Pouring molten iron into a mold' },
+            { url: castTeamMolds, caption: 'Molds glowing after the pour' }
+        ]
+      },
+      {
+        heading: 'The Result',
+        text: `The pour produced a solid iron nameplate with my name and major embossed from the hand-pressed pattern — not the piece I originally set out to cast, but a complete one made entirely from furnace to finished plaque.`,
+        images: [
+            { url: castNameplateFinished, caption: 'The finished cast iron nameplate' },
+            { url: castMoldsCooling, caption: 'Freshly poured molds cooling' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 22,
+    title: 'Snap-Fit Projector Mounts',
+    category: 'Compliant Mechanisms · 3D Printing · Product Design',
+    image: projBedClipFinished,
+    description: 'Two PETG 3D-printed projector mounts — a cantilever snap-fit stand that clips onto a bed frame, and a clamp-on stand that slides onto a table edge for game nights.',
+    filterCategory: 'Personal Projects',
+    date: '2026',
+    tools: ['Compliant Mechanism Design', '3D Printing (PETG)', 'Snap-Fit Design', 'Product Design', 'CAD Modeling'],
+    content: [
+      {
+        text: `Designed and 3D-printed two PETG projector mounts for two different mounting problems. The bed-mount stand was my first true compliant mechanism — I had never designed a snap-fit before this.`,
+        images: [
+            { url: projPlacementIdea, caption: 'Holding the projector up to plan where it would mount' },
+            { url: projConceptSketch, caption: 'Early concept sketch covering both the bed-clip and table-clamp designs' }
+        ]
+      },
+      {
+        heading: 'Bed-Mount Stand',
+        text: `Clips onto the side of my bed frame near the top, by the nightstand, using cantilever snap arms that flex to clip on and hold the projector in place — letting me watch movies from bed. The arms are fixed (non-adjustable), and this was the first compliant mechanism I designed.`,
+        images: [
+            { url: projAngleSketch, caption: 'Snap-arm angle and dimension detail for the cantilever clip' },
+            { url: projCadBedClip, caption: 'CAD model of the bed-mount bracket' },
+            { url: projWoodMockup, caption: 'Wood mockup of the base, clamped to the bed frame to test fit' },
+            { url: projMockupVsPrint, caption: 'Wood mockup next to the first 3D-printed bracket' },
+            { url: projBedClipFinished, caption: 'The finished 3D-printed cantilever snap-fit bracket' }
+        ]
+      },
+      {
+        heading: 'Table-Slide Stand',
+        text: `Slides onto a tabletop edge and clamps down to hold the projector steady — built so we could project maps and displays onto the table for Dungeons & Dragons game nights.`,
+        images: [
+            { url: projCadTableClamp, caption: 'CAD model of the table-clamp bracket' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 23,
+    title: 'Kerf-Bent Walnut Turntable Stand',
+    category: 'Furniture Design · CNC Fabrication · Audio Equipment (Work in Progress)',
+    image: turntableCadRender,
+    description: 'A kerf-bent walnut veneer plywood turntable stand — an S-curved form with two bends and three platforms, accented with brass tubing and tuned for vibration isolation. Currently finalized in CAD and BOM, awaiting CNC router time.',
+    filterCategory: 'Personal Projects',
+    date: '2026',
+    tools: ['CNC Routing', 'Kerf Bending', 'CAD Modeling', 'Bill of Materials', 'Vibration Isolation', 'Furniture Design'],
+    content: [
+      {
+        text: `My first audio-focused project: a turntable stand made from a single piece of walnut veneer plywood, kerf-bent into a squished S-shape with two turns and three platforms. Still a work in progress — I have the full CAD model and BOM finalized, but I'm waiting on a shop trainer to be available for the CNC router (they're only there during hours I'm at work during the week).`,
+        images: [
+            { url: turntableCadRender, caption: 'CAD render of the kerf-bent S-curve stand, with the threaded-rod supports shown' }
+        ]
+      },
+      {
+        heading: 'Design',
+        text: `The stand will be kerf-cut with a V-tapered bit to let a single sheet of walnut veneer plywood bend into the S-curve, forming three continuous platforms in one piece. Brass tubing runs through it as an accent — it isn't structural; a concealed threaded rod inside does the actual load-bearing.`,
+        images: [
+            { url: turntablePracticeKerfs, caption: 'Practice kerf cuts on scrap walnut plywood, testing the bend before committing to the real piece' }
+        ]
+      },
+      {
+        heading: 'Vibration Isolation',
+        text: `Three strategies layered together: isolation feet, damping wool pads, and mass loading — placing the heaviest component, the record itself, on the lowest platform.`
+      },
+      {
+        heading: 'Status',
+        text: `Materials sourced, BOM finalized, CAD complete. Next step is kerfing the walnut plywood on the CNC router, plus cable management for a clean final build.`,
+        images: [
+            { url: turntableBom, caption: 'Bill of materials — $370.04 total across plywood, the V-groove bit, brass tubing, vibration isolation hardware, and finish' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 24,
+    title: 'Light Tracing Board',
+    category: 'Product Design · Laser Cutting · 3D Printing',
+    image: tracingBoardInUse,
+    description: 'A laser-cut acrylic light board with 3D-printed corner stands, sized to fit the large-format paper used in my industrial sketching class.',
+    filterCategory: 'Personal Projects',
+    date: '2026',
+    tools: ['Laser Cutting', 'Acrylic Fabrication', '3D Printing (PLA)', 'Product Design', 'CAD Modeling'],
+    content: [
+      {
+        text: `Built alongside my industrial sketching class in Spring 2026 — a light table for tracing sketches, sized to exactly fit the large-format paper I was using in class. A light placed underneath shines up through the paper, making it easy to see and trace over an existing drawing.`,
+        images: [
+            { url: tracingBoardInUse, caption: 'Tracing a sketch on the light board' }
+        ]
+      },
+      {
+        heading: 'Build',
+        text: `Laser-cut acrylic sheet, held up on four 3D-printed PLA corner stands secured with M3 bolts and nuts. The stands elevate the acrylic off the table so the light underneath has room to spread evenly across the sheet before it reaches the paper.`,
+        images: [
+            { url: tracingBoardLit, caption: 'The board elevated on its corner stands, lit from underneath' },
+            { url: tracingBoardElevated, caption: 'Corner stand detail, showing the elevation off the table surface' }
         ]
       }
     ]
