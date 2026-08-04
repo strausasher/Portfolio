@@ -42,8 +42,43 @@ import processElectronics from 'figma:asset/9cfe9259f08f7d6d1896d5f78dec9f9932c1
 
 // Additional photos
 import artCtMockup from 'figma:asset/0b7d6aceecd4965ee53ded4f68832dab8a0d08a0.webp';
+
+// CT scanner (BodyTom) mockup — concept through build
+import ctConceptRender1 from 'figma:asset/ct-concept-render-1.webp';
+import ctConceptRender2 from 'figma:asset/ct-concept-render-2.webp';
+import ctTableMechanismConcept from 'figma:asset/ct-table-mechanism-concept.webp';
+import ctCadGantry1 from 'figma:asset/ct-cad-gantry-1.webp';
+import ctCadGantry2 from 'figma:asset/ct-cad-gantry-2.webp';
+import ctPrintedPanel from 'figma:asset/ct-printed-panel.webp';
+import ctShopBoreCut from 'figma:asset/ct-shop-bore-cut.webp';
+import ctShopFrameAssembly from 'figma:asset/ct-shop-frame-assembly.webp';
+import ctShopBoreRing from 'figma:asset/ct-shop-bore-ring.webp';
+import ctShopInternalStructure from 'figma:asset/ct-shop-internal-structure.webp';
+import ctShopFinishedBodytom from 'figma:asset/ct-shop-finished-bodytom.webp';
 import artOilPainting from 'figma:asset/341fc91b3513084249553e6967f56281fd6c8645.webp';
 import artLaserCut from 'figma:asset/9794f6b646dbc637e8893cf2fc7a0e216b75a36a.webp';
+
+// More art photos
+import artColorBlockSun from 'figma:asset/art-color-block-sun.webp';
+import artWallDisplay from 'figma:asset/art-wall-display.webp';
+import artJustMarriedSign from 'figma:asset/art-just-married-sign.webp';
+import artCardboardHand2 from 'figma:asset/art-cardboard-hand-2.webp';
+import artColorBlockCircles from 'figma:asset/art-color-block-circles.webp';
+import artSketchbookPov from 'figma:asset/art-sketchbook-pov.webp';
+import artTorchLit from 'figma:asset/art-torch-lit.webp';
+import artPavilionConcept from 'figma:asset/art-pavilion-concept.webp';
+
+// Engineering photos — shop work, labs, and fabrication
+import engSolidworksPart from 'figma:asset/eng-solidworks-part.webp';
+import engRobotArms from 'figma:asset/eng-robot-arms.webp';
+import engHumanoidRobot from 'figma:asset/eng-humanoid-robot.webp';
+import engMachinedMold from 'figma:asset/eng-machined-mold.webp';
+import engSoftSensors from 'figma:asset/eng-soft-sensors.webp';
+import engSensorCast from 'figma:asset/eng-sensor-cast.webp';
+import eng3dPrintTiles from 'figma:asset/eng-3d-print-tiles.webp';
+import engBajaCar from 'figma:asset/eng-baja-car.webp';
+import engCopperBrazing from 'figma:asset/eng-copper-brazing.webp';
+import engWaterjet from 'figma:asset/eng-waterjet.webp';
 
 // Sketchbook scans (one entry per page, in scan order) — too many to import by
 // hand, so pull the whole set in at once.
@@ -82,6 +117,14 @@ const standaloneImages: GalleryItem[] = [
     { src: artLight, category: 'Artwork' },
     { src: artAnvil, category: 'Artwork' },
     { src: artFigures, category: 'Artwork' },
+    { src: artColorBlockSun, category: 'Artwork' },
+    { src: artWallDisplay, caption: 'Wall of studies and small paintings', category: 'Artwork' },
+    { src: artJustMarriedSign, caption: 'Hand-lettered "Just Married" floral sign', category: 'Artwork' },
+    { src: artCardboardHand2, category: 'Artwork' },
+    { src: artColorBlockCircles, category: 'Artwork' },
+    { src: artSketchbookPov, category: 'Artwork' },
+    { src: artTorchLit, category: 'Artwork' },
+    { src: artPavilionConcept, caption: 'Pavilion seating concept sketch', category: 'Artwork' },
 
     // --- ENGINEERING ---
     // { src: processWhiteboard, category: 'Engineering' },  // TODO(missing-asset): re-enable once image is restored
@@ -89,7 +132,28 @@ const standaloneImages: GalleryItem[] = [
     // { src: artFormulaCar, category: 'Engineering' },  // TODO(missing-asset): re-enable once image is restored
     { src: processRobot, category: 'Engineering' },
     { src: artCtMockup, category: 'Engineering' },
+    { src: ctConceptRender1, caption: 'BodyTom CT scanner — early concept render', category: 'Engineering' },
+    { src: ctConceptRender2, caption: 'Bore ring concept sketch', category: 'Engineering' },
+    { src: ctTableMechanismConcept, caption: 'Patient table drive mechanism concept', category: 'Engineering' },
+    { src: ctCadGantry1, caption: 'CAD model of the gantry housing', category: 'Engineering' },
+    { src: ctCadGantry2, category: 'Engineering' },
+    { src: ctPrintedPanel, caption: '3D-printed gantry panel', category: 'Engineering' },
+    { src: ctShopBoreCut, caption: 'Cutting the bore opening', category: 'Engineering' },
+    { src: ctShopFrameAssembly, caption: 'Assembling the support frame', category: 'Engineering' },
+    { src: ctShopBoreRing, caption: 'Bore ring installed', category: 'Engineering' },
+    { src: ctShopInternalStructure, caption: 'Internal bore structure', category: 'Engineering' },
+    { src: ctShopFinishedBodytom, caption: 'Finished BodyTom mockup', category: 'Engineering' },
     { src: artLaserCut, category: 'Engineering' },
+    { src: engSolidworksPart, category: 'Engineering' },
+    { src: engRobotArms, caption: 'Bimanual robot with prosthetic hands, Northwestern Engineering robotics lab', category: 'Engineering' },
+    { src: engHumanoidRobot, caption: 'Humanoid robot rigged for testing', category: 'Engineering' },
+    { src: engMachinedMold, caption: 'CNC-machined aluminum mold', category: 'Engineering' },
+    { src: engSoftSensors, caption: 'Cast silicone tactile sensors', category: 'Engineering' },
+    { src: engSensorCast, category: 'Engineering' },
+    { src: eng3dPrintTiles, caption: '3D-printed tessellated tile array', category: 'Engineering' },
+    { src: engBajaCar, caption: 'Northwestern Baja SAE off-road racer', category: 'Engineering' },
+    { src: engCopperBrazing, caption: 'Brazing copper tubing', category: 'Engineering' },
+    { src: engWaterjet, caption: 'Abrasive waterjet cutting', category: 'Engineering' },
 
     // --- SKETCHES ---
     ...sketchbookPages.map((src): GalleryItem => ({ src, category: 'Artwork' })),
