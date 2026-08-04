@@ -78,15 +78,25 @@ export function Navbar() {
           className="flex items-center"
           aria-label="Asher Straus — back to top"
         >
-          {/* The mark is near-black, so over the dark hero it is filtered to solid
-              white; on the light navbar it shows in its own ink. */}
-          <img
-            src={logo}
-            alt="Asher Straus"
-            width={351}
-            height={300}
-            className={`w-auto transition-all duration-300 ${
-              scrolled || isOnSubpage ? 'h-9' : 'h-11 brightness-0 invert'
+          {/* Logo is recolored via CSS mask (its alpha shape filled with a solid
+              color) so it's the project-title blue on the light navbar and
+              white over the dark hero. */}
+          <span
+            role="img"
+            aria-hidden="true"
+            style={{
+              aspectRatio: '351 / 300',
+              WebkitMaskImage: `url(${logo})`,
+              maskImage: `url(${logo})`,
+              WebkitMaskSize: 'contain',
+              maskSize: 'contain',
+              WebkitMaskRepeat: 'no-repeat',
+              maskRepeat: 'no-repeat',
+              WebkitMaskPosition: 'center',
+              maskPosition: 'center',
+            }}
+            className={`inline-block transition-all duration-300 ${
+              scrolled || isOnSubpage ? 'h-9 bg-[#1B2D5B]' : 'h-11 bg-white'
             }`}
           />
         </a>
