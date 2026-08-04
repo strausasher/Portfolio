@@ -164,8 +164,9 @@ export function Gallery() {
 
   return (
     <section className="relative py-12 pb-24 overflow-hidden">
-      {/* Pattern Background */}
-      <div className="absolute inset-0 z-0">
+      {/* Pattern Background — fixed to the viewport so it doesn't rescale when
+          switching tabs changes the section's content height */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
         <img src={patternBg} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover opacity-[0.15]" />
         <div className="absolute inset-0 bg-[#F7F3ED]/70" />
       </div>

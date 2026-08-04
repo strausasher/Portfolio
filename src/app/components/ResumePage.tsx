@@ -1,4 +1,5 @@
 import { Download, FileText } from 'lucide-react';
+import patternBg from 'figma:asset/ff659488ddca67ce2d2ea51b9e8965e2d85d8a1e.webp';
 
 import resumePdf from '../../assets/Asher_Straus_Resume.pdf';
 
@@ -7,17 +8,14 @@ const resumeEmbed = `${resumePdf}#toolbar=0&navpanes=0&view=FitH`;
 
 export function ResumePage() {
   return (
-    <div className="min-h-screen bg-[#F0EBE3]">
-      {/* Subtle dot-grid pattern */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.06]"
-        style={{
-          backgroundImage: 'radial-gradient(circle, #1B2D5B 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
-        }}
-      />
+    <div className="relative min-h-screen bg-[#F0EBE3]">
+      {/* Pattern background — same treatment as the Photo Gallery */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <img src={patternBg} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover opacity-[0.15]" />
+        <div className="absolute inset-0 bg-[#F0EBE3]/70" />
+      </div>
 
-      <div className="relative pt-28 pb-16 px-6">
+      <div className="relative z-10 pt-28 pb-16 px-6">
         {/* Header */}
         <div className="max-w-4xl mx-auto mb-8 flex items-end justify-between">
           <div>
