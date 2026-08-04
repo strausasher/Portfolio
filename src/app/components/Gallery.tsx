@@ -55,7 +55,7 @@ const sketchbookPages: string[] = Object.keys(sketchbookModules)
   .sort()
   .map(key => sketchbookModules[key]);
 
-type GalleryCategory = 'Engineering' | 'Art' | 'Sketches';
+type GalleryCategory = 'Engineering' | 'Artwork';
 
 interface GalleryItem {
   src: string;
@@ -67,21 +67,21 @@ interface GalleryItem {
 
 // Standalone art / process photos (not tied to a portfolio project)
 const standaloneImages: GalleryItem[] = [
-    // --- ART ---
-    { src: artTorch, category: 'Art' },
-    { src: artCardboardHand, caption: "Fully Cardboard Hand Sculpture, with Functional Tendon Mechanism", category: 'Art' },
-    { src: artCat, category: 'Art' },
-    { src: artRedPainting, category: 'Art' },
-    { src: artField, category: 'Art' },
-    { src: artHallway, category: 'Art' },
-    { src: artHandSketch, category: 'Art' },
-    { src: artCeramics, category: 'Art' },
-    // { src: artCampus, category: 'Art' },  // TODO(missing-asset): re-enable once image is restored
-    // { src: artPainting, category: 'Art' },  // TODO(missing-asset): re-enable once image is restored
-    { src: artOilPainting, category: 'Art' },
-    { src: artLight, category: 'Art' },
-    { src: artAnvil, category: 'Art' },
-    { src: artFigures, category: 'Art' },
+    // --- ARTWORK ---
+    { src: artTorch, category: 'Artwork' },
+    { src: artCardboardHand, caption: "Fully Cardboard Hand Sculpture, with Functional Tendon Mechanism", category: 'Artwork' },
+    { src: artCat, category: 'Artwork' },
+    { src: artRedPainting, category: 'Artwork' },
+    { src: artField, category: 'Artwork' },
+    { src: artHallway, category: 'Artwork' },
+    { src: artHandSketch, category: 'Artwork' },
+    { src: artCeramics, category: 'Artwork' },
+    // { src: artCampus, category: 'Artwork' },  // TODO(missing-asset): re-enable once image is restored
+    // { src: artPainting, category: 'Artwork' },  // TODO(missing-asset): re-enable once image is restored
+    { src: artOilPainting, category: 'Artwork' },
+    { src: artLight, category: 'Artwork' },
+    { src: artAnvil, category: 'Artwork' },
+    { src: artFigures, category: 'Artwork' },
 
     // --- ENGINEERING ---
     // { src: processWhiteboard, category: 'Engineering' },  // TODO(missing-asset): re-enable once image is restored
@@ -92,7 +92,7 @@ const standaloneImages: GalleryItem[] = [
     { src: artLaserCut, category: 'Engineering' },
 
     // --- SKETCHES ---
-    ...sketchbookPages.map((src): GalleryItem => ({ src, category: 'Sketches' })),
+    ...sketchbookPages.map((src): GalleryItem => ({ src, category: 'Artwork' })),
 ];
 
 // Look up the caption an image was given inside its project (if any)
@@ -117,7 +117,7 @@ const projectImages: GalleryItem[] = projects.flatMap(project =>
 
 const galleryImages: GalleryItem[] = [...standaloneImages, ...projectImages];
 
-const tabs: Array<'All' | GalleryCategory> = ['All', 'Engineering', 'Art', 'Sketches'];
+const tabs: Array<'All' | GalleryCategory> = ['All', 'Engineering', 'Artwork'];
 
 export function Gallery() {
   const navigate = useNavigate();
