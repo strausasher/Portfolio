@@ -49,7 +49,11 @@ for (const [dir, specifier] of [
 ]) {
   for (const full of walk(path.join(ROOT, dir))) {
     const spec = specifier(full);
-    if (!live.includes(spec)) continue;
+    // Bulk sets pulled in via import.meta.glob (e.g. sketchbook-*.webp in
+    // Gallery.tsx) never appear as a literal specifier string, so match by
+    // filename prefix instead of requiring an exact `live.includes` hit.
+    const bulkImported = /^sketchbook-/.test(path.basename(full)) && live.includes("'../../assets/sketchbook-*.webp'");
+    if (!bulkImported && !live.includes(spec)) continue;
     const { width, height } = await sharp(full).metadata();
     entries.push({ spec, width, height });
   }

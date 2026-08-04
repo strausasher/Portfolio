@@ -45,7 +45,17 @@ import artCtMockup from 'figma:asset/0b7d6aceecd4965ee53ded4f68832dab8a0d08a0.we
 import artOilPainting from 'figma:asset/341fc91b3513084249553e6967f56281fd6c8645.webp';
 import artLaserCut from 'figma:asset/9794f6b646dbc637e8893cf2fc7a0e216b75a36a.webp';
 
-type GalleryCategory = 'Engineering' | 'Art';
+// Sketchbook scans (one entry per page, in scan order) — too many to import by
+// hand, so pull the whole set in at once.
+const sketchbookModules = import.meta.glob('../../assets/sketchbook-*.webp', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>;
+const sketchbookPages: string[] = Object.keys(sketchbookModules)
+  .sort()
+  .map(key => sketchbookModules[key]);
+
+type GalleryCategory = 'Engineering' | 'Art' | 'Sketches';
 
 interface GalleryItem {
   src: string;
@@ -80,6 +90,9 @@ const standaloneImages: GalleryItem[] = [
     { src: processRobot, category: 'Engineering' },
     { src: artCtMockup, category: 'Engineering' },
     { src: artLaserCut, category: 'Engineering' },
+
+    // --- SKETCHES ---
+    ...sketchbookPages.map((src): GalleryItem => ({ src, category: 'Sketches' })),
 ];
 
 // Look up the caption an image was given inside its project (if any)
@@ -104,7 +117,7 @@ const projectImages: GalleryItem[] = projects.flatMap(project =>
 
 const galleryImages: GalleryItem[] = [...standaloneImages, ...projectImages];
 
-const tabs: Array<'All' | GalleryCategory> = ['All', 'Engineering', 'Art'];
+const tabs: Array<'All' | GalleryCategory> = ['All', 'Engineering', 'Art', 'Sketches'];
 
 export function Gallery() {
   const navigate = useNavigate();
