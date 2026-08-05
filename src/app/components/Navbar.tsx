@@ -64,7 +64,7 @@ export function Navbar() {
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
       scrolled || isOnSubpage ? 'bg-[#F7F3ED]/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
     }`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+      <div className="w-full px-6 md:px-10 lg:px-16 flex justify-between items-center">
         <a
           href="#"
           onClick={(e) => {

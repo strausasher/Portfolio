@@ -55,6 +55,10 @@ import ctShopFrameAssembly from 'figma:asset/ct-shop-frame-assembly.webp';
 import ctShopBoreRing from 'figma:asset/ct-shop-bore-ring.webp';
 import ctShopInternalStructure from 'figma:asset/ct-shop-internal-structure.webp';
 import ctShopFinishedBodytom from 'figma:asset/ct-shop-finished-bodytom.webp';
+
+// Projector-mount working sketches (used on the Snap-Fit Projector Mounts project)
+import projConceptSketch from 'figma:asset/proj-concept-sketch.webp';
+import projAngleSketch from 'figma:asset/proj-angle-sketch.webp';
 import artOilPainting from 'figma:asset/341fc91b3513084249553e6967f56281fd6c8645.webp';
 import artLaserCut from 'figma:asset/9794f6b646dbc637e8893cf2fc7a0e216b75a36a.webp';
 
@@ -86,11 +90,32 @@ const sketchbookModules = import.meta.glob('../../assets/sketchbook-*.webp', {
   eager: true,
   import: 'default',
 }) as Record<string, string>;
-const sketchbookPages: string[] = Object.keys(sketchbookModules)
-  .sort()
-  .map(key => sketchbookModules[key]);
+// The scans are grouped into series by filename (sketchbook-c<series>-p<page>).
+// Each series is one industrial design project. c5 is deliberately absent: those
+// pages are the projector-mount working sketches, which already appear (with
+// better captions and a link back to the project) via projConceptSketch /
+// projAngleSketch on the Snap-Fit Projector Mounts project.
+const sketchSeriesCaptions: Record<string, string> = {
+  c1: 'Racing shoe concepts',
+  c2: 'Transit shelter concepts — Evanston / Northwestern',
+  c3: 'Wand controller & potion speaker set',
+  c4: 'Lighting concepts',
+};
 
-type GalleryCategory = 'Engineering' | 'Artwork';
+const sketchbookScans = Object.keys(sketchbookModules)
+  .sort()
+  .map(key => ({
+    src: sketchbookModules[key],
+    series: key.match(/sketchbook-(c\d+)-/)?.[1] ?? '',
+  }))
+  .filter(({ series }) => series in sketchSeriesCaptions);
+
+// Sketches pulled in from a portfolio project — working drawings that belong in
+// the Sketches tab rather than alongside that project's built/shop photos. (The
+// CT concept drawings are handled directly in standaloneImages below.)
+const projectSketchUrls = new Set([projConceptSketch, projAngleSketch]);
+
+type GalleryCategory = 'Engineering' | 'Artwork' | 'Sketches';
 
 interface GalleryItem {
   src: string;
@@ -109,7 +134,7 @@ const standaloneImages: GalleryItem[] = [
     { src: artRedPainting, category: 'Artwork' },
     { src: artField, category: 'Artwork' },
     { src: artHallway, category: 'Artwork' },
-    { src: artHandSketch, category: 'Artwork' },
+    { src: artHandSketch, category: 'Sketches' },
     { src: artCeramics, category: 'Artwork' },
     // { src: artCampus, category: 'Artwork' },  // TODO(missing-asset): re-enable once image is restored
     // { src: artPainting, category: 'Artwork' },  // TODO(missing-asset): re-enable once image is restored
@@ -124,7 +149,7 @@ const standaloneImages: GalleryItem[] = [
     { src: artColorBlockCircles, category: 'Artwork' },
     { src: artSketchbookPov, category: 'Artwork' },
     { src: artTorchLit, category: 'Artwork' },
-    { src: artPavilionConcept, caption: 'Pavilion seating concept sketch', category: 'Artwork' },
+    { src: artPavilionConcept, caption: 'Pavilion seating concept sketch', category: 'Sketches' },
 
     // --- ENGINEERING ---
     // { src: processWhiteboard, category: 'Engineering' },  // TODO(missing-asset): re-enable once image is restored
@@ -132,9 +157,9 @@ const standaloneImages: GalleryItem[] = [
     // { src: artFormulaCar, category: 'Engineering' },  // TODO(missing-asset): re-enable once image is restored
     { src: processRobot, category: 'Engineering' },
     { src: artCtMockup, category: 'Engineering' },
-    { src: ctConceptRender1, caption: 'BodyTom CT scanner — early concept render', category: 'Engineering' },
-    { src: ctConceptRender2, caption: 'Bore ring concept sketch', category: 'Engineering' },
-    { src: ctTableMechanismConcept, caption: 'Patient table drive mechanism concept', category: 'Engineering' },
+    { src: ctConceptRender1, caption: 'BodyTom CT scanner — early concept drawing', category: 'Sketches' },
+    { src: ctConceptRender2, caption: 'Bore ring concept sketch', category: 'Sketches' },
+    { src: ctTableMechanismConcept, caption: 'Patient table drive mechanism concept', category: 'Sketches' },
     { src: ctCadGantry1, caption: 'CAD model of the gantry housing', category: 'Engineering' },
     { src: ctCadGantry2, category: 'Engineering' },
     { src: ctPrintedPanel, caption: '3D-printed gantry panel', category: 'Engineering' },
@@ -156,7 +181,11 @@ const standaloneImages: GalleryItem[] = [
     { src: engWaterjet, caption: 'Abrasive waterjet cutting', category: 'Engineering' },
 
     // --- SKETCHES ---
-    ...sketchbookPages.map((src): GalleryItem => ({ src, category: 'Artwork' })),
+    ...sketchbookScans.map(({ src, series }): GalleryItem => ({
+      src,
+      caption: sketchSeriesCaptions[series],
+      category: 'Sketches',
+    })),
 ];
 
 // Look up the caption an image was given inside its project (if any)
@@ -173,7 +202,7 @@ const projectImages: GalleryItem[] = projects.flatMap(project =>
   getAllProjectImages(project).map(url => ({
     src: url,
     caption: findCaption(project, url),
-    category: 'Engineering' as GalleryCategory,
+    category: (projectSketchUrls.has(url) ? 'Sketches' : 'Engineering') as GalleryCategory,
     projectId: project.id,
     projectTitle: project.title,
   }))
@@ -181,7 +210,7 @@ const projectImages: GalleryItem[] = projects.flatMap(project =>
 
 const galleryImages: GalleryItem[] = [...standaloneImages, ...projectImages];
 
-const tabs: Array<'All' | GalleryCategory> = ['All', 'Engineering', 'Artwork'];
+const tabs: Array<'All' | GalleryCategory> = ['All', 'Engineering', 'Sketches', 'Artwork'];
 
 export function Gallery() {
   const navigate = useNavigate();

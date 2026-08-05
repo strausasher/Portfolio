@@ -1692,10 +1692,14 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
   );
 });
 
+const filterTabs: Array<'All' | Project['filterCategory']> = ['All', 'Design', 'Personal Projects'];
+
 export function Portfolio() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState<'All' | Project['filterCategory']>('All');
+  const filteredProjects = activeTab === 'All' ? projects : projects.filter(p => p.filterCategory === activeTab);
 
   const selectedProject = projects.find(p => p.id === selectedId);
 
@@ -1749,13 +1753,30 @@ export function Portfolio() {
           <p className="text-[#1B2D5B]/50 font-light text-lg">Engineering, design, and art</p>
         </div>
 
+        {/* Filter Tabs */}
+        <div className="flex justify-center flex-wrap gap-8 mb-12">
+          {filterTabs.map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`text-sm font-bold tracking-widest uppercase pb-2 border-b-2 transition-colors duration-300 ${
+                activeTab === tab
+                  ? 'border-[#1B2D5B] text-[#1B2D5B]'
+                  : 'border-transparent text-[#1B2D5B]/40 hover:text-[#1B2D5B]/70'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
         {/* Grid */}
-        <motion.div 
+        <motion.div
           layout
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           <AnimatePresence mode='popLayout'>
-            {projects.map((project) => (
+            {filteredProjects.map((project) => (
               <ProjectCard
                 key={project.id}
                 project={project}
