@@ -1,4 +1,3 @@
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
@@ -58,7 +57,6 @@ import ctShopFinishedBodytom from 'figma:asset/ct-shop-finished-bodytom.webp';
 
 // Projector-mount working sketches (used on the Snap-Fit Projector Mounts project)
 import projConceptSketch from 'figma:asset/proj-concept-sketch.webp';
-import projAngleSketch from 'figma:asset/proj-angle-sketch.webp';
 import artOilPainting from 'figma:asset/341fc91b3513084249553e6967f56281fd6c8645.webp';
 import artLaserCut from 'figma:asset/9794f6b646dbc637e8893cf2fc7a0e216b75a36a.webp';
 
@@ -70,7 +68,7 @@ import artCardboardHand2 from 'figma:asset/art-cardboard-hand-2.webp';
 import artColorBlockCircles from 'figma:asset/art-color-block-circles.webp';
 import artSketchbookPov from 'figma:asset/art-sketchbook-pov.webp';
 import artTorchLit from 'figma:asset/art-torch-lit.webp';
-import artPavilionConcept from 'figma:asset/art-pavilion-concept.webp';
+import artPavilionConcept from 'figma:asset/art-pavilion-concept-rotated.webp';
 
 // Engineering photos — shop work, labs, and fabrication
 import engSolidworksPart from 'figma:asset/eng-solidworks-part.webp';
@@ -113,7 +111,7 @@ const sketchbookScans = Object.keys(sketchbookModules)
 // Sketches pulled in from a portfolio project — working drawings that belong in
 // the Sketches tab rather than alongside that project's built/shop photos. (The
 // CT concept drawings are handled directly in standaloneImages below.)
-const projectSketchUrls = new Set([projConceptSketch, projAngleSketch]);
+const projectSketchUrls = new Set([projConceptSketch]);
 
 type GalleryCategory = 'Engineering' | 'Artwork' | 'Sketches';
 
@@ -134,7 +132,7 @@ const standaloneImages: GalleryItem[] = [
     { src: artRedPainting, category: 'Artwork' },
     { src: artField, category: 'Artwork' },
     { src: artHallway, category: 'Artwork' },
-    { src: artHandSketch, category: 'Sketches' },
+    { src: artHandSketch, category: 'Artwork' },
     { src: artCeramics, category: 'Artwork' },
     // { src: artCampus, category: 'Artwork' },  // TODO(missing-asset): re-enable once image is restored
     // { src: artPainting, category: 'Artwork' },  // TODO(missing-asset): re-enable once image is restored
@@ -157,9 +155,9 @@ const standaloneImages: GalleryItem[] = [
     // { src: artFormulaCar, category: 'Engineering' },  // TODO(missing-asset): re-enable once image is restored
     { src: processRobot, category: 'Engineering' },
     { src: artCtMockup, category: 'Engineering' },
-    { src: ctConceptRender1, caption: 'BodyTom CT scanner — early concept drawing', category: 'Sketches' },
-    { src: ctConceptRender2, caption: 'Bore ring concept sketch', category: 'Sketches' },
-    { src: ctTableMechanismConcept, caption: 'Patient table drive mechanism concept', category: 'Sketches' },
+    { src: ctConceptRender1, caption: 'BodyTom CT scanner — early concept drawing', category: 'Engineering' },
+    { src: ctConceptRender2, caption: 'Bore ring concept sketch', category: 'Engineering' },
+    { src: ctTableMechanismConcept, caption: 'Patient table drive mechanism concept', category: 'Engineering' },
     { src: ctCadGantry1, caption: 'CAD model of the gantry housing', category: 'Engineering' },
     { src: ctCadGantry2, category: 'Engineering' },
     { src: ctPrintedPanel, caption: '3D-printed gantry panel', category: 'Engineering' },
@@ -212,6 +210,33 @@ const galleryImages: GalleryItem[] = [...standaloneImages, ...projectImages];
 
 const tabs: Array<'All' | GalleryCategory> = ['All', 'Engineering', 'Sketches', 'Artwork'];
 
+const tabLabels: Record<'All' | GalleryCategory, string> = {
+  All: 'All',
+  Engineering: 'Engineering',
+  Sketches: 'Design Sketches',
+  Artwork: 'Artwork',
+};
+
+const COLUMN_BREAKPOINTS: Record<number, number> = { 350: 1, 750: 2, 900: 3 };
+const GUTTER = '24px';
+
+// Mirrors ResponsiveMasonry's own breakpoint → columnsCount logic, so our
+// column packing (below) matches what the grid actually renders.
+function useColumnsCount(breakpoints: Record<number, number>): number {
+  const [width, setWidth] = useState(() => window.innerWidth);
+  useEffect(() => {
+    const onResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+  const sortedBreakpoints = Object.keys(breakpoints).map(Number).sort((a, b) => a - b);
+  let value = breakpoints[sortedBreakpoints[0]] ?? 1;
+  for (const bp of sortedBreakpoints) {
+    if (bp < width) value = breakpoints[bp];
+  }
+  return value;
+}
+
 export function Gallery() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'All' | GalleryCategory>('All');
@@ -225,6 +250,64 @@ export function Gallery() {
     if (activeTab === 'All') return galleryImages;
     return galleryImages.filter(img => img.category === activeTab);
   }, [activeTab]);
+
+  const columnsCount = useColumnsCount(COLUMN_BREAKPOINTS);
+
+  // The masonry grid packs each image into whichever column is currently
+  // shortest (by intrinsic aspect ratio), not left-to-right in list order —
+  // so we compute that same packing ourselves instead of leaving it to the
+  // library, which lets us gate reveal per column below.
+  const columns = useMemo(() => {
+    const heights = Array(columnsCount).fill(0);
+    const cols: { item: GalleryItem; flatIndex: number }[][] = Array.from({ length: columnsCount }, () => []);
+    filteredImages.forEach((item, flatIndex) => {
+      const dims = dimsFor(item.src);
+      const aspect = dims.width && dims.height ? dims.height / dims.width : 0.75;
+      const shortest = heights.indexOf(Math.min(...heights));
+      cols[shortest].push({ item, flatIndex });
+      heights[shortest] += aspect;
+    });
+    return cols;
+  }, [filteredImages, columnsCount]);
+
+  // Photos load (and their network requests finish) in whatever order the
+  // browser gets to them, which looks like a scattered, out-of-order pop-in.
+  // Instead we reveal each column's tiles one at a time, top to bottom, so
+  // the grid visibly fills in order instead of patching in at random (columns
+  // still progress independently of each other, which is normal for a
+  // masonry layout). A tile that errors still counts as "resolved" so a
+  // broken image can't stall the rest of its column, and a timeout
+  // force-reveals everything left after a few seconds as a safety net
+  // against a stalled request.
+  const [loadedIndices, setLoadedIndices] = useState<Set<number>>(new Set());
+
+  const markLoaded = useCallback((i: number) => {
+    setLoadedIndices(prev => (prev.has(i) ? prev : new Set(prev).add(i)));
+  }, []);
+
+  const columnReadyCounts = useMemo(() => {
+    return columns.map(col => {
+      let i = 0;
+      while (i < col.length && loadedIndices.has(col[i].flatIndex)) i++;
+      return i;
+    });
+  }, [columns, loadedIndices]);
+
+  useEffect(() => {
+    setLoadedIndices(new Set());
+  }, [activeTab]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoadedIndices(prev => {
+        if (prev.size >= filteredImages.length) return prev;
+        const next = new Set(prev);
+        for (let i = 0; i < filteredImages.length; i++) next.add(i);
+        return next;
+      });
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [activeTab, filteredImages.length]);
 
   const goNext = useCallback(() => {
     setZoomedIndex(prev => prev !== null ? (prev + 1) % filteredImages.length : null);
@@ -282,46 +365,55 @@ export function Gallery() {
                   : 'border-transparent text-[#1B2D5B]/40 hover:text-[#1B2D5B]/70'
               }`}
             >
-              {tab}
+              {tabLabels[tab]}
             </button>
           ))}
         </div>
         
-        <ResponsiveMasonry
-          columnsCountBreakPoints={{350: 1, 750: 2, 900: 3}}
-        >
-          <Masonry gutter="24px">
-            {filteredImages.map((image, i) => (
-              <div
-                key={`${activeTab}-${i}`}
-                className="overflow-hidden rounded-sm cursor-zoom-in group relative"
-                onClick={() => setZoomedIndex(i)}
-              >
-                <img
-                  src={image.src}
-                  {...dimsFor(image.src)}
-                  loading="lazy"
-                  decoding="async"
-                  style={{width: "100%", height: "auto", display: "block"}}
-                  alt={image.caption || `Gallery item ${i}`}
-                  className="group-hover:scale-105 transition-transform duration-500 ease-in-out"
-                />
-                {/* Hover overlay + caption */}
-                <div className="absolute inset-0 bg-[#F0EBE3]/0 group-hover:bg-[#F0EBE3]/40 transition-colors duration-300 flex flex-col items-center justify-end gap-2 p-4 text-center">
-                  {image.caption && (
-                    <p className="text-[#1B2D5B] text-base tracking-wide opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">{image.caption}</p>
-                  )}
-                  {image.projectTitle && (
-                    <span className="inline-flex items-center gap-1 text-[#1B2D5B] text-xs font-bold uppercase tracking-widest bg-[#F7F3ED]/90 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                      {image.projectTitle}
-                      <ArrowUpRight size={12} />
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </Masonry>
-        </ResponsiveMasonry>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", gap: GUTTER, width: "100%" }}>
+          {columns.map((col, colIdx) => (
+            <div key={colIdx} style={{ display: "flex", flexDirection: "column", gap: GUTTER, flex: 1, width: 0 }}>
+              {col.map(({ item: image, flatIndex }, posInCol) => {
+                const revealed = posInCol < columnReadyCounts[colIdx];
+                return (
+                  <div
+                    key={`${activeTab}-${flatIndex}`}
+                    className="overflow-hidden rounded-sm cursor-zoom-in group relative bg-[#E4DDD1]"
+                    onClick={() => setZoomedIndex(flatIndex)}
+                  >
+                    <img
+                      src={image.src}
+                      {...dimsFor(image.src)}
+                      loading="lazy"
+                      decoding="async"
+                      // A cached image can already be `complete` by the time this ref/handler
+                      // attaches, in which case the load event never fires — check directly
+                      // so it doesn't stall the rest of its column.
+                      ref={(el) => { if (el?.complete) markLoaded(flatIndex); }}
+                      onLoad={() => markLoaded(flatIndex)}
+                      onError={() => markLoaded(flatIndex)}
+                      style={{width: "100%", height: "auto", display: "block", opacity: revealed ? 1 : 0, transition: "opacity 0.4s ease"}}
+                      alt={image.caption || `Gallery item ${flatIndex}`}
+                      className="group-hover:scale-105 transition-transform duration-500 ease-in-out"
+                    />
+                    {/* Hover overlay + caption */}
+                    <div className="absolute inset-0 bg-[#F0EBE3]/0 group-hover:bg-[#F0EBE3]/40 transition-colors duration-300 flex flex-col items-center justify-end gap-2 p-4 text-center">
+                      {image.caption && (
+                        <p className="text-[#1B2D5B] text-base tracking-wide opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">{image.caption}</p>
+                      )}
+                      {image.projectTitle && (
+                        <span className="inline-flex items-center gap-1 text-[#1B2D5B] text-xs font-bold uppercase tracking-widest bg-[#F7F3ED]/90 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                          {image.projectTitle}
+                          <ArrowUpRight size={12} />
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
 
         {/* --- LIGHTBOX POPUP --- */}
         <AnimatePresence>

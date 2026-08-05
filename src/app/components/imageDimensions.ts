@@ -96,7 +96,7 @@ import a90 from 'figma:asset/art-cardboard-hand-2.webp';
 import a91 from 'figma:asset/art-color-block-circles.webp';
 import a92 from 'figma:asset/art-color-block-sun.webp';
 import a93 from 'figma:asset/art-just-married-sign.webp';
-import a94 from 'figma:asset/art-pavilion-concept.webp';
+import a94 from 'figma:asset/art-pavilion-concept-rotated.webp';
 import a95 from 'figma:asset/art-sketchbook-pov.webp';
 import a96 from 'figma:asset/art-torch-lit.webp';
 import a97 from 'figma:asset/art-wall-display.webp';
@@ -342,7 +342,7 @@ export const imageDimensions: Record<string, [number, number]> = {
   [a91]: [617, 861],
   [a92]: [1350, 1800],
   [a93]: [1350, 1800],
-  [a94]: [1350, 1800],
+  [a94]: [1800, 1350],
   [a95]: [1290, 1659],
   [a96]: [1290, 1642],
   [a97]: [1350, 1800],
