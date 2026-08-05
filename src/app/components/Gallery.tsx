@@ -147,10 +147,10 @@ const standaloneImages: GalleryItem[] = [
     { src: artColorBlockCircles, category: 'Artwork' },
     { src: artSketchbookPov, category: 'Artwork' },
     { src: artTorchLit, category: 'Artwork' },
-    { src: artPavilionConcept, caption: 'Pavilion seating concept sketch', category: 'Sketches' },
 
     // --- ENGINEERING ---
     // { src: processWhiteboard, category: 'Engineering' },  // TODO(missing-asset): re-enable once image is restored
+    { src: artPavilionConcept, caption: 'Pavilion seating concept sketch', category: 'Engineering' },
     { src: processElectronics, category: 'Engineering' },
     // { src: artFormulaCar, category: 'Engineering' },  // TODO(missing-asset): re-enable once image is restored
     { src: processRobot, category: 'Engineering' },
