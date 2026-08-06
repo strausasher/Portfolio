@@ -146,7 +146,7 @@ export interface Project {
   content: ProjectSection[]; 
   tools: string[];
   date?: string;
-  filterCategory: 'Design' | 'Personal Projects';
+  filterCategory: 'Design' | 'Personal Projects' | 'Research';
 }
 
 export const projects: Project[] = [
@@ -840,7 +840,7 @@ This demonstrated scalability awareness beyond prototype design.`
     category: 'Research · Manufacturing AI · Multi-Agent LLM Systems',
     image: sheetSmithPoster,
     description: 'An end-to-end LLM-driven multi-agent system that turns a 2D sheet-metal drawing into a verified, physics-grounded bending process plan — no 3D CAD, no labeled data. Presented at MSEC 2026 / NAMRC54.',
-    filterCategory: 'Design',
+    filterCategory: 'Research',
     date: '2025–2026',
     tools: ['Multi-Agent LLM Orchestration', 'Vision-Language Models', 'Retrieval-Augmented Generation', 'Reference-Free Evaluation', 'SolidWorks API / VBA', 'Parametric CAD', 'Sheet-Metal Bend Analysis', 'Dataset Construction'],
     content: [
@@ -936,7 +936,7 @@ Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northweste
     category: 'Drivetrain Testing · Instrumentation & DAQ · Baja SAE · Mechanical Design',
     image: drivetrainBajaCar,
     description: 'A bench-top drivetrain efficiency test rig for Baja SAE, designed to measure power losses across individual components — CVT and gearbox — under repeatable, controlled-load conditions using torque sensors and a Teensy 4.1 DAQ.',
-    filterCategory: 'Personal Projects',
+    filterCategory: 'Research',
     date: '2025–2026',
     tools: ['Drivetrain Systems Architecture', 'Torque & RPM Measurement', 'Microcontroller DAQ (Teensy 4.1)', 'Sensor Selection & Evaluation', 'Bill of Materials Management', 'Sponsor Outreach', 'Mechanical Rig Design', 'Technical Documentation'],
     content: [
@@ -1692,7 +1692,7 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
   );
 });
 
-const filterTabs: Array<'All' | Project['filterCategory']> = ['All', 'Design', 'Personal Projects'];
+const filterTabs: Array<'All' | Project['filterCategory']> = ['All', 'Design', 'Personal Projects', 'Research'];
 
 export function Portfolio() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
