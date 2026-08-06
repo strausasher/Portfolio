@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router';
 import logo from 'figma:asset/logo-skinny-65.webp';
+import { scrollToHash } from './scrollToHash';
 
 interface NavItem {
   name: string;
@@ -53,10 +54,7 @@ export function Navbar() {
       navigate('/' + item.href);
     } else {
       // Already on home, just scroll
-      const el = document.querySelector(item.href);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
+      scrollToHash(item.href);
     }
   };
 
@@ -122,9 +120,11 @@ export function Navbar() {
         </div>
 
         {/* Mobile Menu Button */}
-        <button 
+        <button
           className="md:hidden"
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isOpen}
         >
           {isOpen ? (
             <X className={scrolled || isOnSubpage ? 'text-[#1B2D5B]' : 'text-white'} />

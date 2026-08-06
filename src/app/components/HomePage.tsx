@@ -4,16 +4,14 @@ import { Hero } from "./Hero";
 import { About } from "./About";
 import { Portfolio } from "./Portfolio";
 import { Contact } from "./Contact";
+import { scrollToHash } from "./scrollToHash";
 
 export function HomePage() {
   const location = useLocation();
 
   useEffect(() => {
     if (!location.hash) return;
-    const el = document.querySelector(location.hash);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    scrollToHash(location.hash);
   }, [location.hash]);
 
   return (
