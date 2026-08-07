@@ -156,13 +156,13 @@ export const projects: Project[] = [
     title: 'Water Guard',
     category: 'Design for Reliability · Medical Equipment · Polymer Testing',
     image: wgInstalledFront,
-    description: 'A fully removable waterproofing system that protects a ~$1M CT scanner at Shedd Aquarium during aquatic animal imaging.',
+    description: 'A fully removable waterproofing system that protects a ~$1M CT scanner at a major Chicago aquarium during aquatic animal imaging.',
     filterCategory: 'Design',
     date: '2025–2026',
     tools: ['Human-Centered Engineering', 'Risk Mitigation & FMEA', 'Polymer Materials Testing', 'Saltwater Degradation Analysis', 'Mechanical Design Under Constraints', 'Stakeholder Interview Synthesis', 'Medical Equipment Integration', 'Design for Serviceability'],
     content: [
       {
-        text: `Shedd Aquarium uses a ~$1M portable NeuroLogica BodyTom 32 CT scanner to image aquatic animals — from small fish up to beluga whales. The scanner was built for human clinical use, not wet or saltwater environments, so water reaching the gantry can cause electric shorting, corrosion, calibration errors, and hazards to nearby staff and animals.
+        text: `A major Chicago aquarium uses a ~$1M portable NeuroLogica BodyTom 32 CT scanner to image aquatic animals — from small fish up to beluga whales. The scanner was built for human clinical use, not wet or saltwater environments, so water reaching the gantry can cause electric shorting, corrosion, calibration errors, and hazards to nearby staff and animals.
 
 Today, staff protect it by taping plastic sheeting across the gantry and towel-drying the floor and scanner before and after every scan.
 
@@ -170,7 +170,7 @@ WaterGuard is a fully removable, reusable waterproofing system that covers the g
 
 Team: Asher Straus, Selin Orbay, Gabriela Hernandez, Eunsoo Kim, and Tyler Gant.`,
         images: [
-            { url: ctScannerImg, caption: 'Shedd Aquarium’s NeuroLogica BodyTom 32 portable CT scanner.' }
+            { url: ctScannerImg, caption: 'The aquarium’s NeuroLogica BodyTom 32 portable CT scanner.' }
         ]
       },
       {
@@ -206,7 +206,7 @@ The solution had to:
 
 A clear PETG laser window at the top of the gantry liner preserves full visibility of the vertical alignment laser.`,
         images: [
-            { url: wgInstalledFront, caption: 'Front view of the WaterGuard installed on Shedd’s CT scanner.' },
+            { url: wgInstalledFront, caption: 'Front view of the WaterGuard installed on the aquarium’s CT scanner.' },
             { url: wgInstalledRear, caption: 'Back view of the installed liner and Runoff Collector.' },
             { url: ctLinerFront, caption: 'Integrated waterproofing architecture showing the liner and collection system.' }
         ]
@@ -281,7 +281,7 @@ Conclusion: short-term saltwater exposure does not weaken LDPE heat-welded seams
         ]
       },
       {
-        heading: 'Prototype User Testing at Shedd',
+        heading: 'Prototype User Testing On-Site',
         text: `We ran an on-site session with Dr. Megan Strobel (Veterinary) and Richard Kasbee (Veterinary Technician), who regularly operate the scanner.
 
 Key findings that shaped the final design:
@@ -304,17 +304,17 @@ This analysis directly informed the next-steps recommendations: validate long-te
       },
       {
         heading: 'Maintenance & Serviceability',
-        text: `The liner is designed to be maintained by Shedd staff without specialized tools:
+        text: `The liner is designed to be maintained by aquarium staff without specialized tools:
 
 • Storage: Lay the liner flat, smooth out bunching, and fold over the center of the gantry piece — avoiding folds across the laser window, which can create white stress lines that reduce laser visibility.
 • Field repairs: Small tears can be patched by heat-welding a spare LDPE square over the damage with a soldering iron (~450°F), or sealed with silicone caulk if no welding tool is available.
 • Before first use: Run a quality scan to characterize the liner's imaging behavior, keeping the gantry portion as wrinkle-free as possible to minimize artifacts.
 
-Full step-by-step installation instructions for both the liner and Runoff Collector are documented for handoff to Shedd.`
+Full step-by-step installation instructions for both the liner and Runoff Collector are documented for handoff to the aquarium's team.`
       },
       {
         heading: 'Outcome',
-        text: `Our team built a full-scale prototype — sloped gantry liner, front and back face covers, laser window, and Runoff Collector — that is ready for immediate use on Shedd's CT scanner and intended as a long-term solution.
+        text: `Our team built a full-scale prototype — sloped gantry liner, front and back face covers, laser window, and Runoff Collector — that is ready for immediate use on the aquarium's CT scanner and intended as a long-term solution.
 
 WaterGuard:
 • Cuts setup from 45+ minutes to under 4
@@ -322,7 +322,7 @@ WaterGuard:
 • Protects a nearly irreplaceable imaging asset from saltwater damage
 • Reduces staff stress and enables a safer aquatic imaging workflow
 
-The only remaining step is for Shedd to run a quality scan confirming the liner introduces no imaging artifacts.`
+The only remaining step is for the aquarium to run a quality scan confirming the liner introduces no imaging artifacts.`
       }
     ]
   },
