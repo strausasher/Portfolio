@@ -247,7 +247,13 @@ export function Gallery() {
   }, [navigate]);
 
   const filteredImages = useMemo(() => {
-    if (activeTab === 'All') return galleryImages;
+    if (activeTab === 'All') {
+      // Group by category in the same order as the tabs themselves
+      // (Engineering, Sketches, Artwork), rather than however the source
+      // arrays happen to be interleaved.
+      const categoryOrder = tabs.filter((t): t is GalleryCategory => t !== 'All');
+      return categoryOrder.flatMap(cat => galleryImages.filter(img => img.category === cat));
+    }
     return galleryImages.filter(img => img.category === activeTab);
   }, [activeTab]);
 
