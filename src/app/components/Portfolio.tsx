@@ -854,6 +854,28 @@ Smart Sheet Smith turns a 2D sheet-metal engineering drawing into a verified, ph
         ]
       },
       {
+        heading: 'The Poster, Transcribed',
+        text: `"Smart Sheet Smith: End-to-End LLM-Driven MAS for Sheet Process Planning" — MSEC 2026 | NAMRC54, June 14–18, 2026, State College, Pennsylvania.
+
+Zahra Sadeghi¹, Ashton Dy², Asher Straus¹, Xiangyu Shi¹, Qi Zhu¹, Jamie Coble², Ping Guo¹ — ¹Northwestern University, Evanston, IL, USA; ²University of Tennessee, Knoxville, TN, USA.
+
+Abstract: Smart Sheet Smith converts a 2D engineering drawing directly into a verified sheet-metal bending process plan, no 3D CAD model required. Five specialized agents handle view classification, geometry extraction, and physics-based process planning, with two reference-free judge-patcher loops that self-correct errors by re-deriving expected values from the input drawing itself, no ground-truth labels or human intervention needed. A curated Knowledge Graph supplies deterministic physics constants to prevent hallucination, and the system emits a physics-compensated flat-pattern blueprint ready for shop-floor use. Evaluated on real industrial V-bending drawings, the closed loop achieves substantial accuracy gains over the single-pass baseline without any labeled data.
+
+Introduction: Sheet-metal bending process planning — choosing the bend order, tooling, and flat blank for a target part — remains a manual task driven by expert judgment. Commercial CAM software automates bend sequencing, but only after an engineer rebuilds the 2D drawing as a 3D CAD model. Large language models can ingest drawings directly, yet they hallucinate dimensions and produce plans with no built-in physics check. We present Smart Sheet Smith, an end-to-end multi-agent system that reads a multi-view 2D engineering drawing directly and produces a verified, physics-grounded bending process plan, no CAD model and no ground-truth labels required.
+
+Method: The Vision Agent classifies the drawing layout and identifies the master profile and sheet thickness. The Tracer Agent extracts the full geometric topology into a structured JSON, audited by the Geometric-Judge in a reference-free closed loop. The Engineering Agent retrieves physics constants from the Knowledge Graph and computes bend allowances, tonnage, and bend sequence, verified by the Performance-Judge before emitting the final process plan and flat-pattern blueprint. Six metrics across the two judge agents define the PASS/FAIL verdicts driving the self-correction loop — Geometric-Judge: segment sequence alignment (SSA), feature anchor accuracy (RAA), developed length deviation (GDD); Performance-Judge: physics math accuracy (PMA), operation sequence alignment (OSA), feasibility validation (FVA).
+
+Dataset: SIMBA (Sheet Metal Intelligent Bending Archive) — 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple to complex geometries for robust evaluation.
+
+Results — Effect of the Judge-Patcher Loop: Each patcher iteration recovers more failing parts by rewriting the agent's prompt with a targeted error description from the judge, driving accuracy higher across both the geometric and performance loops.
+
+Conclusion: Smart Sheet Smith shows that physics invariants can drive reliable self-correction in LLM-based process planning with no ground-truth labels or human intervention. The reference-free judge-patcher loop achieves substantial accuracy gains over the single-pass baseline, opening an automated path from 2D drawing to verified bending process plan for job shops that 3D-CAD pipelines cannot serve.
+
+References: [1] Duflou et al., Computer-Aided Process Planning for Sheet Metal Bending, 2005. [2] Pawar et al., Interpretable Vision-Language Models for Engineering Drawings, 2025.
+
+Acknowledgment: The authors would like to acknowledge support from the U.S. National Science Foundation Engineering Research Center for Hybrid Autonomous Manufacturing Moving from Evolution to Revolution (ERC-HAMMER) under Award Number EEC-2133630.`
+      },
+      {
         heading: 'The Problem',
         text: `Sheet-metal bending process planning is one of the last stubbornly manual steps in fabrication. Choosing the bend order, tooling, and flat-blank dimensions still depends on an experienced planner reading a 2D engineering drawing and applying years of shop-floor judgment.
 
