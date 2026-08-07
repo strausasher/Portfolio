@@ -285,6 +285,20 @@ export function Gallery() {
     setLoadedIndices(prev => (prev.has(i) ? prev : new Set(prev).add(i)));
   }, []);
 
+  // One stable ref callback per image, rather than an inline arrow in JSX.
+  // An inline ref is a new function identity every render, so React detaches
+  // and reattaches it — and re-checks el.complete — on every single render
+  // for every rendered image. With hundreds of images (the All tab) that
+  // cascades into synchronous re-render after re-render and trips React's
+  // "Maximum update depth exceeded" safety limit. A stable callback per
+  // index is only invoked on actual mount/unmount, which breaks the cascade.
+  const imgRefCallbacks = useMemo(
+    () => filteredImages.map((_, i) => (el: HTMLImageElement | null) => {
+      if (el?.complete) markLoaded(i);
+    }),
+    [filteredImages, markLoaded]
+  );
+
   const columnReadyCounts = useMemo(() => {
     return columns.map(col => {
       let i = 0;
@@ -389,7 +403,7 @@ export function Gallery() {
                       // A cached image can already be `complete` by the time this ref/handler
                       // attaches, in which case the load event never fires — check directly
                       // so it doesn't stall the rest of its column.
-                      ref={(el) => { if (el?.complete) markLoaded(flatIndex); }}
+                      ref={imgRefCallbacks[flatIndex]}
                       onLoad={() => markLoaded(flatIndex)}
                       onError={() => markLoaded(flatIndex)}
                       style={{width: "100%", height: "auto", display: "block", opacity: revealed ? 1 : 0, transition: "opacity 0.4s ease"}}
