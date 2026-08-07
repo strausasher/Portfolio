@@ -147,6 +147,7 @@ export interface Project {
   tools: string[];
   date?: string;
   filterCategory: 'Design' | 'Personal Projects' | 'Research';
+  inProgress?: boolean;
 }
 
 export const projects: Project[] = [
@@ -1528,6 +1529,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     image: turntableCadRender,
     description: 'A kerf-bent walnut veneer plywood turntable stand — an S-curved form with two bends and three platforms, accented with brass tubing and tuned for vibration isolation. Currently finalized in CAD and BOM, awaiting CNC router time.',
     filterCategory: 'Personal Projects',
+    inProgress: true,
     date: '2026',
     tools: ['CNC Routing', 'Kerf Bending', 'CAD Modeling', 'Bill of Materials', 'Vibration Isolation', 'Furniture Design'],
     content: [
@@ -1639,6 +1641,18 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
           </div>
         )}
         <div className="absolute inset-0 bg-[#1B2D5B]/0 group-hover:bg-[#1B2D5B]/10 transition-colors duration-300" />
+
+        {/* Work-in-progress treatment: darken the thumbnail and stamp it */}
+        {project.inProgress && (
+          <>
+            <div className="absolute inset-0 bg-black/35 pointer-events-none" />
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <span className="-rotate-12 border-[3px] border-[#F7F3ED] text-[#F7F3ED] text-xs font-bold tracking-[0.2em] uppercase px-4 py-1.5 shadow-lg">
+                Work In Progress
+              </span>
+            </div>
+          </>
+        )}
 
         {/* Chevron arrows for cycling images */}
         {hasMultiple && (
