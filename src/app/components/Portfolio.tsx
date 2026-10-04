@@ -1,7 +1,8 @@
-import { useState, useEffect, forwardRef } from 'react';
+import { useState, useEffect, useRef, forwardRef } from 'react';
 import { useSearchParams } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Calendar, Wrench, ZoomIn, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Reveal } from './Reveal';
 import { dimsFor } from './imageDimensions';
 
 // Import assets
@@ -146,11 +147,257 @@ export interface Project {
   content: ProjectSection[]; 
   tools: string[];
   date?: string;
-  filterCategory: 'Design' | 'Personal Projects' | 'Research';
+  filterCategory: 'Design' | 'Small Projects' | 'Research';
   inProgress?: boolean;
 }
 
 export const projects: Project[] = [
+  {
+    id: 16,
+    title: 'Smart Sheet Smith',
+    category: 'Research · Manufacturing AI · Multi-Agent LLM Systems',
+    image: sheetSmithPoster,
+    description: 'An end-to-end LLM-driven multi-agent system that turns a 2D sheet-metal drawing into a verified, physics-grounded bending process plan — no 3D CAD, no labeled data. Presented at MSEC 2026 / NAMRC54.',
+    filterCategory: 'Research',
+    date: '2025–2026',
+    tools: ['Multi-Agent LLM Orchestration', 'Vision-Language Models', 'Retrieval-Augmented Generation', 'Reference-Free Evaluation', 'SolidWorks API / VBA', 'Parametric CAD', 'Sheet-Metal Bend Analysis', 'Dataset Construction'],
+    content: [
+      {
+        text: `Research at the Advanced Intelligent Manufacturing Laboratory, Northwestern University. Presented at MSEC 2026 / NAMRC54 (State College, PA, June 2026) and supported by the NSF ERC-HAMMER (Award EEC-2133630) — the Hybrid Autonomous Manufacturing: Moving from Evolution to Revolution Engineering Research Center, a multi-institution collaboration across Northwestern, Ohio State, Case Western Reserve, NC A&T, and UT Knoxville.
+
+Smart Sheet Smith turns a 2D sheet-metal engineering drawing into a verified, physics-grounded bending process plan — no 3D CAD model and no labeled training data required. I worked on the Tracer Agent and built the data foundation underneath it: the CAD parts, the drawings, the ground-truth geometry, the hand-checked bend math, and a SolidWorks VBA pipeline that generated hundreds of valid parametric drawings automatically.`,
+        images: [
+          { url: sheetSmithPoster, caption: 'Zahra Sadeghi, the graduate student I worked with, presenting our Smart Sheet Smith poster at MSEC 2026 / NAMRC54.' }
+        ]
+      },
+      {
+        heading: 'The Poster, Transcribed',
+        text: `"Smart Sheet Smith: End-to-End LLM-Driven MAS for Sheet Process Planning" — MSEC 2026 | NAMRC54, June 14–18, 2026, State College, Pennsylvania.
+
+Zahra Sadeghi¹, Ashton Dy², Asher Straus¹, Xiangyu Shi¹, Qi Zhu¹, Jamie Coble², Ping Guo¹ — ¹Northwestern University, Evanston, IL, USA; ²University of Tennessee, Knoxville, TN, USA.
+
+Abstract: Smart Sheet Smith converts a 2D engineering drawing directly into a verified sheet-metal bending process plan, no 3D CAD model required. Five specialized agents handle view classification, geometry extraction, and physics-based process planning, with two reference-free judge-patcher loops that self-correct errors by re-deriving expected values from the input drawing itself, no ground-truth labels or human intervention needed. A curated Knowledge Graph supplies deterministic physics constants to prevent hallucination, and the system emits a physics-compensated flat-pattern blueprint ready for shop-floor use. Evaluated on real industrial V-bending drawings, the closed loop achieves substantial accuracy gains over the single-pass baseline without any labeled data.
+
+Introduction: Sheet-metal bending process planning — choosing the bend order, tooling, and flat blank for a target part — remains a manual task driven by expert judgment. Commercial CAM software automates bend sequencing, but only after an engineer rebuilds the 2D drawing as a 3D CAD model. Large language models can ingest drawings directly, yet they hallucinate dimensions and produce plans with no built-in physics check. We present Smart Sheet Smith, an end-to-end multi-agent system that reads a multi-view 2D engineering drawing directly and produces a verified, physics-grounded bending process plan, no CAD model and no ground-truth labels required.
+
+Method: The Vision Agent classifies the drawing layout and identifies the master profile and sheet thickness. The Tracer Agent extracts the full geometric topology into a structured JSON, audited by the Geometric-Judge in a reference-free closed loop. The Engineering Agent retrieves physics constants from the Knowledge Graph and computes bend allowances, tonnage, and bend sequence, verified by the Performance-Judge before emitting the final process plan and flat-pattern blueprint. Six metrics across the two judge agents define the PASS/FAIL verdicts driving the self-correction loop — Geometric-Judge: segment sequence alignment (SSA), feature anchor accuracy (RAA), developed length deviation (GDD); Performance-Judge: physics math accuracy (PMA), operation sequence alignment (OSA), feasibility validation (FVA).
+
+Dataset: SIMBA (Sheet Metal Intelligent Bending Archive) — 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple to complex geometries for robust evaluation.
+
+Results — Effect of the Judge-Patcher Loop: Each patcher iteration recovers more failing parts by rewriting the agent's prompt with a targeted error description from the judge, driving accuracy higher across both the geometric and performance loops.
+
+Conclusion: Smart Sheet Smith shows that physics invariants can drive reliable self-correction in LLM-based process planning with no ground-truth labels or human intervention. The reference-free judge-patcher loop achieves substantial accuracy gains over the single-pass baseline, opening an automated path from 2D drawing to verified bending process plan for job shops that 3D-CAD pipelines cannot serve.
+
+References: [1] Duflou et al., Computer-Aided Process Planning for Sheet Metal Bending, 2005. [2] Pawar et al., Interpretable Vision-Language Models for Engineering Drawings, 2025.
+
+Acknowledgment: The authors would like to acknowledge support from the U.S. National Science Foundation Engineering Research Center for Hybrid Autonomous Manufacturing Moving from Evolution to Revolution (ERC-HAMMER) under Award Number EEC-2133630.`
+      },
+      {
+        heading: 'The Problem',
+        text: `Sheet-metal bending process planning is one of the last stubbornly manual steps in fabrication. Choosing the bend order, tooling, and flat-blank dimensions still depends on an experienced planner reading a 2D engineering drawing and applying years of shop-floor judgment.
+
+Commercial CAM software can automate bend sequencing — but only after an engineer rebuilds the 2D drawing as a 3D CAD model, a slow, expensive prerequisite job shops working from customer prints often can't justify. Large language models can ingest drawings directly, but they hallucinate dimensions and produce plans with no built-in physics check. Neither path gets you from a print to a trustworthy plan.`
+      },
+      {
+        heading: 'What We Built',
+        text: `Smart Sheet Smith reads a multi-view 2D engineering drawing and produces a verified, physics-grounded bending process plan through a five-agent pipeline:
+
+• Vision Agent — classifies the drawing layout and identifies the master profile and sheet thickness.
+• Tracer Agent — extracts the full geometric topology into a structured JSON representation.
+• Geometric-Judge — audits the traced geometry against the input drawing itself, in a reference-free loop.
+• Engineering Agent — retrieves deterministic physics constants from a curated Knowledge Graph via RAG, then computes bend allowances, tonnage, and bend sequence.
+• Performance-Judge — verifies the final plan before the system emits a physics-compensated flat-pattern blueprint ready for the shop floor.`
+      },
+      {
+        heading: 'The Judge–Patcher Loop',
+        text: `The core idea is a judge–patcher loop. Rather than scoring output against a labeled answer key, the judges re-derive expected values directly from the source drawing and compare. When a check fails, the patcher rewrites the failing agent's prompt with a targeted error description — for example, a segment extracted at 30.0 mm against a true value of 32.0 mm, or a virtual-sharp-dimension misinterpretation in the flat-pattern calculation — and the pipeline re-runs that stage.
+
+Six metrics across the two judges define the PASS/FAIL verdicts that drive self-correction: segment sequence alignment, feature anchor accuracy, developed length deviation, physics math accuracy, operation sequence alignment, and feasibility validation. This removes the labeling bottleneck — the system improves itself using invariants it can check from first principles, not human annotation.`
+      },
+      {
+        heading: 'Evaluation',
+        text: `We evaluated on SIMBA (Sheet Metal Intelligent Bending Archive), a dataset of 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple through complex geometries for robustness testing.
+
+Cumulative correctness rose substantially across three patcher iterations in both the geometric and performance loops, with each iteration recovering additional failing parts. The closed loop delivered meaningful accuracy gains over the single-pass baseline — without a single labeled example.`
+      },
+      {
+        heading: 'My Contribution',
+        text: `I worked on the Tracer Agent and owned much of the data foundation it was developed and validated against.
+
+I built the evaluation corpus from the ground up: modeling the parts in CAD, producing the multi-view orthographic drawings, and hand-deriving the ground-truth geometry each drawing should resolve to. I then authored and corrected the structured JSON representations that encoded that topology, iterating on the schema and training examples as failure modes surfaced.
+
+Validating the agent meant doing the bend math by hand — bend allowances, developed lengths, segment sequences — and checking the agent's extraction against it case by case. Beyond numerical correctness, I applied a manufacturability check the math alone can't provide: reasoning through the actual forming process to judge whether a proposed plan was physically realizable on a press brake, or whether it produced a sequence that looked valid on paper but couldn't be made. That distinction drove several corrections to how the pipeline handles bend ordering and tool access.`
+      },
+      {
+        heading: 'Automated Parametric Drawing Generation',
+        text: `Manual drawing creation was the hard ceiling on dataset size, so I built a SolidWorks VBA macro pipeline to remove it. Given one base CAD model, the macro randomizes its dimensions within controlled ranges and exports each variation as a fully-dimensioned PDF — hundreds of valid drawings in minutes instead of days.
+
+The design principle that made it work: the macro only changes the values of dimensions that already exist, never adding or removing them. Any variation from a valid base drawing is therefore structurally valid by construction. That reframed the hard problem from "produce a correct drawing" to "produce geometry that rebuilds cleanly and fits on the sheet."
+
+Each iteration randomizes the parameters, force-rebuilds the part and drawing, auto-scales and centers the views, then runs a "safe box" check confirming all geometry and annotations fall inside a defined fraction of the page. Failures retry with new values rather than emitting a bad sample. The helpers are part-agnostic — adapting to a new part family means editing only the dimension names and ranges at the top of the file.`
+      },
+      {
+        heading: 'Validation Across Part Families',
+        text: `I validated across three part families and documented the failure modes:
+
+• Simple tab bracket — 20 parts, 85% success. Primary failure: dimensions off page.
+• L-bracket — 20 parts, 90% success. Primary failures: bad range → failed rebuild; dimensions off page.
+• Bracket with holes and slots — 20 parts, 74% success. Primary failures: hole diameter exceeding parent face; broken flanges; detached radius.
+
+The complex-part result was the useful one. Interdependent features — a hole that must stay inside its containing flange — fail under naive uniform sampling, and the fix isn't more retries. It's defining CAD features as relationships to parent geometry (hole diameter = 0.3 × flange width) rather than absolute values, so features scale proportionally and stay valid across the whole sampling range. Parts modeled that way were substantially more stable.`
+      },
+      {
+        heading: 'What I Took Away',
+        text: `• Constrain the generator, not the output. The strongest results in both halves of my work came from making invalid states unrepresentable rather than filtering for them after the fact — value-only randomization in the macro, ratio-defined CAD features instead of absolute ones, physics invariants instead of labeled answers.
+
+• Domain judgment is the scarce input to an AI pipeline. The model could produce a bend sequence that satisfied every numerical check and still couldn't be made on a press brake. Catching that required thinking about tooling access and forming order — the part of the loop an ME contributes that isn't automatable yet.
+
+• Failure modes are the deliverable. Cataloguing why generations failed — off-page annotations, rebuild breaks on interdependent dimensions, the mm-to-meters unit conversion in the SolidWorks API that caused the most early bugs — is what let the next person configure the tool for a new part in an afternoon.`
+      },
+      {
+        heading: 'Where It Goes Next',
+        text: `Directions I documented in the technical handoff, roughly in order of leverage:
+• Auto-detect dimension names from the part file, so a new base model needs no hand-written configuration — the key step toward full automation across arbitrary geometries.
+• Constraint-aware sampling that respects inter-dimension relationships instead of sampling each independently — the direct fix for the 74% complex-part rate.
+• A VLM evaluator agent to flag failed or unreadable PDFs automatically, replacing manual QA and doubling as a manufacturability screen.
+• A broader base-part library covering flanges, housings, and plates with hole patterns.`
+      },
+      {
+        heading: 'Publication & Team',
+        text: `Co-author on the MSEC 2026 / NAMRC54 publication as an undergraduate researcher (Tracer Agent, dataset construction and validation, automated parametric drawing generation).
+
+Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northwestern University); Jamie Coble (University of Tennessee, Knoxville); Ping Guo (Northwestern University).`
+      }
+    ]
+  },
+  {
+    id: 25,
+    title: 'Flexible Tactile Sensors',
+    category: 'Research · Soft Robotics · Sensor Fabrication',
+    image: '',
+    description: 'Hand-fabricated flexible resistive sensors — carbon nanotubes and nanoparticles embedded in Ecoflex silicone — for a soft robotic hand, plus near-field electrospinning at 10 kV. Fall 2025, AIM Lab at Northwestern.',
+    filterCategory: 'Research',
+    date: '2025',
+    tools: ['Near-Field Electrospinning (NFES)', 'Carbon Nanotube / Nanoparticle Composites', 'Ecoflex Silicone', 'Resistive Sensor Fabrication', 'High-Voltage Equipment (10 kV)', 'Literature Review', 'Lab Safety Training'],
+    content: [
+      {
+        text: `My first research project at the Advanced Intelligent Manufacturing (AIM) Laboratory at Northwestern, in Fall 2025 — the quarter before I moved onto Smart Sheet Smith. I worked under Zahra Sadeghi, a PhD student in Prof. Ping Guo's group, continuing her work on soft tactile sensors for a robotic hand. My role was hands-on: I fabricated the sensors and ran the electrospinning setup myself.`
+      },
+      {
+        heading: 'How the Sensors Work',
+        text: `Each sensor is a flexible resistive sensor. Carbon nanotubes and nanoparticles are suspended in an alcohol solution and applied to Ecoflex silicone; as the alcohol evaporates, the particles are left embedded in the silicone and form a conductive network. When voltage is applied, current flows through that network. Stretching or pressing the sensor breaks some of the connections between particles, so its electrical resistance goes up — and that change in resistance is the signal.`
+      },
+      {
+        heading: 'What I Built',
+        text: `• Fabricated more than ten flexible resistive sensors by hand
+• Ran near-field electrospinning (NFES) myself at 10 kV, after completing the lab's safety training
+• Worked through a reading list on resistive tactile sensing, e-skin, piezoresistive strain sensors, embedded 3D-printed strain sensors, and AC near-field electrospinning`
+      },
+      {
+        heading: 'Directions We Explored',
+        text: `The group's next steps for the hand sensor were to add more connection pads (on the same layer and in stacked layers) so force and position could be triangulated, to cast a fingerprint-textured fingertip mold, and to add a stiffer "robotic nail" support behind the sensor, since the support material needed to be stiffer than Ecoflex.`
+      },
+      {
+        heading: 'Outcome',
+        text: `This project didn't go on to a result or publication, and I chose not to continue into the following quarter. What I took from it was hands-on practice fabricating soft sensors, working with a high-voltage electrospinning setup, and reading and applying research literature — experience I carried into the lab's sheet-metal AI work.`
+      }
+    ]
+  },
+  {
+    id: 26,
+    title: 'Door Signal',
+    category: 'Accessible Design · Embedded Systems · SME NSMIC (Work in Progress)',
+    image: '',
+    description: 'A single adhesive-mounted device that tells a knock from a slam and answers with a customizable wash of light instead of sound — so Deaf and hard-of-hearing students don\'t miss a knock at a dorm door. A proposal for SME\'s National Student Manufacturing Innovation Challenge.',
+    filterCategory: 'Design',
+    inProgress: true,
+    date: '2026–2027',
+    tools: ['Accessible Design', 'Embedded Systems (ESP32-C3)', 'Accelerometer / IMU Sensing', 'Signal Discrimination', 'Power Budgeting', 'Bill of Materials', 'Prototyping', 'Team Leadership'],
+    content: [
+      {
+        text: `Door Signal is my team's entry for the National Student Manufacturing Innovation Challenge (NSMIC), hosted by SME's student chapter at Purdue. Teams of four to six students design and build a working prototype that makes everyday objects in college residence halls more accessible, and the competition is April 17–18, 2027. I'm the team lead, designer, and engineer on a team of five Northwestern students, and I also helped organize Northwestern's two NSMIC teams through the university's SME student chapter. The project is at the proposal stage — nothing is built or validated yet.`
+      },
+      {
+        heading: 'The Problem',
+        text: `Dorm rooms have no doorbells, so a knock is audible-only. Deaf and hard-of-hearing students miss it — and so does anyone asleep or wearing headphones. About 19% of undergraduates report a disability, and a missed knock can mean a locked-out roommate or a missed delivery. Commercial fixes exist, but they split into two devices and cost over $250: the Serene Innovations CentralAlert knock sensor plus a wearable pager comes to $261.72.`
+      },
+      {
+        heading: 'The Concept',
+        text: `One self-contained unit that mounts to the inside face of the door, senses a knock through the door panel, tells it apart from a slam, and answers with a wide, diffuse wash of colored light aimed at the wall and ceiling instead of a sound. A thin adhesive baseplate stays on the door while the device body clips on and off for charging, so the adhesive isn't disturbed every charge. It works with no phone, app, account, or Wi-Fi, and every control is physically distinct by size and shape, because identical buttons would themselves be an accessibility failure.`
+      },
+      {
+        heading: 'Telling a Knock from a Slam',
+        text: `Detecting an impulse is easy; rejecting the wrong ones is the real problem. A knock is a 5–20 ms high-frequency impulse delivered straight into the panel, while a door opening is a lower-frequency acceleration ending in a latch impact, and a neighbor's slam arrives attenuated through the frame as a single impulse.
+
+The plan escalates only as far as testing demands:
+• First pass: a three-axis accelerometer in low-power motion-wake mode, requiring two or more impulses within about 1.5 s, since a knock is a pattern and a slam isn't
+• If that misses the false-positive target: a 6-axis IMU, where the gyroscope turns "is the door rotating?" into a direct measurement
+• If still short: a classifier trained on the IMU's on-chip ML core`
+      },
+      {
+        heading: 'Target Specifications',
+        text: `• Detection latency under 1 s after the final knock
+• Fewer than 1 false positive per 24 hours — above that, users disable the device
+• Fewer than 5% missed normal-force knocks, including light knocks from limited grip
+• Steady, non-strobing light, because of seizure and migraine risk
+• Over 5 months of battery life per charge; the power budget works out to about 175 days on a single 18650 cell
+• Tool-free, reversible adhesive installation that works on wood and steel doors`
+      },
+      {
+        heading: 'Secondary Goals',
+        text: `In priority order: on-device customization of color, brightness, and alert pattern; optional phone or smartwatch pairing over the microcontroller's built-in Bluetooth; and fire alarm detection. Fire alarms in sleeping areas use a standardized 520 Hz low-frequency, three-pulse signal, so a microphone could match that cadence and switch the device to a dedicated fire-alert light pattern — audible-only alarms have the same blind spot as a knock. It needs its own sensor and its own validation, so it's scoped as a goal rather than a requirement.`
+      },
+      {
+        heading: 'Cost',
+        text: `A single prototype is costed at about $50 on protoboard — an ESP32-C3 microcontroller, accelerometer, RGBW light strip with a printed diffuser, an 18650 battery with charging, and a PETG enclosure — against $261.72 for the commercial two-device setup.`
+      },
+      {
+        heading: 'Validation Plan',
+        text: `• Tape a phone logging accelerometer and gyroscope data to a dorm door and record knocks, door open and close, a neighbor's door, and hallway traffic on each door type
+• Test accelerometer-only separation first and escalate only if needed
+• Compare Command strip and VHB mounting by which one best preserves the high-frequency signal
+• Run a 72-hour breadboard test on a real door and count false positives against the target
+• Photograph the light wash from the desk and bed to confirm it's noticeable
+• Get feedback from students who would actually use it`
+      },
+      {
+        heading: 'Status',
+        text: `Pre-build. The team has reached out to Northwestern's AccessibleNU office for feedback from students who would use the device. Team registration is due October 23, the concept has to be locked by the end of November, when SME submits it for ADA compliance review, and a poster is required at the competition.`
+      }
+    ]
+  },
+  {
+    id: 27,
+    title: 'P1 Motor Club Track Model',
+    category: 'Scale Modeling · 3D Printing · Civil 3D to Physical (Work in Progress)',
+    image: '',
+    description: 'A large-scale, mostly 3D-printed model of the P1 Motor Club racetrack property, built from the project civil engineer\'s Civil 3D files and sized to ride in the back of a truck as a sales tool for memberships.',
+    filterCategory: 'Design',
+    inProgress: true,
+    date: '2026',
+    tools: ['3D Printing', 'AutoCAD / Civil 3D Data', 'Scale Modeling', 'Terrain Modeling', 'Painting & Finishing', 'Prototyping'],
+    content: [
+      {
+        text: `P1 Motor Club is building a private motorsports community on Florida's Treasure Coast, with racetracks, testing areas, and homes for car enthusiasts. The club asked me to build a physical model of the property that can travel to events in the back of a truck and help sell memberships. I'm designing and building it myself, and it's still in progress.`
+      },
+      {
+        heading: 'The Brief',
+        text: `The model should be as large as possible while still fitting in the back of a truck. It is built as one rigid piece — it doesn't come apart for transport and has no moving parts — so it has to survive being driven around and look good when it arrives.`
+      },
+      {
+        heading: 'From Civil Drawings to a Physical Model',
+        text: `The model is built from AutoCAD and Civil 3D files supplied by the project's lead civil engineer, so the track layout and the terrain come from the real site data instead of being approximated by eye.`
+      },
+      {
+        heading: 'Build Approach',
+        text: `The terrain and track are mostly 3D printed, then glued together and painted. Fake modeling grass, trees, and water finish the surface so it reads as a real landscape at a glance.`
+      },
+      {
+        heading: 'Status',
+        text: `I'm currently printing a test piece and iterating on it to get the best-looking result — the print, the paint, and the grass and water — before buying enough material to build the full-size model.`
+      }
+    ]
+  },
   {
     id: 10,
     title: 'Water Guard',
@@ -836,124 +1083,6 @@ This demonstrated scalability awareness beyond prototype design.`
     ]
   },
   {
-    id: 16,
-    title: 'Smart Sheet Smith',
-    category: 'Research · Manufacturing AI · Multi-Agent LLM Systems',
-    image: sheetSmithPoster,
-    description: 'An end-to-end LLM-driven multi-agent system that turns a 2D sheet-metal drawing into a verified, physics-grounded bending process plan — no 3D CAD, no labeled data. Presented at MSEC 2026 / NAMRC54.',
-    filterCategory: 'Research',
-    date: '2025–2026',
-    tools: ['Multi-Agent LLM Orchestration', 'Vision-Language Models', 'Retrieval-Augmented Generation', 'Reference-Free Evaluation', 'SolidWorks API / VBA', 'Parametric CAD', 'Sheet-Metal Bend Analysis', 'Dataset Construction'],
-    content: [
-      {
-        text: `Research at the Advanced Intelligent Manufacturing Laboratory, Northwestern University. Presented at MSEC 2026 / NAMRC54 (State College, PA, June 2026) and supported by the NSF ERC-HAMMER (Award EEC-2133630) — the Hybrid Autonomous Manufacturing: Moving from Evolution to Revolution Engineering Research Center, a multi-institution collaboration across Northwestern, Ohio State, Case Western Reserve, NC A&T, and UT Knoxville.
-
-Smart Sheet Smith turns a 2D sheet-metal engineering drawing into a verified, physics-grounded bending process plan — no 3D CAD model and no labeled training data required. I worked on the Tracer Agent and built the data foundation underneath it: the CAD parts, the drawings, the ground-truth geometry, the hand-checked bend math, and a SolidWorks VBA pipeline that generated hundreds of valid parametric drawings automatically.`,
-        images: [
-          { url: sheetSmithPoster, caption: 'Zahra Sadeghi, the graduate student I worked with, presenting our Smart Sheet Smith poster at MSEC 2026 / NAMRC54.' }
-        ]
-      },
-      {
-        heading: 'The Poster, Transcribed',
-        text: `"Smart Sheet Smith: End-to-End LLM-Driven MAS for Sheet Process Planning" — MSEC 2026 | NAMRC54, June 14–18, 2026, State College, Pennsylvania.
-
-Zahra Sadeghi¹, Ashton Dy², Asher Straus¹, Xiangyu Shi¹, Qi Zhu¹, Jamie Coble², Ping Guo¹ — ¹Northwestern University, Evanston, IL, USA; ²University of Tennessee, Knoxville, TN, USA.
-
-Abstract: Smart Sheet Smith converts a 2D engineering drawing directly into a verified sheet-metal bending process plan, no 3D CAD model required. Five specialized agents handle view classification, geometry extraction, and physics-based process planning, with two reference-free judge-patcher loops that self-correct errors by re-deriving expected values from the input drawing itself, no ground-truth labels or human intervention needed. A curated Knowledge Graph supplies deterministic physics constants to prevent hallucination, and the system emits a physics-compensated flat-pattern blueprint ready for shop-floor use. Evaluated on real industrial V-bending drawings, the closed loop achieves substantial accuracy gains over the single-pass baseline without any labeled data.
-
-Introduction: Sheet-metal bending process planning — choosing the bend order, tooling, and flat blank for a target part — remains a manual task driven by expert judgment. Commercial CAM software automates bend sequencing, but only after an engineer rebuilds the 2D drawing as a 3D CAD model. Large language models can ingest drawings directly, yet they hallucinate dimensions and produce plans with no built-in physics check. We present Smart Sheet Smith, an end-to-end multi-agent system that reads a multi-view 2D engineering drawing directly and produces a verified, physics-grounded bending process plan, no CAD model and no ground-truth labels required.
-
-Method: The Vision Agent classifies the drawing layout and identifies the master profile and sheet thickness. The Tracer Agent extracts the full geometric topology into a structured JSON, audited by the Geometric-Judge in a reference-free closed loop. The Engineering Agent retrieves physics constants from the Knowledge Graph and computes bend allowances, tonnage, and bend sequence, verified by the Performance-Judge before emitting the final process plan and flat-pattern blueprint. Six metrics across the two judge agents define the PASS/FAIL verdicts driving the self-correction loop — Geometric-Judge: segment sequence alignment (SSA), feature anchor accuracy (RAA), developed length deviation (GDD); Performance-Judge: physics math accuracy (PMA), operation sequence alignment (OSA), feasibility validation (FVA).
-
-Dataset: SIMBA (Sheet Metal Intelligent Bending Archive) — 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple to complex geometries for robust evaluation.
-
-Results — Effect of the Judge-Patcher Loop: Each patcher iteration recovers more failing parts by rewriting the agent's prompt with a targeted error description from the judge, driving accuracy higher across both the geometric and performance loops.
-
-Conclusion: Smart Sheet Smith shows that physics invariants can drive reliable self-correction in LLM-based process planning with no ground-truth labels or human intervention. The reference-free judge-patcher loop achieves substantial accuracy gains over the single-pass baseline, opening an automated path from 2D drawing to verified bending process plan for job shops that 3D-CAD pipelines cannot serve.
-
-References: [1] Duflou et al., Computer-Aided Process Planning for Sheet Metal Bending, 2005. [2] Pawar et al., Interpretable Vision-Language Models for Engineering Drawings, 2025.
-
-Acknowledgment: The authors would like to acknowledge support from the U.S. National Science Foundation Engineering Research Center for Hybrid Autonomous Manufacturing Moving from Evolution to Revolution (ERC-HAMMER) under Award Number EEC-2133630.`
-      },
-      {
-        heading: 'The Problem',
-        text: `Sheet-metal bending process planning is one of the last stubbornly manual steps in fabrication. Choosing the bend order, tooling, and flat-blank dimensions still depends on an experienced planner reading a 2D engineering drawing and applying years of shop-floor judgment.
-
-Commercial CAM software can automate bend sequencing — but only after an engineer rebuilds the 2D drawing as a 3D CAD model, a slow, expensive prerequisite job shops working from customer prints often can't justify. Large language models can ingest drawings directly, but they hallucinate dimensions and produce plans with no built-in physics check. Neither path gets you from a print to a trustworthy plan.`
-      },
-      {
-        heading: 'What We Built',
-        text: `Smart Sheet Smith reads a multi-view 2D engineering drawing and produces a verified, physics-grounded bending process plan through a five-agent pipeline:
-
-• Vision Agent — classifies the drawing layout and identifies the master profile and sheet thickness.
-• Tracer Agent — extracts the full geometric topology into a structured JSON representation.
-• Geometric-Judge — audits the traced geometry against the input drawing itself, in a reference-free loop.
-• Engineering Agent — retrieves deterministic physics constants from a curated Knowledge Graph via RAG, then computes bend allowances, tonnage, and bend sequence.
-• Performance-Judge — verifies the final plan before the system emits a physics-compensated flat-pattern blueprint ready for the shop floor.`
-      },
-      {
-        heading: 'The Judge–Patcher Loop',
-        text: `The core idea is a judge–patcher loop. Rather than scoring output against a labeled answer key, the judges re-derive expected values directly from the source drawing and compare. When a check fails, the patcher rewrites the failing agent's prompt with a targeted error description — for example, a segment extracted at 30.0 mm against a true value of 32.0 mm, or a virtual-sharp-dimension misinterpretation in the flat-pattern calculation — and the pipeline re-runs that stage.
-
-Six metrics across the two judges define the PASS/FAIL verdicts that drive self-correction: segment sequence alignment, feature anchor accuracy, developed length deviation, physics math accuracy, operation sequence alignment, and feasibility validation. This removes the labeling bottleneck — the system improves itself using invariants it can check from first principles, not human annotation.`
-      },
-      {
-        heading: 'Evaluation',
-        text: `We evaluated on SIMBA (Sheet Metal Intelligent Bending Archive), a dataset of 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple through complex geometries for robustness testing.
-
-Cumulative correctness rose substantially across three patcher iterations in both the geometric and performance loops, with each iteration recovering additional failing parts. The closed loop delivered meaningful accuracy gains over the single-pass baseline — without a single labeled example.`
-      },
-      {
-        heading: 'My Contribution',
-        text: `I worked on the Tracer Agent and owned much of the data foundation it was developed and validated against.
-
-I built the evaluation corpus from the ground up: modeling the parts in CAD, producing the multi-view orthographic drawings, and hand-deriving the ground-truth geometry each drawing should resolve to. I then authored and corrected the structured JSON representations that encoded that topology, iterating on the schema and training examples as failure modes surfaced.
-
-Validating the agent meant doing the bend math by hand — bend allowances, developed lengths, segment sequences — and checking the agent's extraction against it case by case. Beyond numerical correctness, I applied a manufacturability check the math alone can't provide: reasoning through the actual forming process to judge whether a proposed plan was physically realizable on a press brake, or whether it produced a sequence that looked valid on paper but couldn't be made. That distinction drove several corrections to how the pipeline handles bend ordering and tool access.`
-      },
-      {
-        heading: 'Automated Parametric Drawing Generation',
-        text: `Manual drawing creation was the hard ceiling on dataset size, so I built a SolidWorks VBA macro pipeline to remove it. Given one base CAD model, the macro randomizes its dimensions within controlled ranges and exports each variation as a fully-dimensioned PDF — hundreds of valid drawings in minutes instead of days.
-
-The design principle that made it work: the macro only changes the values of dimensions that already exist, never adding or removing them. Any variation from a valid base drawing is therefore structurally valid by construction. That reframed the hard problem from "produce a correct drawing" to "produce geometry that rebuilds cleanly and fits on the sheet."
-
-Each iteration randomizes the parameters, force-rebuilds the part and drawing, auto-scales and centers the views, then runs a "safe box" check confirming all geometry and annotations fall inside a defined fraction of the page. Failures retry with new values rather than emitting a bad sample. The helpers are part-agnostic — adapting to a new part family means editing only the dimension names and ranges at the top of the file.`
-      },
-      {
-        heading: 'Validation Across Part Families',
-        text: `I validated across three part families and documented the failure modes:
-
-• Simple tab bracket — 20 parts, 85% success. Primary failure: dimensions off page.
-• L-bracket — 20 parts, 90% success. Primary failures: bad range → failed rebuild; dimensions off page.
-• Bracket with holes and slots — 20 parts, 74% success. Primary failures: hole diameter exceeding parent face; broken flanges; detached radius.
-
-The complex-part result was the useful one. Interdependent features — a hole that must stay inside its containing flange — fail under naive uniform sampling, and the fix isn't more retries. It's defining CAD features as relationships to parent geometry (hole diameter = 0.3 × flange width) rather than absolute values, so features scale proportionally and stay valid across the whole sampling range. Parts modeled that way were substantially more stable.`
-      },
-      {
-        heading: 'What I Took Away',
-        text: `• Constrain the generator, not the output. The strongest results in both halves of my work came from making invalid states unrepresentable rather than filtering for them after the fact — value-only randomization in the macro, ratio-defined CAD features instead of absolute ones, physics invariants instead of labeled answers.
-
-• Domain judgment is the scarce input to an AI pipeline. The model could produce a bend sequence that satisfied every numerical check and still couldn't be made on a press brake. Catching that required thinking about tooling access and forming order — the part of the loop an ME contributes that isn't automatable yet.
-
-• Failure modes are the deliverable. Cataloguing why generations failed — off-page annotations, rebuild breaks on interdependent dimensions, the mm-to-meters unit conversion in the SolidWorks API that caused the most early bugs — is what let the next person configure the tool for a new part in an afternoon.`
-      },
-      {
-        heading: 'Where It Goes Next',
-        text: `Directions I documented in the technical handoff, roughly in order of leverage:
-• Auto-detect dimension names from the part file, so a new base model needs no hand-written configuration — the key step toward full automation across arbitrary geometries.
-• Constraint-aware sampling that respects inter-dimension relationships instead of sampling each independently — the direct fix for the 74% complex-part rate.
-• A VLM evaluator agent to flag failed or unreadable PDFs automatically, replacing manual QA and doubling as a manufacturability screen.
-• A broader base-part library covering flanges, housings, and plates with hole patterns.`
-      },
-      {
-        heading: 'Publication & Team',
-        text: `Co-author on the MSEC 2026 / NAMRC54 publication as an undergraduate researcher (Tracer Agent, dataset construction and validation, automated parametric drawing generation).
-
-Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northwestern University); Jamie Coble (University of Tennessee, Knoxville); Ping Guo (Northwestern University).`
-      }
-    ]
-  },
-  {
     id: 17,
     title: 'Drivetrain Efficiency Test Rig',
     category: 'Drivetrain Testing · Instrumentation & DAQ · Baja SAE · Mechanical Design',
@@ -1434,7 +1563,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     category: 'Digital Fabrication · Geometric Modeling',
     image: lampImg,
     description: 'A modular geometric lamp exploring 3D printing constraints and reflective material design.',
-    filterCategory: 'Personal Projects',
+    filterCategory: 'Small Projects',
     date: '2026',
     tools: ['Geometric Modeling', '3D Printing', 'Laser Cutting', 'Modular Assembly', 'Rapid Prototyping'],
     content: [
@@ -1478,7 +1607,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     category: 'Metal Casting · Furnace Fabrication · Foundry Practice',
     image: castFurnaceHero,
     description: "Built a coke-fired furnace to cast iron, and hand-embossed a nameplate in sand when a binder-jet mold order didn't arrive in time.",
-    filterCategory: 'Personal Projects',
+    filterCategory: 'Small Projects',
     date: '2026',
     tools: ['Furnace Fabrication', 'Iron Casting', 'Sand Mold Casting', 'Onshape', 'Forced-Air Combustion', 'Foundry Safety'],
     content: [
@@ -1513,7 +1642,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     category: 'Compliant Mechanisms · 3D Printing · Product Design',
     image: projBedClipFinished,
     description: 'Two PETG 3D-printed projector mounts — a cantilever snap-fit stand that clips onto a bed frame, and a clamp-on stand that slides onto a table edge for game nights.',
-    filterCategory: 'Personal Projects',
+    filterCategory: 'Small Projects',
     date: '2026',
     tools: ['Compliant Mechanism Design', '3D Printing (PETG)', 'Snap-Fit Design', 'Product Design', 'CAD Modeling'],
     content: [
@@ -1550,7 +1679,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     category: 'Furniture Design · CNC Fabrication · Audio Equipment (Work in Progress)',
     image: turntableCadRender,
     description: 'A kerf-bent walnut veneer plywood turntable stand — an S-curved form with two bends and three platforms, accented with brass tubing and tuned for vibration isolation. Currently finalized in CAD and BOM, awaiting CNC router time.',
-    filterCategory: 'Personal Projects',
+    filterCategory: 'Design',
     inProgress: true,
     date: '2026',
     tools: ['CNC Routing', 'Kerf Bending', 'CAD Modeling', 'Bill of Materials', 'Vibration Isolation', 'Furniture Design'],
@@ -1587,7 +1716,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     category: 'Product Design · Laser Cutting · 3D Printing',
     image: tracingBoardInUse,
     description: 'A laser-cut acrylic light board with 3D-printed corner stands, sized to fit the large-format paper used in my industrial sketching class.',
-    filterCategory: 'Personal Projects',
+    filterCategory: 'Small Projects',
     date: '2026',
     tools: ['Laser Cutting', 'Acrylic Fabrication', '3D Printing (PLA)', 'Product Design', 'CAD Modeling'],
     content: [
@@ -1624,9 +1753,11 @@ export function getAllProjectImages(project: Project): string[] {
   return images;
 }
 
-const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id: number) => void }>(
-  function ProjectCard({ project, onSelect }, ref) {
+const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id: number) => void; compact?: boolean; index?: number }>(
+  function ProjectCard({ project, onSelect, compact = false, index = 0 }, ref) {
   const [imgIndex, setImgIndex] = useState(0);
+  const [loaded, setLoaded] = useState<Record<number, boolean>>({});
+  const markLoaded = (i: number) => setLoaded((prev) => (prev[i] ? prev : { ...prev, [i]: true }));
   const allImages = getAllProjectImages(project);
   const hasMultiple = allImages.length > 1;
 
@@ -1634,13 +1765,14 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
     <motion.div
       ref={ref}
       layout
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.3 }}
-      className="group cursor-pointer bg-[#F7F3ED] shadow-sm hover:shadow-lg transition-all duration-300 rounded-sm overflow-hidden border border-[#1B2D5B]/10"
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      exit={{ opacity: 0, scale: 0.92 }}
+      transition={{ duration: 0.5, delay: (index % (compact ? 4 : 3)) * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      className="group cursor-pointer bg-[#F7F3ED] shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-[box-shadow,translate] duration-300 rounded-sm overflow-hidden border border-[#1B2D5B]/10"
     >
-      <div className="relative aspect-[4/3] overflow-hidden bg-[#E8E3DB]" onClick={() => onSelect(project.id)}>
+      <div className={`relative ${compact ? 'aspect-square' : 'aspect-[4/3]'} overflow-hidden bg-[#E8E3DB]`} onClick={() => onSelect(project.id)}>
         {allImages.length > 0 ? (
           <AnimatePresence mode="wait">
             <motion.img
@@ -1649,11 +1781,14 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
               alt={project.title}
               loading="lazy"
               decoding="async"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              ref={(el) => { if (el?.complete && el.naturalWidth > 0) markLoaded(imgIndex); }}
+              onLoad={() => markLoaded(imgIndex)}
+              onError={() => markLoaded(imgIndex)}
+              initial={{ opacity: 0, filter: 'blur(12px)' }}
+              animate={{ opacity: loaded[imgIndex] ? 1 : 0, filter: loaded[imgIndex] ? 'blur(0px)' : 'blur(12px)' }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="w-full h-full object-cover absolute inset-0"
+              transition={{ duration: 0.4 }}
+              className="w-full h-full object-cover absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.05]"
             />
           </AnimatePresence>
         ) : (
@@ -1716,26 +1851,27 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
           </>
         )}
       </div>
-      <div className="p-6" onClick={() => onSelect(project.id)}>
+      <div className={compact ? 'p-4' : 'p-6'} onClick={() => onSelect(project.id)}>
         <p className="text-xs font-bold text-[#3B5998] uppercase tracking-wider mb-2">{project.category.split('·')[0]}</p>
-        <h3 className="text-xl font-bold text-[#1B2D5B] mb-3 group-hover:text-[#3B5998] transition-colors flex items-center gap-2">
+        <h3 className={`${compact ? 'text-base mb-0' : 'text-xl mb-3'} font-bold text-[#1B2D5B] group-hover:text-[#3B5998] transition-colors flex items-center gap-2`}>
           {project.title}
           <ArrowRight size={16} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
         </h3>
-        <p className="text-[#1B2D5B]/50 text-sm leading-relaxed line-clamp-2">{project.description}</p>
+        {!compact && <p className="text-[#1B2D5B]/50 text-sm leading-relaxed line-clamp-2">{project.description}</p>}
       </div>
     </motion.div>
   );
 });
 
-const filterTabs: Array<'All' | Project['filterCategory']> = ['All', 'Design', 'Personal Projects', 'Research'];
+const filterTabs: Array<'All' | Project['filterCategory']> = ['All', 'Design', 'Research', 'Small Projects'];
 
 export function Portfolio() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<'All' | Project['filterCategory']>('All');
-  const filteredProjects = activeTab === 'All' ? projects : projects.filter(p => p.filterCategory === activeTab);
+  const mainProjects = projects.filter(p => p.filterCategory !== 'Small Projects' && (activeTab === 'All' || p.filterCategory === activeTab));
+  const smallProjects = activeTab === 'All' || activeTab === 'Small Projects' ? projects.filter(p => p.filterCategory === 'Small Projects') : [];
 
   const selectedProject = projects.find(p => p.id === selectedId);
 
@@ -1759,6 +1895,35 @@ export function Portfolio() {
       setSearchParams(searchParams, { replace: true });
     }
   };
+
+  // Step through projects in the order they appear on the page (falls back to all projects
+  // if the open one isn't in the current tab, e.g. when linked from the Gallery)
+  const orderedProjects = [...mainProjects, ...smallProjects];
+  const navList = orderedProjects.some(p => p.id === selectedId) ? orderedProjects : projects;
+  const goToProject = (delta: number) => {
+    const i = navList.findIndex(p => p.id === selectedId);
+    if (i === -1) return;
+    setSelectedId(navList[(i + delta + navList.length) % navList.length].id);
+  };
+
+  const modalScrollRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    modalScrollRef.current?.scrollTo({ top: 0 });
+  }, [selectedId]);
+
+  // Keyboard: Esc closes the modal (or lightbox), arrow keys move between projects
+  useEffect(() => {
+    if (!selectedId) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (zoomedImage) setZoomedImage(null);
+        else closeModal();
+      } else if (!zoomedImage && e.key === 'ArrowRight') goToProject(1);
+      else if (!zoomedImage && e.key === 'ArrowLeft') goToProject(-1);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  });
 
   useEffect(() => {
     if (selectedId || zoomedImage) {
@@ -1784,43 +1949,79 @@ export function Portfolio() {
       />
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
-        <div className="text-center mb-16">
+        <Reveal className="text-center mb-16">
           <h2 className="text-4xl font-bold text-[#1B2D5B] mb-4 tracking-wide">PORTFOLIO</h2>
           <p className="text-[#1B2D5B]/50 font-light text-lg">Engineering, design, and art</p>
-        </div>
+        </Reveal>
 
         {/* Filter Tabs */}
-        <div className="flex justify-center flex-wrap gap-8 mb-12">
+        <Reveal delay={0.1} className="flex justify-center flex-wrap gap-8 mb-12">
           {filterTabs.map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`text-sm font-bold tracking-widest uppercase pb-2 border-b-2 transition-colors duration-300 ${
+              className={`relative text-sm font-bold tracking-widest uppercase pb-2 transition-colors duration-300 ${
                 activeTab === tab
-                  ? 'border-[#1B2D5B] text-[#1B2D5B]'
-                  : 'border-transparent text-[#1B2D5B]/40 hover:text-[#1B2D5B]/70'
+                  ? 'text-[#1B2D5B]'
+                  : 'text-[#1B2D5B]/40 hover:text-[#1B2D5B]/70'
               }`}
             >
               {tab}
+              {activeTab === tab && (
+                <motion.span
+                  layoutId="portfolio-tab-underline"
+                  className="absolute left-0 right-0 -bottom-0.5 h-0.5 bg-[#1B2D5B]"
+                  transition={{ type: 'spring', stiffness: 500, damping: 40 }}
+                />
+              )}
             </button>
           ))}
-        </div>
+        </Reveal>
 
-        {/* Grid */}
-        <motion.div
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          <AnimatePresence mode='popLayout'>
-            {filteredProjects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                onSelect={setSelectedId}
-              />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* Main projects grid */}
+        {mainProjects.length > 0 && (
+          <motion.div
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            <AnimatePresence mode='popLayout'>
+              {mainProjects.map((project, i) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  onSelect={setSelectedId}
+                  index={i}
+                />
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )}
+
+        {/* Small projects */}
+        {smallProjects.length > 0 && (
+          <div className={mainProjects.length > 0 ? 'mt-20' : ''}>
+            <div className="flex items-center gap-4 mb-8">
+              <h3 className="text-sm font-bold tracking-widest uppercase text-[#1B2D5B]">Small Projects</h3>
+              <div className="flex-1 h-px bg-[#1B2D5B]/15" />
+            </div>
+            <motion.div
+              layout
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            >
+              <AnimatePresence mode='popLayout'>
+                {smallProjects.map((project, i) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    onSelect={setSelectedId}
+                    index={i}
+                    compact
+                  />
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+        )}
 
         {/* --- MODAL --- */}
         <AnimatePresence>
@@ -1841,19 +2042,40 @@ export function Portfolio() {
                 exit={{ opacity: 0, y: 20, scale: 0.95 }}
                 className="relative w-full max-w-5xl bg-[#F7F3ED] rounded-lg shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
               >
-                <button
-                  onClick={closeModal}
-                  className="absolute top-4 right-4 z-10 p-2 bg-white/50 hover:bg-white rounded-full transition-colors shadow-md"
-                >
-                  <X size={24} className="text-gray-900" />
-                </button>
+                <div className="absolute top-4 right-4 z-10 flex gap-2">
+                  <button
+                    onClick={() => goToProject(-1)}
+                    aria-label="Previous project"
+                    className="p-2 bg-white/50 hover:bg-white rounded-full transition-colors shadow-md"
+                  >
+                    <ChevronLeft size={24} className="text-gray-900" />
+                  </button>
+                  <button
+                    onClick={() => goToProject(1)}
+                    aria-label="Next project"
+                    className="p-2 bg-white/50 hover:bg-white rounded-full transition-colors shadow-md"
+                  >
+                    <ChevronRight size={24} className="text-gray-900" />
+                  </button>
+                  <button
+                    onClick={closeModal}
+                    aria-label="Close"
+                    className="p-2 bg-white/50 hover:bg-white rounded-full transition-colors shadow-md"
+                  >
+                    <X size={24} className="text-gray-900" />
+                  </button>
+                </div>
 
-                <div className="overflow-y-auto custom-scrollbar">
-                  <div className="w-full h-64 md:h-80 relative bg-[#1B2D5B]">
+                <div ref={modalScrollRef} className="overflow-y-auto custom-scrollbar">
+                  <div className="w-full h-64 md:h-80 relative bg-[#1B2D5B] overflow-hidden">
                     {selectedProject.image ? (
-                      <img
+                      <motion.img
+                        key={selectedProject.id}
                         src={selectedProject.image}
                         alt={selectedProject.title}
+                        initial={{ scale: 1.06 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.9, ease: 'easeOut' }}
                         className="w-full h-full object-cover md:object-contain bg-[#F0EBE3] cursor-pointer"
                         onClick={() => setZoomedImage(selectedProject.image)}
                       />
@@ -1872,7 +2094,13 @@ export function Portfolio() {
                         {selectedProject.content && selectedProject.content.length > 0 ? (
                           <div className="space-y-10">
                             {selectedProject.content.map((section, idx) => (
-                              <div key={idx} className="space-y-4">
+                              <motion.div
+                                key={`${selectedProject.id}-${idx}`}
+                                initial={{ opacity: 0, y: 16 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4, delay: 0.15 + Math.min(idx, 6) * 0.06 }}
+                                className="space-y-4"
+                              >
                                 {section.heading && (
                                   <h5 className="text-lg font-bold text-[#1B2D5B] uppercase tracking-wide border-b border-[#1B2D5B]/10 pb-2 inline-block">
                                     {section.heading}
@@ -1907,7 +2135,7 @@ export function Portfolio() {
                                     ))}
                                   </div>
                                 )}
-                              </div>
+                              </motion.div>
                             ))}
                           </div>
                         ) : (

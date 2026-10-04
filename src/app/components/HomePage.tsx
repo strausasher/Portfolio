@@ -4,6 +4,7 @@ import { Hero } from "./Hero";
 import { About } from "./About";
 import { Portfolio } from "./Portfolio";
 import { Contact } from "./Contact";
+import { SectionDivider } from "./SectionDivider";
 import { scrollToHash } from "./scrollToHash";
 
 export function HomePage() {
@@ -18,6 +19,7 @@ export function HomePage() {
     <>
       <Hero />
       <About />
+      <SectionDivider />
       <Portfolio />
       <Contact />
     </>
