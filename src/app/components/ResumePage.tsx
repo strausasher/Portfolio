@@ -30,9 +30,9 @@ const experience: Entry[] = [
     where: 'Hoffman Estates, IL',
     dates: 'Jun 2026 – Dec 2026',
     bullets: [
-      'Modify SPECT/PET scanner components so they work within the larger system, including resolving a part interference, and assign tolerances and apply GD&T for manufacturability.',
-      'Design and prototype in Siemens NX with 3D-printed parts, and support hands-on assembly and troubleshooting.',
-      'Produce engineering drawings and exploded views; contribute research on mechanical subsystems for a next-generation SPECT/CT system.',
+      'Updated CAD models and drawings for mechanical components in SPECT and PET scanners to resolve interferences and improve manufacturability. Applied GD&T to fully define part requirements.',
+      'Designed fixtures and brackets in Siemens NX/Designcenter. Used 3D printing to evaluate and iterate on design.',
+      'Contributed to the development of a multi-axis stage and investigated motorized drives to support SPECT research team.',
     ],
   },
   {
@@ -112,7 +112,7 @@ const skills = [
   ['Design & Fabrication', 'Siemens NX, SolidWorks, GD&T, Engineering Drawings, 3D Printing, Machining (Lathe, CNC, Mill), Welding, Rapid Prototyping, DFM/DFR'],
   ['Analysis & Software', 'Ansys, MATLAB, Python, VBA, Unity, GitHub, Adobe Photoshop, Circuit Design, Radio Control'],
   ['Relevant Courses', 'Manufacturing Engineering Design (DFM), Computer Integrated Manufacturing, Geometry & Manufacturing, Mechanical Design & Manufacturing, Materials Selection, Mechatronics, Mechanics of Materials, Electronics Design, Human-Centered Product Design, Optimization'],
-  ['Clubs', 'Formula SAE, Combat Robotics, SME Student Chapter'],
+  ['Clubs', 'Formula SAE, Baja SAE, Combat Robotics, SME Student Chapter'],
 ];
 
 function EntryBlock({ entry }: { entry: Entry }) {
