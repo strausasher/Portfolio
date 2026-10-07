@@ -837,6 +837,124 @@ This demonstrated scalability awareness beyond prototype design.`
     ]
   },
   {
+    id: 16,
+    title: 'Smart Sheet Smith',
+    category: 'Research · Manufacturing AI · Multi-Agent LLM Systems',
+    image: sheetSmithPoster,
+    description: 'An end-to-end LLM-driven multi-agent system that turns a 2D sheet-metal drawing into a verified, physics-grounded bending process plan — no 3D CAD, no labeled data. Presented at MSEC 2026 / NAMRC54.',
+    filterCategory: 'Research',
+    date: '2025–2026',
+    tools: ['Multi-Agent LLM Orchestration', 'Vision-Language Models', 'Retrieval-Augmented Generation', 'Reference-Free Evaluation', 'SolidWorks API / VBA', 'Parametric CAD', 'Sheet-Metal Bend Analysis', 'Dataset Construction'],
+    content: [
+      {
+        text: `Research at the Advanced Intelligent Manufacturing Laboratory, Northwestern University. Presented at MSEC 2026 / NAMRC54 (State College, PA, June 2026) and supported by the NSF ERC-HAMMER (Award EEC-2133630) — the Hybrid Autonomous Manufacturing: Moving from Evolution to Revolution Engineering Research Center, a multi-institution collaboration across Northwestern, Ohio State, Case Western Reserve, NC A&T, and UT Knoxville.
+
+Smart Sheet Smith turns a 2D sheet-metal engineering drawing into a verified, physics-grounded bending process plan — no 3D CAD model and no labeled training data required. I worked on the Tracer Agent and built the data foundation underneath it: the CAD parts, the drawings, the ground-truth geometry, the hand-checked bend math, and a SolidWorks VBA pipeline that generated hundreds of valid parametric drawings automatically.`,
+        images: [
+          { url: sheetSmithPoster, caption: 'Zahra Sadeghi, the graduate student I worked with, presenting our Smart Sheet Smith poster at MSEC 2026 / NAMRC54.' }
+        ]
+      },
+      {
+        heading: 'The Poster, Transcribed',
+        text: `"Smart Sheet Smith: End-to-End LLM-Driven MAS for Sheet Process Planning" — MSEC 2026 | NAMRC54, June 14–18, 2026, State College, Pennsylvania.
+
+Zahra Sadeghi¹, Ashton Dy², Asher Straus¹, Xiangyu Shi¹, Qi Zhu¹, Jamie Coble², Ping Guo¹ — ¹Northwestern University, Evanston, IL, USA; ²University of Tennessee, Knoxville, TN, USA.
+
+Abstract: Smart Sheet Smith converts a 2D engineering drawing directly into a verified sheet-metal bending process plan, no 3D CAD model required. Five specialized agents handle view classification, geometry extraction, and physics-based process planning, with two reference-free judge-patcher loops that self-correct errors by re-deriving expected values from the input drawing itself, no ground-truth labels or human intervention needed. A curated Knowledge Graph supplies deterministic physics constants to prevent hallucination, and the system emits a physics-compensated flat-pattern blueprint ready for shop-floor use. Evaluated on real industrial V-bending drawings, the closed loop achieves substantial accuracy gains over the single-pass baseline without any labeled data.
+
+Introduction: Sheet-metal bending process planning — choosing the bend order, tooling, and flat blank for a target part — remains a manual task driven by expert judgment. Commercial CAM software automates bend sequencing, but only after an engineer rebuilds the 2D drawing as a 3D CAD model. Large language models can ingest drawings directly, yet they hallucinate dimensions and produce plans with no built-in physics check. We present Smart Sheet Smith, an end-to-end multi-agent system that reads a multi-view 2D engineering drawing directly and produces a verified, physics-grounded bending process plan, no CAD model and no ground-truth labels required.
+
+Method: The Vision Agent classifies the drawing layout and identifies the master profile and sheet thickness. The Tracer Agent extracts the full geometric topology into a structured JSON, audited by the Geometric-Judge in a reference-free closed loop. The Engineering Agent retrieves physics constants from the Knowledge Graph and computes bend allowances, tonnage, and bend sequence, verified by the Performance-Judge before emitting the final process plan and flat-pattern blueprint. Six metrics across the two judge agents define the PASS/FAIL verdicts driving the self-correction loop — Geometric-Judge: segment sequence alignment (SSA), feature anchor accuracy (RAA), developed length deviation (GDD); Performance-Judge: physics math accuracy (PMA), operation sequence alignment (OSA), feasibility validation (FVA).
+
+Dataset: SIMBA (Sheet Metal Intelligent Bending Archive) — 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple to complex geometries for robust evaluation.
+
+Results — Effect of the Judge-Patcher Loop: Each patcher iteration recovers more failing parts by rewriting the agent's prompt with a targeted error description from the judge, driving accuracy higher across both the geometric and performance loops.
+
+Conclusion: Smart Sheet Smith shows that physics invariants can drive reliable self-correction in LLM-based process planning with no ground-truth labels or human intervention. The reference-free judge-patcher loop achieves substantial accuracy gains over the single-pass baseline, opening an automated path from 2D drawing to verified bending process plan for job shops that 3D-CAD pipelines cannot serve.
+
+References: [1] Duflou et al., Computer-Aided Process Planning for Sheet Metal Bending, 2005. [2] Pawar et al., Interpretable Vision-Language Models for Engineering Drawings, 2025.
+
+Acknowledgment: The authors would like to acknowledge support from the U.S. National Science Foundation Engineering Research Center for Hybrid Autonomous Manufacturing Moving from Evolution to Revolution (ERC-HAMMER) under Award Number EEC-2133630.`
+      },
+      {
+        heading: 'The Problem',
+        text: `Sheet-metal bending process planning is one of the last stubbornly manual steps in fabrication. Choosing the bend order, tooling, and flat-blank dimensions still depends on an experienced planner reading a 2D engineering drawing and applying years of shop-floor judgment.
+
+Commercial CAM software can automate bend sequencing — but only after an engineer rebuilds the 2D drawing as a 3D CAD model, a slow, expensive prerequisite job shops working from customer prints often can't justify. Large language models can ingest drawings directly, but they hallucinate dimensions and produce plans with no built-in physics check. Neither path gets you from a print to a trustworthy plan.`
+      },
+      {
+        heading: 'What We Built',
+        text: `Smart Sheet Smith reads a multi-view 2D engineering drawing and produces a verified, physics-grounded bending process plan through a five-agent pipeline:
+
+• Vision Agent — classifies the drawing layout and identifies the master profile and sheet thickness.
+• Tracer Agent — extracts the full geometric topology into a structured JSON representation.
+• Geometric-Judge — audits the traced geometry against the input drawing itself, in a reference-free loop.
+• Engineering Agent — retrieves deterministic physics constants from a curated Knowledge Graph via RAG, then computes bend allowances, tonnage, and bend sequence.
+• Performance-Judge — verifies the final plan before the system emits a physics-compensated flat-pattern blueprint ready for the shop floor.`
+      },
+      {
+        heading: 'The Judge–Patcher Loop',
+        text: `The core idea is a judge–patcher loop. Rather than scoring output against a labeled answer key, the judges re-derive expected values directly from the source drawing and compare. When a check fails, the patcher rewrites the failing agent's prompt with a targeted error description — for example, a segment extracted at 30.0 mm against a true value of 32.0 mm, or a virtual-sharp-dimension misinterpretation in the flat-pattern calculation — and the pipeline re-runs that stage.
+
+Six metrics across the two judges define the PASS/FAIL verdicts that drive self-correction: segment sequence alignment, feature anchor accuracy, developed length deviation, physics math accuracy, operation sequence alignment, and feasibility validation. This removes the labeling bottleneck — the system improves itself using invariants it can check from first principles, not human annotation.`
+      },
+      {
+        heading: 'Evaluation',
+        text: `We evaluated on SIMBA (Sheet Metal Intelligent Bending Archive), a dataset of 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple through complex geometries for robustness testing.
+
+Cumulative correctness rose substantially across three patcher iterations in both the geometric and performance loops, with each iteration recovering additional failing parts. The closed loop delivered meaningful accuracy gains over the single-pass baseline — without a single labeled example.`
+      },
+      {
+        heading: 'My Contribution',
+        text: `I worked on the Tracer Agent and owned much of the data foundation it was developed and validated against.
+
+I built the evaluation corpus from the ground up: modeling the parts in CAD, producing the multi-view orthographic drawings, and hand-deriving the ground-truth geometry each drawing should resolve to. I then authored and corrected the structured JSON representations that encoded that topology, iterating on the schema and training examples as failure modes surfaced.
+
+Validating the agent meant doing the bend math by hand — bend allowances, developed lengths, segment sequences — and checking the agent's extraction against it case by case. Beyond numerical correctness, I applied a manufacturability check the math alone can't provide: reasoning through the actual forming process to judge whether a proposed plan was physically realizable on a press brake, or whether it produced a sequence that looked valid on paper but couldn't be made. That distinction drove several corrections to how the pipeline handles bend ordering and tool access.`
+      },
+      {
+        heading: 'Automated Parametric Drawing Generation',
+        text: `Manual drawing creation was the hard ceiling on dataset size, so I built a SolidWorks VBA macro pipeline to remove it. Given one base CAD model, the macro randomizes its dimensions within controlled ranges and exports each variation as a fully-dimensioned PDF — hundreds of valid drawings in minutes instead of days.
+
+The design principle that made it work: the macro only changes the values of dimensions that already exist, never adding or removing them. Any variation from a valid base drawing is therefore structurally valid by construction. That reframed the hard problem from "produce a correct drawing" to "produce geometry that rebuilds cleanly and fits on the sheet."
+
+Each iteration randomizes the parameters, force-rebuilds the part and drawing, auto-scales and centers the views, then runs a "safe box" check confirming all geometry and annotations fall inside a defined fraction of the page. Failures retry with new values rather than emitting a bad sample. The helpers are part-agnostic — adapting to a new part family means editing only the dimension names and ranges at the top of the file.`
+      },
+      {
+        heading: 'Validation Across Part Families',
+        text: `I validated across three part families and documented the failure modes:
+
+• Simple tab bracket — 20 parts, 85% success. Primary failure: dimensions off page.
+• L-bracket — 20 parts, 90% success. Primary failures: bad range → failed rebuild; dimensions off page.
+• Bracket with holes and slots — 20 parts, 74% success. Primary failures: hole diameter exceeding parent face; broken flanges; detached radius.
+
+The complex-part result was the useful one. Interdependent features — a hole that must stay inside its containing flange — fail under naive uniform sampling, and the fix isn't more retries. It's defining CAD features as relationships to parent geometry (hole diameter = 0.3 × flange width) rather than absolute values, so features scale proportionally and stay valid across the whole sampling range. Parts modeled that way were substantially more stable.`
+      },
+      {
+        heading: 'What I Took Away',
+        text: `• Constrain the generator, not the output. The strongest results in both halves of my work came from making invalid states unrepresentable rather than filtering for them after the fact — value-only randomization in the macro, ratio-defined CAD features instead of absolute ones, physics invariants instead of labeled answers.
+
+• Domain judgment is the scarce input to an AI pipeline. The model could produce a bend sequence that satisfied every numerical check and still couldn't be made on a press brake. Catching that required thinking about tooling access and forming order — the part of the loop an ME contributes that isn't automatable yet.
+
+• Failure modes are the deliverable. Cataloguing why generations failed — off-page annotations, rebuild breaks on interdependent dimensions, the mm-to-meters unit conversion in the SolidWorks API that caused the most early bugs — is what let the next person configure the tool for a new part in an afternoon.`
+      },
+      {
+        heading: 'Where It Goes Next',
+        text: `Directions I documented in the technical handoff, roughly in order of leverage:
+• Auto-detect dimension names from the part file, so a new base model needs no hand-written configuration — the key step toward full automation across arbitrary geometries.
+• Constraint-aware sampling that respects inter-dimension relationships instead of sampling each independently — the direct fix for the 74% complex-part rate.
+• A VLM evaluator agent to flag failed or unreadable PDFs automatically, replacing manual QA and doubling as a manufacturability screen.
+• A broader base-part library covering flanges, housings, and plates with hole patterns.`
+      },
+      {
+        heading: 'Publication & Team',
+        text: `Co-author on the MSEC 2026 / NAMRC54 publication as an undergraduate researcher (Tracer Agent, dataset construction and validation, automated parametric drawing generation).
+
+Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northwestern University); Jamie Coble (University of Tennessee, Knoxville); Ping Guo (Northwestern University).`
+      }
+    ]
+  },
+  {
     id: 9,
     title: 'ExtendIt',
     category: 'Human-Centered Design · Product Development', 
@@ -1308,124 +1426,6 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
 • Expanded overlay library
 • Replaceable texture panels
 • Magnetic overlay attachment system`
-      }
-    ]
-  },
-  {
-    id: 16,
-    title: 'Smart Sheet Smith',
-    category: 'Research · Manufacturing AI · Multi-Agent LLM Systems',
-    image: sheetSmithPoster,
-    description: 'An end-to-end LLM-driven multi-agent system that turns a 2D sheet-metal drawing into a verified, physics-grounded bending process plan — no 3D CAD, no labeled data. Presented at MSEC 2026 / NAMRC54.',
-    filterCategory: 'Research',
-    date: '2025–2026',
-    tools: ['Multi-Agent LLM Orchestration', 'Vision-Language Models', 'Retrieval-Augmented Generation', 'Reference-Free Evaluation', 'SolidWorks API / VBA', 'Parametric CAD', 'Sheet-Metal Bend Analysis', 'Dataset Construction'],
-    content: [
-      {
-        text: `Research at the Advanced Intelligent Manufacturing Laboratory, Northwestern University. Presented at MSEC 2026 / NAMRC54 (State College, PA, June 2026) and supported by the NSF ERC-HAMMER (Award EEC-2133630) — the Hybrid Autonomous Manufacturing: Moving from Evolution to Revolution Engineering Research Center, a multi-institution collaboration across Northwestern, Ohio State, Case Western Reserve, NC A&T, and UT Knoxville.
-
-Smart Sheet Smith turns a 2D sheet-metal engineering drawing into a verified, physics-grounded bending process plan — no 3D CAD model and no labeled training data required. I worked on the Tracer Agent and built the data foundation underneath it: the CAD parts, the drawings, the ground-truth geometry, the hand-checked bend math, and a SolidWorks VBA pipeline that generated hundreds of valid parametric drawings automatically.`,
-        images: [
-          { url: sheetSmithPoster, caption: 'Zahra Sadeghi, the graduate student I worked with, presenting our Smart Sheet Smith poster at MSEC 2026 / NAMRC54.' }
-        ]
-      },
-      {
-        heading: 'The Poster, Transcribed',
-        text: `"Smart Sheet Smith: End-to-End LLM-Driven MAS for Sheet Process Planning" — MSEC 2026 | NAMRC54, June 14–18, 2026, State College, Pennsylvania.
-
-Zahra Sadeghi¹, Ashton Dy², Asher Straus¹, Xiangyu Shi¹, Qi Zhu¹, Jamie Coble², Ping Guo¹ — ¹Northwestern University, Evanston, IL, USA; ²University of Tennessee, Knoxville, TN, USA.
-
-Abstract: Smart Sheet Smith converts a 2D engineering drawing directly into a verified sheet-metal bending process plan, no 3D CAD model required. Five specialized agents handle view classification, geometry extraction, and physics-based process planning, with two reference-free judge-patcher loops that self-correct errors by re-deriving expected values from the input drawing itself, no ground-truth labels or human intervention needed. A curated Knowledge Graph supplies deterministic physics constants to prevent hallucination, and the system emits a physics-compensated flat-pattern blueprint ready for shop-floor use. Evaluated on real industrial V-bending drawings, the closed loop achieves substantial accuracy gains over the single-pass baseline without any labeled data.
-
-Introduction: Sheet-metal bending process planning — choosing the bend order, tooling, and flat blank for a target part — remains a manual task driven by expert judgment. Commercial CAM software automates bend sequencing, but only after an engineer rebuilds the 2D drawing as a 3D CAD model. Large language models can ingest drawings directly, yet they hallucinate dimensions and produce plans with no built-in physics check. We present Smart Sheet Smith, an end-to-end multi-agent system that reads a multi-view 2D engineering drawing directly and produces a verified, physics-grounded bending process plan, no CAD model and no ground-truth labels required.
-
-Method: The Vision Agent classifies the drawing layout and identifies the master profile and sheet thickness. The Tracer Agent extracts the full geometric topology into a structured JSON, audited by the Geometric-Judge in a reference-free closed loop. The Engineering Agent retrieves physics constants from the Knowledge Graph and computes bend allowances, tonnage, and bend sequence, verified by the Performance-Judge before emitting the final process plan and flat-pattern blueprint. Six metrics across the two judge agents define the PASS/FAIL verdicts driving the self-correction loop — Geometric-Judge: segment sequence alignment (SSA), feature anchor accuracy (RAA), developed length deviation (GDD); Performance-Judge: physics math accuracy (PMA), operation sequence alignment (OSA), feasibility validation (FVA).
-
-Dataset: SIMBA (Sheet Metal Intelligent Bending Archive) — 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple to complex geometries for robust evaluation.
-
-Results — Effect of the Judge-Patcher Loop: Each patcher iteration recovers more failing parts by rewriting the agent's prompt with a targeted error description from the judge, driving accuracy higher across both the geometric and performance loops.
-
-Conclusion: Smart Sheet Smith shows that physics invariants can drive reliable self-correction in LLM-based process planning with no ground-truth labels or human intervention. The reference-free judge-patcher loop achieves substantial accuracy gains over the single-pass baseline, opening an automated path from 2D drawing to verified bending process plan for job shops that 3D-CAD pipelines cannot serve.
-
-References: [1] Duflou et al., Computer-Aided Process Planning for Sheet Metal Bending, 2005. [2] Pawar et al., Interpretable Vision-Language Models for Engineering Drawings, 2025.
-
-Acknowledgment: The authors would like to acknowledge support from the U.S. National Science Foundation Engineering Research Center for Hybrid Autonomous Manufacturing Moving from Evolution to Revolution (ERC-HAMMER) under Award Number EEC-2133630.`
-      },
-      {
-        heading: 'The Problem',
-        text: `Sheet-metal bending process planning is one of the last stubbornly manual steps in fabrication. Choosing the bend order, tooling, and flat-blank dimensions still depends on an experienced planner reading a 2D engineering drawing and applying years of shop-floor judgment.
-
-Commercial CAM software can automate bend sequencing — but only after an engineer rebuilds the 2D drawing as a 3D CAD model, a slow, expensive prerequisite job shops working from customer prints often can't justify. Large language models can ingest drawings directly, but they hallucinate dimensions and produce plans with no built-in physics check. Neither path gets you from a print to a trustworthy plan.`
-      },
-      {
-        heading: 'What We Built',
-        text: `Smart Sheet Smith reads a multi-view 2D engineering drawing and produces a verified, physics-grounded bending process plan through a five-agent pipeline:
-
-• Vision Agent — classifies the drawing layout and identifies the master profile and sheet thickness.
-• Tracer Agent — extracts the full geometric topology into a structured JSON representation.
-• Geometric-Judge — audits the traced geometry against the input drawing itself, in a reference-free loop.
-• Engineering Agent — retrieves deterministic physics constants from a curated Knowledge Graph via RAG, then computes bend allowances, tonnage, and bend sequence.
-• Performance-Judge — verifies the final plan before the system emits a physics-compensated flat-pattern blueprint ready for the shop floor.`
-      },
-      {
-        heading: 'The Judge–Patcher Loop',
-        text: `The core idea is a judge–patcher loop. Rather than scoring output against a labeled answer key, the judges re-derive expected values directly from the source drawing and compare. When a check fails, the patcher rewrites the failing agent's prompt with a targeted error description — for example, a segment extracted at 30.0 mm against a true value of 32.0 mm, or a virtual-sharp-dimension misinterpretation in the flat-pattern calculation — and the pipeline re-runs that stage.
-
-Six metrics across the two judges define the PASS/FAIL verdicts that drive self-correction: segment sequence alignment, feature anchor accuracy, developed length deviation, physics math accuracy, operation sequence alignment, and feasibility validation. This removes the labeling bottleneck — the system improves itself using invariants it can check from first principles, not human annotation.`
-      },
-      {
-        heading: 'Evaluation',
-        text: `We evaluated on SIMBA (Sheet Metal Intelligent Bending Archive), a dataset of 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple through complex geometries for robustness testing.
-
-Cumulative correctness rose substantially across three patcher iterations in both the geometric and performance loops, with each iteration recovering additional failing parts. The closed loop delivered meaningful accuracy gains over the single-pass baseline — without a single labeled example.`
-      },
-      {
-        heading: 'My Contribution',
-        text: `I worked on the Tracer Agent and owned much of the data foundation it was developed and validated against.
-
-I built the evaluation corpus from the ground up: modeling the parts in CAD, producing the multi-view orthographic drawings, and hand-deriving the ground-truth geometry each drawing should resolve to. I then authored and corrected the structured JSON representations that encoded that topology, iterating on the schema and training examples as failure modes surfaced.
-
-Validating the agent meant doing the bend math by hand — bend allowances, developed lengths, segment sequences — and checking the agent's extraction against it case by case. Beyond numerical correctness, I applied a manufacturability check the math alone can't provide: reasoning through the actual forming process to judge whether a proposed plan was physically realizable on a press brake, or whether it produced a sequence that looked valid on paper but couldn't be made. That distinction drove several corrections to how the pipeline handles bend ordering and tool access.`
-      },
-      {
-        heading: 'Automated Parametric Drawing Generation',
-        text: `Manual drawing creation was the hard ceiling on dataset size, so I built a SolidWorks VBA macro pipeline to remove it. Given one base CAD model, the macro randomizes its dimensions within controlled ranges and exports each variation as a fully-dimensioned PDF — hundreds of valid drawings in minutes instead of days.
-
-The design principle that made it work: the macro only changes the values of dimensions that already exist, never adding or removing them. Any variation from a valid base drawing is therefore structurally valid by construction. That reframed the hard problem from "produce a correct drawing" to "produce geometry that rebuilds cleanly and fits on the sheet."
-
-Each iteration randomizes the parameters, force-rebuilds the part and drawing, auto-scales and centers the views, then runs a "safe box" check confirming all geometry and annotations fall inside a defined fraction of the page. Failures retry with new values rather than emitting a bad sample. The helpers are part-agnostic — adapting to a new part family means editing only the dimension names and ranges at the top of the file.`
-      },
-      {
-        heading: 'Validation Across Part Families',
-        text: `I validated across three part families and documented the failure modes:
-
-• Simple tab bracket — 20 parts, 85% success. Primary failure: dimensions off page.
-• L-bracket — 20 parts, 90% success. Primary failures: bad range → failed rebuild; dimensions off page.
-• Bracket with holes and slots — 20 parts, 74% success. Primary failures: hole diameter exceeding parent face; broken flanges; detached radius.
-
-The complex-part result was the useful one. Interdependent features — a hole that must stay inside its containing flange — fail under naive uniform sampling, and the fix isn't more retries. It's defining CAD features as relationships to parent geometry (hole diameter = 0.3 × flange width) rather than absolute values, so features scale proportionally and stay valid across the whole sampling range. Parts modeled that way were substantially more stable.`
-      },
-      {
-        heading: 'What I Took Away',
-        text: `• Constrain the generator, not the output. The strongest results in both halves of my work came from making invalid states unrepresentable rather than filtering for them after the fact — value-only randomization in the macro, ratio-defined CAD features instead of absolute ones, physics invariants instead of labeled answers.
-
-• Domain judgment is the scarce input to an AI pipeline. The model could produce a bend sequence that satisfied every numerical check and still couldn't be made on a press brake. Catching that required thinking about tooling access and forming order — the part of the loop an ME contributes that isn't automatable yet.
-
-• Failure modes are the deliverable. Cataloguing why generations failed — off-page annotations, rebuild breaks on interdependent dimensions, the mm-to-meters unit conversion in the SolidWorks API that caused the most early bugs — is what let the next person configure the tool for a new part in an afternoon.`
-      },
-      {
-        heading: 'Where It Goes Next',
-        text: `Directions I documented in the technical handoff, roughly in order of leverage:
-• Auto-detect dimension names from the part file, so a new base model needs no hand-written configuration — the key step toward full automation across arbitrary geometries.
-• Constraint-aware sampling that respects inter-dimension relationships instead of sampling each independently — the direct fix for the 74% complex-part rate.
-• A VLM evaluator agent to flag failed or unreadable PDFs automatically, replacing manual QA and doubling as a manufacturability screen.
-• A broader base-part library covering flanges, housings, and plates with hole patterns.`
-      },
-      {
-        heading: 'Publication & Team',
-        text: `Co-author on the MSEC 2026 / NAMRC54 publication as an undergraduate researcher (Tracer Agent, dataset construction and validation, automated parametric drawing generation).
-
-Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northwestern University); Jamie Coble (University of Tennessee, Knoxville); Ping Guo (Northwestern University).`
       }
     ]
   },
