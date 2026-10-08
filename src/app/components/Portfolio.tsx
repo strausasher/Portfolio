@@ -1715,24 +1715,24 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
   },
   {
     id: 26,
-    title: 'Door Signal',
-    category: 'Accessible Design · Embedded Systems · SME NSMIC (Work in Progress)',
+    title: 'SME Dorm Accessibility Competition Project',
+    category: 'Accessible Design · Concept Development · SME NSMIC (Work in Progress)',
     image: '',
-    description: 'A single adhesive-mounted device that tells a knock from a slam and answers with a customizable wash of light instead of sound — so Deaf and hard-of-hearing students don\'t miss a knock at a dorm door. A proposal for SME\'s National Student Manufacturing Innovation Challenge.',
+    description: "My team's entry in SME's National Student Manufacturing Innovation Challenge: designing something that makes college residence halls more accessible. We're back at concept brainstorming while we learn what budget we can get; an early concept, Door Signal, is documented below.",
     filterCategory: 'Design',
     inProgress: true,
     date: '2026–2027',
-    tools: ['Accessible Design', 'Embedded Systems (ESP32-C3)', 'Accelerometer / IMU Sensing', 'Signal Discrimination', 'Power Budgeting', 'Bill of Materials', 'Prototyping', 'Team Leadership'],
+    tools: ['Accessible Design', 'Concept Development', 'Budget Scoping', 'Team Leadership', 'Embedded Systems (ESP32-C3, early concept)', 'Accelerometer / IMU Sensing', 'Bill of Materials'],
     content: [
       {
-        text: `Door Signal is my team's entry for the National Student Manufacturing Innovation Challenge (NSMIC), hosted by SME's student chapter at Purdue. Teams of four to six students design and build a working prototype that makes everyday objects in college residence halls more accessible, and the competition is April 17–18, 2027. I'm the team lead, designer, and engineer on a team of five Northwestern students, and I also helped organize Northwestern's two NSMIC teams through the university's SME student chapter. The project is at the proposal stage — nothing is built or validated yet.`
+        text: `This is my team's entry for the National Student Manufacturing Innovation Challenge (NSMIC), hosted by SME's student chapter at Purdue. Teams of four to six students design and build a working prototype that makes everyday objects in college residence halls more accessible, and the competition is April 17–18, 2027. I'm the team lead, designer, and engineer on a team of five Northwestern students, and I also helped organize Northwestern's two NSMIC teams through the university's SME student chapter. The project is at the concept stage — nothing is built or validated yet. Our first proposal was a door-knock alert called Door Signal, but we're stepping back to brainstorm while we find out what budget we can secure; a larger budget could let us take on something bigger than that first idea. The sections below document that first concept.`
       },
       {
-        heading: 'The Problem',
+        heading: 'First Concept: The Problem',
         text: `Dorm rooms have no doorbells, so a knock is audible-only. Deaf and hard-of-hearing students miss it — and so does anyone asleep or wearing headphones. About 19% of undergraduates report a disability, and a missed knock can mean a locked-out roommate or a missed delivery. Commercial fixes exist, but they split into two devices and cost over $250: the Serene Innovations CentralAlert knock sensor plus a wearable pager comes to $261.72.`
       },
       {
-        heading: 'The Concept',
+        heading: 'First Concept: Door Signal',
         text: `One self-contained unit that mounts to the inside face of the door, senses a knock through the door panel, tells it apart from a slam, and answers with a wide, diffuse wash of colored light aimed at the wall and ceiling instead of a sound. A thin adhesive baseplate stays on the door while the device body clips on and off for charging, so the adhesive isn't disturbed every charge. It works with no phone, app, account, or Wi-Fi, and every control is physically distinct by size and shape, because identical buttons would themselves be an accessibility failure.`
       },
       {
@@ -1772,7 +1772,7 @@ The plan escalates only as far as testing demands:
       },
       {
         heading: 'Status',
-        text: `Pre-build. The team has reached out to Northwestern's AccessibleNU office for feedback from students who would use the device. Team registration is due October 23, the concept has to be locked by the end of November, when SME submits it for ADA compliance review, and a poster is required at the competition.`
+        text: `Pre-build and re-brainstorming. The team has reached out to Northwestern's AccessibleNU office for feedback from students who would use the device. Team registration is due October 23, the concept has to be locked by the end of November, when SME submits it for ADA compliance review, and a poster is required at the competition.`
       }
     ]
   },

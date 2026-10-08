@@ -26,7 +26,7 @@ const education = {
 const experience: Entry[] = [
   {
     title: 'Siemens Healthineers',
-    role: 'Mechanical Engineering Intern, Molecular Imaging',
+    role: 'Mechanical Engineering Co-op, Molecular Imaging',
     where: 'Hoffman Estates, IL',
     dates: 'Jun 2026 – Present',
     bullets: [
@@ -37,7 +37,7 @@ const experience: Entry[] = [
   },
   {
     title: 'P1 Motor Club',
-    role: 'Test Driver, Research & Promotions Intern',
+    role: 'Virtual Test Driver, Research & Promotions Intern',
     where: 'Tampa, FL',
     dates: 'Apr 2023 – Present',
     bullets: [
@@ -74,7 +74,7 @@ const projects: Entry[] = [
   },
   {
     title: 'Formula SAE Brake System',
-    role: 'Design, Analysis & Fabrication Lead · Northwestern Formula Racing',
+    role: 'Suspension Member · Northwestern Formula Racing',
     dates: 'Sep 2024 – Sep 2025',
     bullets: [
       'Designed the brake system for 1 G deceleration (~42 lbf pedal to ~690 lbf tire force) using an analytical model and an improved team MATLAB sim; verified limits with ANSYS FEA.',
@@ -89,11 +89,12 @@ const projects: Entry[] = [
     bullets: ['Adapted a medical CT scanner for fish with a veterinarian: stabilization, ventilation and saltwater corrosion protection.'],
   },
   {
-    title: 'Door Signal',
-    role: 'Team Lead & Designer · SME National Student Manufacturing Innovation Challenge',
+    title: 'SME Dorm Accessibility Competition Project',
+    role: 'Team Lead · SME National Student Manufacturing Innovation Challenge',
     dates: 'Aug 2026 – Present',
-    bullets: ['Leading a team of five on an adhesive-mounted device that tells a knock from a slam and alerts Deaf and hard-of-hearing students with light; in the proposal stage.'],
+    bullets: ['Leading a team of five on a residence-hall accessibility project; in concept stage while we scope budget and ideas.'],
   },
+
   {
     title: 'Midwest EV Openpilot Retrofit',
     role: 'Enclosure Designer · Pre-Autopilot Tesla Model S retrofit',
