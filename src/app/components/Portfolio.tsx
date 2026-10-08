@@ -525,7 +525,7 @@ The only remaining step is for the aquarium to run a quality scan confirming the
     image: formulaBrakeImg,
     description: 'Contributed to rotor design, simulation, and manufacturing for a Formula SAE braking system.',
     filterCategory: 'Design',
-    date: '2024–2025',
+    date: '2024–Present',
     tools: ['SolidWorks', 'Thermal Simulation', 'Structural Analysis', 'Manufacturing', 'Jig Design'],
     content: [
       {

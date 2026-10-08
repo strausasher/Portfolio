@@ -75,7 +75,7 @@ const projects: Entry[] = [
   {
     title: 'Formula SAE Brake System',
     role: 'Suspension Member · Northwestern Formula Racing',
-    dates: 'Sep 2024 – Sep 2025',
+    dates: 'Sep 2024 – Present',
     bullets: [
       'Designed the brake system for 1 G deceleration (~42 lbf pedal to ~690 lbf tire force) using an analytical model and an improved team MATLAB sim; verified limits with ANSYS FEA.',
       'Machined and lathe-finished rotors, routed lines, and bled the system on the car.',
