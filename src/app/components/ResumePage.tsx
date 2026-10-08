@@ -115,8 +115,8 @@ const projects: Entry[] = [
 ];
 
 const skills = [
-  ['Design & Fabrication', 'Siemens NX, SolidWorks, GD&T, Engineering Drawings, 3D Printing, Machining (Lathe, CNC, Mill), Welding, Rapid Prototyping, DFM/DFR'],
-  ['Analysis & Software', 'Ansys, MATLAB, Python, VBA, Unity, GitHub, Adobe Photoshop, Circuit Design, Radio Control'],
+  ['Design & Fabrication', 'Siemens NX/Designcenter, SolidWorks, Onshape, AutoCAD/Civil 3D, GD&T, Engineering Drawings, Fixture & Jig Design, 3D Printing, Laser Cutting, Waterjet, Machining (Lathe/CNC/Mill), Welding, Sand/Iron Casting, Sheet Metal, Metrology, Snap-Fit/Compliant Design, Rapid Prototyping, DFM/DFR'],
+  ['Analysis & Software', 'Ansys, FEA/Topology Opt., Thermal Sim., MATLAB, Python, VBA, SolidWorks API, LLM Pipelines, Embedded Systems/Raspberry Pi, FMEA, Cost Modeling, Lean/VSM, Line Balancing, Excel, Unity, GitHub, Photoshop, Circuit Design, Radio Control'],
   ['Relevant Courses', 'Manufacturing Engineering Design (DFM), Computer Integrated Manufacturing, Geometry & Manufacturing, Mechanical Design & Manufacturing, Materials Selection, Mechatronics, Mechanics of Materials, Electronics Design, Human-Centered Product Design, Optimization'],
   ['Clubs', 'Formula SAE, Baja SAE, Combat Robotics, SME Student Chapter'],
 ];
@@ -170,12 +170,12 @@ export function ResumePage() {
     <div className="resume-page relative min-h-screen bg-[#F0EBE3]">
       <style>{`
         .paper { width: ${PAPER_W}px; min-height: 1056px; padding: 34px 44px; box-sizing: border-box;
-          background: #fff; color: #1a1a1a; font-size: 12px; line-height: 1.33; }
+          background: #fff; color: #1a1a1a; font-size: 12px; line-height: 1.31; }
         .paper h1 { font-size: 26px; line-height: 1.1; font-weight: 700; letter-spacing: .02em; color: #1B2D5B; text-align: center; margin: 0; }
         .paper .contact { text-align: center; font-size: 10.8px; color: #333; margin-top: 3px; }
         .paper .contact a { color: #1B2D5B; font-weight: 600; text-decoration: none; }
         .paper h2 { font-size: 11.6px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #1B2D5B;
-          border-bottom: 1.5px solid #1B2D5B; padding-bottom: 1px; margin: 9px 0 4px; }
+          border-bottom: 1.5px solid #1B2D5B; padding-bottom: 1px; margin: 8px 0 4px; }
         .paper .entry { margin-top: 4px; }
         .paper .entry-head { display: flex; justify-content: space-between; gap: 12px; }
         .paper .dates { white-space: nowrap; color: #333; }

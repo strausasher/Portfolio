@@ -173,291 +173,169 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: 16,
-    title: 'Smart Sheet Smith',
-    category: 'Research · Manufacturing AI · Multi-Agent LLM Systems',
-    image: sheetSmithPoster,
-    description: 'An end-to-end LLM-driven multi-agent system that turns a 2D sheet-metal drawing into a verified, physics-grounded bending process plan — no 3D CAD, no labeled data. Presented at MSEC 2026 / NAMRC54.',
-    filterCategory: 'Research',
-    date: '2026',
-    tools: ['Multi-Agent LLM Orchestration', 'Vision-Language Models', 'Retrieval-Augmented Generation', 'Reference-Free Evaluation', 'SolidWorks API / VBA', 'Parametric CAD', 'Sheet-Metal Bend Analysis', 'Dataset Construction'],
-    content: [
-      {
-        text: `Research at the Advanced Intelligent Manufacturing Laboratory, Northwestern University. Presented at MSEC 2026 / NAMRC54 (State College, PA, June 2026) and supported by the NSF ERC-HAMMER (Award EEC-2133630) — the Hybrid Autonomous Manufacturing: Moving from Evolution to Revolution Engineering Research Center, a multi-institution collaboration across Northwestern, Ohio State, Case Western Reserve, NC A&T, and UT Knoxville.
-
-Smart Sheet Smith turns a 2D sheet-metal engineering drawing into a verified, physics-grounded bending process plan — no 3D CAD model and no labeled training data required. I worked on the Tracer Agent and built the data foundation underneath it: the CAD parts, the drawings, the ground-truth geometry, the hand-checked bend math, and a SolidWorks VBA pipeline that generated hundreds of valid parametric drawings automatically.`,
-        images: [
-          { url: sheetSmithPoster, caption: 'Zahra Sadeghi, the graduate student I worked with, presenting our Smart Sheet Smith poster at MSEC 2026 / NAMRC54.' }
-        ]
-      },
-      {
-        heading: 'The Poster, Transcribed',
-        text: `"Smart Sheet Smith: End-to-End LLM-Driven MAS for Sheet Process Planning" — MSEC 2026 | NAMRC54, June 14–18, 2026, State College, Pennsylvania.
-
-Zahra Sadeghi¹, Ashton Dy², Asher Straus¹, Xiangyu Shi¹, Qi Zhu¹, Jamie Coble², Ping Guo¹ — ¹Northwestern University, Evanston, IL, USA; ²University of Tennessee, Knoxville, TN, USA.
-
-Abstract: Smart Sheet Smith converts a 2D engineering drawing directly into a verified sheet-metal bending process plan, no 3D CAD model required. Five specialized agents handle view classification, geometry extraction, and physics-based process planning, with two reference-free judge-patcher loops that self-correct errors by re-deriving expected values from the input drawing itself, no ground-truth labels or human intervention needed. A curated Knowledge Graph supplies deterministic physics constants to prevent hallucination, and the system emits a physics-compensated flat-pattern blueprint ready for shop-floor use. Evaluated on real industrial V-bending drawings, the closed loop achieves substantial accuracy gains over the single-pass baseline without any labeled data.
-
-Introduction: Sheet-metal bending process planning — choosing the bend order, tooling, and flat blank for a target part — remains a manual task driven by expert judgment. Commercial CAM software automates bend sequencing, but only after an engineer rebuilds the 2D drawing as a 3D CAD model. Large language models can ingest drawings directly, yet they hallucinate dimensions and produce plans with no built-in physics check. We present Smart Sheet Smith, an end-to-end multi-agent system that reads a multi-view 2D engineering drawing directly and produces a verified, physics-grounded bending process plan, no CAD model and no ground-truth labels required.
-
-Method: The Vision Agent classifies the drawing layout and identifies the master profile and sheet thickness. The Tracer Agent extracts the full geometric topology into a structured JSON, audited by the Geometric-Judge in a reference-free closed loop. The Engineering Agent retrieves physics constants from the Knowledge Graph and computes bend allowances, tonnage, and bend sequence, verified by the Performance-Judge before emitting the final process plan and flat-pattern blueprint. Six metrics across the two judge agents define the PASS/FAIL verdicts driving the self-correction loop — Geometric-Judge: segment sequence alignment (SSA), feature anchor accuracy (RAA), developed length deviation (GDD); Performance-Judge: physics math accuracy (PMA), operation sequence alignment (OSA), feasibility validation (FVA).
-
-Dataset: SIMBA (Sheet Metal Intelligent Bending Archive) — 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple to complex geometries for robust evaluation.
-
-Results — Effect of the Judge-Patcher Loop: Each patcher iteration recovers more failing parts by rewriting the agent's prompt with a targeted error description from the judge, driving accuracy higher across both the geometric and performance loops.
-
-Conclusion: Smart Sheet Smith shows that physics invariants can drive reliable self-correction in LLM-based process planning with no ground-truth labels or human intervention. The reference-free judge-patcher loop achieves substantial accuracy gains over the single-pass baseline, opening an automated path from 2D drawing to verified bending process plan for job shops that 3D-CAD pipelines cannot serve.
-
-References: [1] Duflou et al., Computer-Aided Process Planning for Sheet Metal Bending, 2005. [2] Pawar et al., Interpretable Vision-Language Models for Engineering Drawings, 2025.
-
-Acknowledgment: The authors would like to acknowledge support from the U.S. National Science Foundation Engineering Research Center for Hybrid Autonomous Manufacturing Moving from Evolution to Revolution (ERC-HAMMER) under Award Number EEC-2133630.`
-      },
-      {
-        heading: 'The Problem',
-        text: `Sheet-metal bending process planning is one of the last stubbornly manual steps in fabrication. Choosing the bend order, tooling, and flat-blank dimensions still depends on an experienced planner reading a 2D engineering drawing and applying years of shop-floor judgment.
-
-Commercial CAM software can automate bend sequencing — but only after an engineer rebuilds the 2D drawing as a 3D CAD model, a slow, expensive prerequisite job shops working from customer prints often can't justify. Large language models can ingest drawings directly, but they hallucinate dimensions and produce plans with no built-in physics check. Neither path gets you from a print to a trustworthy plan.`
-      },
-      {
-        heading: 'What We Built',
-        text: `Smart Sheet Smith reads a multi-view 2D engineering drawing and produces a verified, physics-grounded bending process plan through a five-agent pipeline:
-
-• Vision Agent — classifies the drawing layout and identifies the master profile and sheet thickness.
-• Tracer Agent — extracts the full geometric topology into a structured JSON representation.
-• Geometric-Judge — audits the traced geometry against the input drawing itself, in a reference-free loop.
-• Engineering Agent — retrieves deterministic physics constants from a curated Knowledge Graph via RAG, then computes bend allowances, tonnage, and bend sequence.
-• Performance-Judge — verifies the final plan before the system emits a physics-compensated flat-pattern blueprint ready for the shop floor.`
-      },
-      {
-        heading: 'The Judge–Patcher Loop',
-        text: `The core idea is a judge–patcher loop. Rather than scoring output against a labeled answer key, the judges re-derive expected values directly from the source drawing and compare. When a check fails, the patcher rewrites the failing agent's prompt with a targeted error description — for example, a segment extracted at 30.0 mm against a true value of 32.0 mm, or a virtual-sharp-dimension misinterpretation in the flat-pattern calculation — and the pipeline re-runs that stage.
-
-Six metrics across the two judges define the PASS/FAIL verdicts that drive self-correction: segment sequence alignment, feature anchor accuracy, developed length deviation, physics math accuracy, operation sequence alignment, and feasibility validation. This removes the labeling bottleneck — the system improves itself using invariants it can check from first principles, not human annotation.`
-      },
-      {
-        heading: 'Evaluation',
-        text: `We evaluated on SIMBA (Sheet Metal Intelligent Bending Archive), a dataset of 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple through complex geometries for robustness testing.
-
-Cumulative correctness rose substantially across three patcher iterations in both the geometric and performance loops, with each iteration recovering additional failing parts. The closed loop delivered meaningful accuracy gains over the single-pass baseline — without a single labeled example.`
-      },
-      {
-        heading: 'My Contribution',
-        text: `I worked on the Tracer Agent and owned much of the data foundation it was developed and validated against.
-
-I built the evaluation corpus from the ground up: modeling the parts in CAD, producing the multi-view orthographic drawings, and hand-deriving the ground-truth geometry each drawing should resolve to. I then authored and corrected the structured JSON representations that encoded that topology, iterating on the schema and training examples as failure modes surfaced.
-
-Validating the agent meant doing the bend math by hand — bend allowances, developed lengths, segment sequences — and checking the agent's extraction against it case by case. Beyond numerical correctness, I applied a manufacturability check the math alone can't provide: reasoning through the actual forming process to judge whether a proposed plan was physically realizable on a press brake, or whether it produced a sequence that looked valid on paper but couldn't be made. That distinction drove several corrections to how the pipeline handles bend ordering and tool access.`
-      },
-      {
-        heading: 'Labeling & Reviewing the Agents',
-        text: `The Tracer Agent was only as good as the ground truth it was checked against, so labeling was shared work: the SIMBA drawings were split three ways (roughly 17 parts each) and each of us hand-labeled the segment topology, bend directions and feature positions in JSON. Early on I ran into cases the schema didn't cover — a drawing missing the dimension needed for total extrusion length, features whose segment IDs didn't line up — so I proposed a convention for flagging them (a corrected value plus a "corrected_reason" note) and wrote it up for the whole team so every labeler used the same format.
-
-While labeling I kept a running list of Tracer failure modes, which fed back into prompt design:
-• Angled flanges, angled cuts and angle callouts were the weakest area — angles were rarely reported unless they were bends.
-• Positions need one stated reference corner and a stated reference point on the feature (slot arc centers, triangle centroids), or the model can't know which way to measure.
-• The model sometimes subtracted a radius from a length when it shouldn't, and was ambiguous about which of several identical views it was reading.
-
-Later I also reviewed Engineering Agent output on five parts as the "manufacturing engineer" in the loop. Findings: the K-factor needs to be fixed before bend deduction is computed; bend deduction was being calculated from the outer radius instead of the inner radius; and V-die selection should be reported as an approximate range (e.g. 8t–10t for thickness t) rather than a single number, since real dies come in discrete sizes.`
-      },
-      {
-        heading: 'Building the Dataset & Knowledge Base',
-        text: `Beyond modeling parts, I helped keep the dataset physically realistic. Parts had to be makeable by V-bending, with bend radius sensible for the sheet thickness (a 3 mm radius on 0.1 mm stock isn't a bend, it's a curved shell, and springback makes it unpredictable), reasonable minimum widths, and no overlapping tabs that would confuse feature extraction. I first proved out automated data generation by randomizing part dimensions through SolidWorks equations, then moved to the VBA macro below for flexibility.
-
-For the Engineering Agent's RAG knowledge base, I gathered open-access papers, handbooks and tooling references as PDFs and sorted them into three groups — materials, bending machines and tooling, and bending processes — plus a separate set of computer-aided process planning (CAPP) papers kept out of retrieval.`
-      },
-      {
-        heading: 'Automated Parametric Drawing Generation',
-        text: `Manual drawing creation was the hard ceiling on dataset size, so I built a SolidWorks VBA macro pipeline to remove it. Given one base CAD model, the macro randomizes its dimensions within controlled ranges and exports each variation as a fully-dimensioned PDF — hundreds of valid drawings in minutes instead of days.
-
-The design principle that made it work: the macro only changes the values of dimensions that already exist, never adding or removing them. Any variation from a valid base drawing is therefore structurally valid by construction. That reframed the hard problem from "produce a correct drawing" to "produce geometry that rebuilds cleanly and fits on the sheet."
-
-Each iteration randomizes the parameters, force-rebuilds the part and drawing, auto-scales and centers the views, then runs a "safe box" check confirming all geometry and annotations fall inside a defined fraction of the page. Failures retry with new values rather than emitting a bad sample. The helpers are part-agnostic — adapting to a new part family means editing only the dimension names and ranges at the top of the file.`
-      },
-      {
-        heading: 'Validation Across Part Families',
-        text: `I validated across three part families and documented the failure modes:
-
-• Simple tab bracket — 20 parts, 85% success. Primary failure: dimensions off page.
-• L-bracket — 20 parts, 90% success. Primary failures: bad range → failed rebuild; dimensions off page.
-• Bracket with holes and slots — 20 parts, 74% success. Primary failures: hole diameter exceeding parent face; broken flanges; detached radius.
-
-The complex-part result was the useful one. Interdependent features — a hole that must stay inside its containing flange — fail under naive uniform sampling, and the fix isn't more retries. It's defining CAD features as relationships to parent geometry (hole diameter = 0.3 × flange width) rather than absolute values, so features scale proportionally and stay valid across the whole sampling range. Parts modeled that way were substantially more stable.`
-      },
-      {
-        heading: 'What I Took Away',
-        text: `• Constrain the generator, not the output. The strongest results in both halves of my work came from making invalid states unrepresentable rather than filtering for them after the fact — value-only randomization in the macro, ratio-defined CAD features instead of absolute ones, physics invariants instead of labeled answers.
-
-• Domain judgment is the scarce input to an AI pipeline. The model could produce a bend sequence that satisfied every numerical check and still couldn't be made on a press brake. Catching that required thinking about tooling access and forming order — the part of the loop an ME contributes that isn't automatable yet.
-
-• Failure modes are the deliverable. Cataloguing why generations failed — off-page annotations, rebuild breaks on interdependent dimensions, the mm-to-meters unit conversion in the SolidWorks API that caused the most early bugs — is what let the next person configure the tool for a new part in an afternoon.`
-      },
-      {
-        heading: 'Where It Goes Next',
-        text: `Directions I documented in the technical handoff, roughly in order of leverage:
-• Auto-detect dimension names from the part file, so a new base model needs no hand-written configuration — the key step toward full automation across arbitrary geometries.
-• Constraint-aware sampling that respects inter-dimension relationships instead of sampling each independently — the direct fix for the 74% complex-part rate.
-• A VLM evaluator agent to flag failed or unreadable PDFs automatically, replacing manual QA and doubling as a manufacturability screen.
-• A broader base-part library covering flanges, housings, and plates with hole patterns.`
-      },
-      {
-        heading: 'Poster & Team',
-        text: `Co-author on the MSEC 2026 / NAMRC54 poster as an undergraduate researcher (Tracer Agent, dataset construction and validation, automated parametric drawing generation).
-
-Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northwestern University); Jamie Coble (University of Tennessee, Knoxville); Ping Guo (Northwestern University).`
-      }
-    ]
-  },
-  {
-    id: 25,
-    title: 'Flexible Tactile Sensors',
-    category: 'Research · Soft Robotics · Sensor Fabrication',
-    image: '',
-    description: 'Hand-fabricated flexible resistive sensors — carbon nanotubes and nanoparticles embedded in Ecoflex silicone — for a soft robotic hand, plus near-field electrospinning at 10 kV. Fall 2025, AIM Lab at Northwestern.',
-    filterCategory: 'Research',
+    id: 15,
+    title: 'Bionic Wrench Manufacturing',
+    category: 'Manufacturing Engineering · Fixture Design · Production Planning',
+    image: wrenchHero,
+    description: 'Reverse-engineered the Bionic Wrench, then designed a seven-version assembly fixture and a full high-volume manufacturing plan to build one million wrenches per year.',
+    filterCategory: 'Design',
     date: '2025',
-    tools: ['Near-Field Electrospinning (NFES)', 'Carbon Nanotube / Nanoparticle Composites', 'Ecoflex Silicone', 'Resistive Sensor Fabrication', 'High-Voltage Equipment (10 kV)', 'Literature Review', 'Lab Safety Training'],
+    tools: ['Reverse Engineering', 'Fixture & Tooling Design', 'SolidWorks', 'Metrology', 'DFM', 'Lean / Value Stream Mapping', 'FMEA', 'Process & Line Balancing', 'Cost Modeling', 'CNC / Waterjet / 3D Printing'],
     content: [
       {
-        text: `My first research project at the Advanced Intelligent Manufacturing (AIM) Laboratory at Northwestern, starting in Fall 2025, before I moved onto Smart Sheet Smith. I worked under Zahra Sadeghi, a PhD student in Prof. Ping Guo's group, continuing her work on soft tactile sensors for a robotic hand. My role was hands-on: I fabricated the sensors and ran the electrospinning setup myself.`
-      },
-      {
-        heading: 'How the Sensors Work',
-        text: `Each sensor is a flexible resistive sensor. Carbon nanotubes and nanoparticles are suspended in an alcohol solution and applied to Ecoflex silicone; as the alcohol evaporates, the particles are left embedded in the silicone and form a conductive network. When voltage is applied, current flows through that network. Stretching or pressing the sensor breaks some of the connections between particles, so its electrical resistance goes up — and that change in resistance is the signal.`
-      },
-      {
-        heading: 'What I Built',
-        text: `• Fabricated more than ten flexible resistive sensors by hand
-• Ran near-field electrospinning (NFES) myself at 10 kV, after completing the lab's safety training
-• Worked through a reading list on resistive tactile sensing, e-skin, piezoresistive strain sensors, embedded 3D-printed strain sensors, and AC near-field electrospinning`
-      },
-      {
-        heading: 'The Electrospinning Setup',
-        text: `The near-field electrospinning rig I ran: a syringe pump feeds the nozzle, a high-voltage lead energizes it, and the sample sits on a copper collector plate on a motion stage, with a microscope light for watching the fiber.`,
-        images: [
-          { url: sensorNfesSetupWide, caption: 'The full rig: syringe pump, nozzle on a clamp, and sample on a copper collector plate over a motion stage' },
-          { url: sensorNfesNozzle, caption: 'Nozzle above the silicone sample, with the high-voltage clip lead attached' },
-          { url: sensorNfesSample, caption: 'Closer view of the nozzle over a sample' },
-          { url: sensorNfesPump, caption: 'Syringe pump display during a run' }
-        ]
-      },
-      {
-        heading: 'Fabrication Photos',
-        text: `Photos from the bench: conductive networks embedded in Ecoflex, including samples that didn't come out well.`,
-        images: [
-          { url: sensorCarbonMesh1 },
-          { url: sensorCarbonMesh3 },
-          { url: sensorFailedSample1 },
-          { url: sensorFailedSample2 },
-          { url: sensorFinished1 },
-          { url: sensorFinished2 }
-        ]
-      },
-      {
-        heading: 'Lab Notes: First Electrospinning Runs',
-        text: `My first runs showed how sensitive the process is. With a 1 mL syringe on the pump at roughly 1.2 mL/h (fluctuating), the fibers came out thick and broke up — my mentor's read was that the flow rate was far too high and the result wasn't true electrospinning. The same lesson applied to sensor curing: the copper electrode pads have to go in at the right moment, and I learned that by getting the timing wrong once. I logged each sensor's measured resistance alongside likely failure causes and ideas for improvement, which turned trial-and-error into something comparable from one sensor to the next.`
-      },
-      {
-        heading: 'Directions We Explored',
-        text: `The group's next steps for the hand sensor were to add more connection pads (on the same layer and in stacked layers) so force and position could be triangulated, to cast a fingerprint-textured fingertip mold, and to add a stiffer "robotic nail" support behind the sensor, since the support material needed to be stiffer than Ecoflex.`
-      },
-      {
-        heading: 'Outcome',
-        text: `This project didn't go on to a result or publication; I stepped away from it when I moved onto the lab's sheet-metal AI work, and I left the lab in March 2026. What I took from it was hands-on practice fabricating soft sensors, working with a high-voltage electrospinning setup, and reading and applying research literature — experience I carried into the lab's sheet-metal AI work.`
-      }
-    ]
-  },
-  {
-    id: 26,
-    title: 'Door Signal',
-    category: 'Accessible Design · Embedded Systems · SME NSMIC (Work in Progress)',
-    image: '',
-    description: 'A single adhesive-mounted device that tells a knock from a slam and answers with a customizable wash of light instead of sound — so Deaf and hard-of-hearing students don\'t miss a knock at a dorm door. A proposal for SME\'s National Student Manufacturing Innovation Challenge.',
-    filterCategory: 'Design',
-    inProgress: true,
-    date: '2026–2027',
-    tools: ['Accessible Design', 'Embedded Systems (ESP32-C3)', 'Accelerometer / IMU Sensing', 'Signal Discrimination', 'Power Budgeting', 'Bill of Materials', 'Prototyping', 'Team Leadership'],
-    content: [
-      {
-        text: `Door Signal is my team's entry for the National Student Manufacturing Innovation Challenge (NSMIC), hosted by SME's student chapter at Purdue. Teams of four to six students design and build a working prototype that makes everyday objects in college residence halls more accessible, and the competition is April 17–18, 2027. I'm the team lead, designer, and engineer on a team of five Northwestern students, and I also helped organize Northwestern's two NSMIC teams through the university's SME student chapter. The project is at the proposal stage — nothing is built or validated yet.`
-      },
-      {
-        heading: 'The Problem',
-        text: `Dorm rooms have no doorbells, so a knock is audible-only. Deaf and hard-of-hearing students miss it — and so does anyone asleep or wearing headphones. About 19% of undergraduates report a disability, and a missed knock can mean a locked-out roommate or a missed delivery. Commercial fixes exist, but they split into two devices and cost over $250: the Serene Innovations CentralAlert knock sensor plus a wearable pager comes to $261.72.`
-      },
-      {
-        heading: 'The Concept',
-        text: `One self-contained unit that mounts to the inside face of the door, senses a knock through the door panel, tells it apart from a slam, and answers with a wide, diffuse wash of colored light aimed at the wall and ceiling instead of a sound. A thin adhesive baseplate stays on the door while the device body clips on and off for charging, so the adhesive isn't disturbed every charge. It works with no phone, app, account, or Wi-Fi, and every control is physically distinct by size and shape, because identical buttons would themselves be an accessibility failure.`
-      },
-      {
-        heading: 'Telling a Knock from a Slam',
-        text: `Detecting an impulse is easy; rejecting the wrong ones is the real problem. A knock is a 5–20 ms high-frequency impulse delivered straight into the panel, while a door opening is a lower-frequency acceleration ending in a latch impact, and a neighbor's slam arrives attenuated through the frame as a single impulse.
+        text: `DSGN 386 — Manufacturing Engineering & Design (Final Project, with Peter Wang). We took a commercial Bionic Wrench, reverse-engineered how it is made, and then built everything needed to manufacture it ourselves: an assembly fixture, a standard operating procedure, full process documentation, and a high-volume production plan scaled to one million wrenches per year.
 
-The plan escalates only as far as testing demands:
-• First pass: a three-axis accelerometer in low-power motion-wake mode, requiring two or more impulses within about 1.5 s, since a knock is a pattern and a slam isn't
-• If that misses the false-positive target: a 6-axis IMU, where the gyroscope turns "is the door rotating?" into a direct measurement
-• If still short: a classifier trained on the IMU's on-chip ML core`
+The work spanned five phases — reverse engineering the wrench, mapping the manufacturing and assembly workflows, developing the assembly fixture through seven versions, documenting the process (SOP, FMEA, VSM), and finally running a live 30-minute timed trial that produced four good wrenches at a 3:58 average cycle time.`,
+        images: [
+          { url: wrenchHero, caption: 'The commercial Bionic Wrench we reverse-engineered and designed a production process to build.' }
+        ]
       },
       {
-        heading: 'Target Specifications',
-        text: `• Detection latency under 1 s after the final knock
-• Fewer than 1 false positive per 24 hours — above that, users disable the device
-• Fewer than 5% missed normal-force knocks, including light knocks from limited grip
-• Steady, non-strobing light, because of seizure and migraine risk
-• Over 5 months of battery life per charge; the power budget works out to about 175 days on a single 18650 cell
-• Tool-free, reversible adhesive installation that works on wood and steel doors`
+        heading: 'Approach',
+        text: `1. Reverse engineering — We dissected the wrench to document how each component fit together (press fit, loose, interference), the geometric relationships between parts, and every dimension using calipers, micrometers, and an optical comparator. From that we inferred a logical assembly order and the likely material and process for each part.
+
+2. Workflow creation — We built manufacturing and assembly journey maps. Mapping revealed jaw insertion and jaw riveting as the bottleneck, and showed a two-worker layout left the second worker idle — so we consolidated to a single-operator line.
+
+3. Fixture & process development — Seven fixture versions, ending in a 3D-printed body holding steel locating pins on an angled stand, with a waterjet steel plate over the rivet zone and a track that constrains the riveter.
+
+4. Manufacturing documentation — SOP, journey maps, value stream map, and production planning for scale-up to one million wrenches per year.
+
+5. Pilot testing — A 30-minute timed trial: four good wrenches, two defective, 3:58 average cycle time. Defects traced to out-of-spec jaws rather than the process.`
       },
       {
-        heading: 'Secondary Goals',
-        text: `In priority order: on-device customization of color, brightness, and alert pattern; optional phone or smartwatch pairing over the microcontroller's built-in Bluetooth; and fire alarm detection. Fire alarms in sleeping areas use a standardized 520 Hz low-frequency, three-pulse signal, so a microphone could match that cadence and switch the device to a dedicated fire-alert light pattern — audible-only alarms have the same blind spot as a knock. It needs its own sensor and its own validation, so it's scoped as a goal rather than a requirement.`
+        heading: 'My Role',
+        text: `Peter and I initially split the fixture work by component — I owned the track geometry, he owned the pin layout — but the two were so tightly coupled that we ended up at the bench together for nearly every iteration. I led the track design across all seven versions, drove the metrology and CAD drawings, and co-developed the SOP, FMEA, and high-volume manufacturing plan.`
       },
       {
-        heading: 'Cost',
-        text: `A single prototype is costed at about $50 on protoboard — an ESP32-C3 microcontroller, accelerometer, RGBW light strip with a printed diffuser, an 18650 battery with charging, and a PETG enclosure — against $261.72 for the commercial two-device setup.`
+        heading: 'Fixture Design — The Problem',
+        text: `The fixture has four jobs: locate the wrench plates accurately, hold them rigidly while they are riveted, absorb the riveter's force without damaging the tooling, and constrain the riveter to the correct rivet locations via a track. Almost every design change below was driven by something we could not have predicted on a computer — that sheet metal compresses under riveter force, that a two-pin track over-constrains orientation, that inverting the whole track logic simplifies everything.`
       },
       {
-        heading: 'Validation Plan',
-        text: `• Tape a phone logging accelerometer and gyroscope data to a dorm door and record knocks, door open and close, a neighbor's door, and hallway traffic on each door type
-• Test accelerometer-only separation first and escalate only if needed
-• Compare Command strip and VHB mounting by which one best preserves the high-frequency signal
-• Run a 72-hour breadboard test on a real door and count false positives against the target
-• Photograph the light wash from the desk and bed to confirm it's noticeable
-• Get feedback from students who would actually use it`
+        heading: 'V1 — Flip-Based Locating Fixture (no track)',
+        text: `Our first version was a flat 3D-printed base with the wrench profile cut into it. Inner plates, outer plates, spacers, and rivets were all loaded face-up at once, a flat steel top plate was placed over the assembly, and the whole thing was flipped so the rivets could be set from underneath. At this stage we planned to rivet by hand and had not yet realized how critical precise rivet location would be — so there was no track.`,
+        images: [
+          { url: wrenchV1TopPlate, caption: 'V1 — flat steel top plate placed over the assembly before flipping.' },
+          { url: wrenchV1Loaded, caption: 'V1 fixture loaded with an outer and an inner plate.' },
+          { url: wrenchV1Bare, caption: 'V1 bare fixture showing the cutout geometry.' }
+        ]
       },
       {
-        heading: 'Status',
-        text: `Pre-build. The team has reached out to Northwestern's AccessibleNU office for feedback from students who would use the device. Team registration is due October 23, the concept has to be locked by the end of November, when SME submits it for ADA compliance review, and a poster is required at the competition.`
-      }
-    ]
-  },
-  {
-    id: 27,
-    title: 'P1 Motor Club Track Model',
-    category: 'Scale Modeling · 3D Printing · Civil 3D to Physical (Work in Progress)',
-    image: '',
-    description: 'A large-scale, mostly 3D-printed model of the P1 Motor Club racetrack property, built from the project civil engineer\'s Civil 3D files and sized to ride in the back of a truck as a sales tool for memberships.',
-    filterCategory: 'Design',
-    inProgress: true,
-    date: '2026',
-    tools: ['3D Printing', 'AutoCAD / Civil 3D Data', 'Scale Modeling', 'Terrain Modeling', 'Painting & Finishing', 'Prototyping'],
-    content: [
-      {
-        text: `P1 Motor Club is building a private motorsports community on Florida's Treasure Coast, with racetracks, testing areas, and homes for car enthusiasts. The club asked me to build a physical model of the property that can travel to events in the back of a truck and help sell memberships. I'm designing and building it myself, and it's still in progress.`
+        heading: 'V2 — Flip the Plates, Not the Fixture',
+        text: `V2 was a complete redesign with four simultaneous changes:
+• We stopped flipping the fixture and instead flipped the plates onto it. The fixture sat on a stand at a fixed angle, which also meant rivets would not fall out of the plates during handling.
+• Plate location moved from a printed cutout to steel pins passing through the printed body — more rigid, still easy to remove.
+• A sheet-metal plate was bolted on top to absorb the rivet force (bare PLA would not survive).
+• Two guide pins on the back rode in two external tracks screwed to the riveter — one for inner plates, one for outer plates.`,
+        images: [
+          { url: wrenchV2Stand, caption: 'V2 fixture mounted on its angled stand, with steel pins constraining the plates.' },
+          { url: wrenchV2Back, caption: 'V2 fixture back, showing the two guide pins and four bolt holes for the steel plate.' },
+          { url: wrenchV2InnerTrack, caption: 'V2 inner-plate track that screwed onto the riveter.' },
+          { url: wrenchV2OuterTrack, caption: 'V2 outer-plate track (wrench-head geometry and handle paths).' }
+        ]
       },
       {
-        heading: 'The Brief',
-        text: `The model should be as large as possible while still fitting in the back of a truck. It is built as one rigid piece — it doesn't come apart for transport and has no moving parts — so it has to survive being driven around and look good when it arrives.`
+        heading: 'V3 — Inverting the Track Logic',
+        text: `In V3 we inverted the track relationship. Instead of the fixture carrying two pins that followed external tracks on the riveter, we cut a single track into the fixture body and let it follow one fixed pin mounted to the riveter. This eliminated the orientation constraint the two-pin setup imposed, made the tracks easier to navigate, and reduced material and setup. This insight didn't come from analysis — it came from standing at the riveter and realizing the thing we thought was fixed didn't need to be.`,
+        images: [
+          { url: wrenchV3Back, caption: 'V3 back of fixture, with the track now cut directly into the fixture body.' }
+        ]
       },
       {
-        heading: 'From Civil Drawings to a Physical Model',
-        text: `The model is built from AutoCAD and Civil 3D files supplied by the project's lead civil engineer, so the track layout and the terrain come from the real site data instead of being approximated by eye.`
+        heading: 'V4 — Thicker Steel Plate and Separated Rivet Zones',
+        text: `V2 used sheet metal too thin to take the rivet force; V3 used 1/16" waterjet steel, better but still too thin. In V4 we waterjet a thicker, harder steel plate that finally held up under repeated riveting. We also separated the jaw and body sections on the track — visually and physically — and added clearance between rivet-stop locations to remove ambiguity about where to position the riveter.`,
+        images: [
+          { url: wrenchV4Track, caption: 'V4 fixture with redesigned track — jaw and body rivet zones separated, waterjet steel outline in orange.' }
+        ]
       },
       {
-        heading: 'Build Approach',
-        text: `The terrain and track are mostly 3D printed, then glued together and painted. Fake modeling grass, trees, and water finish the surface so it reads as a real landscape at a glance.`
+        heading: 'V5 — Stand Resized, Track Entrances Opened',
+        text: `Two ergonomics-driven changes. We redesigned the stand to fit the entire wrench in its open position — previously we had to hang the fixture off the table edge to accommodate the open wrench. We also gave each rivet path an open entrance from the outside edge, letting the riveter pin slide in laterally instead of being lifted and dropped into the track each time.`,
+        images: [
+          { url: wrenchV5Stand, caption: 'V5 fixture on the redesigned wider stand that accommodates the fully-open wrench.' },
+          { url: wrenchV5Track, caption: 'V5 track with open entrances from the outside edges for lateral riveter pin entry.' }
+        ]
       },
       {
-        heading: 'Status',
-        text: `I'm currently printing a test piece and iterating on it to get the best-looking result — the print, the paint, and the grass and water — before buying enough material to build the full-size model.`
+        heading: 'V6 — Refinements for Dual-Riveter Operation',
+        text: `V6 introduced four refinements:
+• Rivet "corner" positions were tightened so each location slotted in positively, keeping the extra spacing V4 introduced.
+• Every track segment got its own entrance (four segments now), so the operator no longer had to pick up the fixture to start the jaw section.
+• The inner-plate region was redesigned around a 3/8" pin (vs. the 1/4" pin used elsewhere), and we built a second fixture plate carrying that pin so we could finally run both riveters simultaneously.
+• Steel pins were seated deeper into the body to remove flex at the pin tops.
+
+Running both riveters together and hitting a sub-4-minute cycle for the first time felt like the project clicking into place.`,
+        images: [
+          { url: wrenchV6, caption: 'V6; track segments separately entered, inner-plate region resized for 3/8" pin, pins seated deeper.' }
+        ]
+      },
+      {
+        heading: 'V7 — Final Fixture',
+        text: `V7 is the fixture used in the timed trial, plus one refinement added afterward: a protruding support piece that braces the handle end of the inner plates when the wrench is fully open. During the trial, the open inner-plate handles cantilevered slightly, introducing play that could affect alignment during riveting. The support piece addresses this directly, and the stand was redesigned to accommodate the new geometry.`,
+        images: [
+          { url: wrenchV7Support, caption: 'V7 fixture with support for the inner plate on the angled stand.' },
+          { url: wrenchV7Stand, caption: 'V7 fixture on the raised stand to accommodate the new supporting component.' }
+        ]
+      },
+      {
+        heading: 'Standard Operating Procedure',
+        text: `The line is run by a single worker across three co-located stations on one bench: a small riveter on the left (S2), a central assembly area (S1), and a large riveter on the right (S3). The operator assembles at the center, steps left to rivet inner plates, returns to build the outer body, steps right to rivet the body and jaws, and returns for spring, handles, and final inspection. An in-process quality check (open/close action) is performed before jaws are installed so out-of-tolerance body assemblies are caught early.
+
+Total cycle time is 246 s per wrench (3:58): S1 (all non-riveting work) = 158 s, S2 (inner-plate riveting) = 38 s, S3 (outer-body and jaw riveting plus head swap) = 50 s. All three stations are within reach of a single operator.`,
+        images: [
+          { url: wrenchEquipSetup, caption: 'Equipment setup for the single-operator line — small riveter, central assembly bench, and large riveter.' }
+        ]
+      },
+      {
+        heading: 'Process Flow Documentation',
+        text: `We built two journey maps: a manufacturing map from raw materials to finished parts, and an assembly map for the single-operator workflow. The mapping is what revealed the second worker was idle too often to justify, and where the bottleneck (jaw insertion and riveting) lived.
+
+We also documented KPIs to track at scale — cycle time, yield rate, rework rate, takt time, operator efficiency, downtime, and cost per unit — and ran an FMEA covering both process/quality failure modes (uneven rivets, plate misalignment, jaws not seating) and operator safety risks (crush injuries, dropped small parts, spring projectiles).`,
+        images: [
+          { url: wrenchMfgMap, caption: 'Manufacturing journey map — raw materials to finished parts.' },
+          { url: wrenchAsmMap, caption: 'Assembly journey map — single-operator workflow with three co-located stations.' }
+        ]
+      },
+      {
+        heading: 'High-Volume Manufacturing Plan',
+        text: `The plan targets 1,000,000 wrenches per year against a highly seasonal demand profile: 60% in Oct–Dec (holiday retail), 20% in a May–June spring surge, and 20% across the rest of the year. Capacity is flexed by activating the right number of parallel U-shaped workcells and staffing one or two operators per cell by season, with a third shift held in reserve.
+
+At peak (200,000 units/month) the takt time is 6 s/unit, requiring 25 parallel cells and 50 operators; off-peak months run as few as 4 cells. The line also supports two to three jaw-size variants with only a sub-five-minute fixture pin-plate swap between models.
+
+The value stream map covers the full flow from supplier to customer: total production lead time is 18 days against ~16 minutes of process time per wrench — highlighting the lean opportunity in the 6-day and 4-day inventory buffers at the front of the line.`,
+        images: [
+          { url: wrenchVSM, caption: 'Value stream map — information and material flow, 18-day lead time vs. ~16 min process time.' },
+          { url: wrenchLineLayout, caption: 'Production line layout — two parallel rows of U-shaped workcells sharing a central conveyor and replenishment aisle.' }
+        ]
+      },
+      {
+        heading: 'Cost & Capital Investment',
+        text: `Projected fully-loaded cost is $10.22 per unit — $7.03 direct material (9-component BOM at high-volume pricing), $1.00 direct labor (150 s/unit at $24/hr), $1.16 amortized machinery, $0.35 overhead, $0.65 packaging & shipping, and $0.03 amortized tooling.
+
+Total line investment for one million units is ~$1,196,000: $33,500 in fixtures and tooling (riveting fixtures, assembly fixtures, angled stands, spring tools, inspection gauges) and $1,162,500 in capital equipment (50 riveters, material-handling, packaging).`
+      },
+      {
+        heading: 'CAD Drawings',
+        text: `Fully dimensioned SolidWorks drawings for the wrench components and the fixture tooling.`,
+        images: [
+          { url: wrenchCadOuterPlate, caption: 'Outer plate CAD drawing.' },
+          { url: wrenchCadInnerPlate, caption: 'Inner plate CAD drawing.' },
+          { url: wrenchCadJaw, caption: 'Bionic Wrench jaw CAD drawing.' },
+          { url: wrenchCadWaterjet, caption: 'Waterjet steel plate CAD drawing.' },
+          { url: wrenchCadFixture, caption: '3D-printed fixture CAD drawing.' },
+          { url: wrenchCadStand, caption: 'Fixture stand CAD drawing.' }
+        ]
+      },
+      {
+        heading: 'Trial Run & Outcome',
+        text: `In the 30-minute timed trial we produced four good wrenches and two defective ones at a 3:58 average cycle time. We completed every assembly step except seating all six jaws on the two defective units — the professor attributed this to out-of-spec jaws rather than the process. Early in the run the jaws wouldn't seat until we learned to tap the assembled body against a steel plate to re-align the stacked plates.
+
+What worked: we hit our planned cycle time; the single-operator, co-located-riveter workflow held together with no station running dry; the angled flip-the-plates approach (V2) kept rivets seated through handling; open-entrance tracks (V5) sped up riveter navigation; and dual riveters (V6) eliminated the head-swap delay.`
+      },
+      {
+        heading: 'What I Learned',
+        text: `Two lessons no lecture could have taught: physical reality always overrules your model, and the only way to a good answer is to build something wrong first. The hardest part wasn't any single fixture version — it was the early metrology. Small errors on the optical comparator propagated into misaligned tracks, then uneven rivets, and took several iterations to trace back to their source. Precision at the measurement stage isn't optional, because every downstream decision is only as good as the data it's built on.
+
+The highest-leverage next step would be CNC-machining the fixture from a single piece of steel with integrated pins — eliminating the waterjet step and removing the small pin flex that PLA holes still allow — plus incoming-jaw inspection to catch bad parts upstream of the line.`
       }
     ]
   },
@@ -633,173 +511,6 @@ WaterGuard:
 • Reduces staff stress and enables a safer aquatic imaging workflow
 
 The only remaining step is for the aquarium to run a quality scan confirming the liner introduces no imaging artifacts.`
-      }
-    ]
-  },
-  {
-    id: 15,
-    title: 'Bionic Wrench Manufacturing',
-    category: 'Manufacturing Engineering · Fixture Design · Production Planning',
-    image: wrenchHero,
-    description: 'Reverse-engineered the Bionic Wrench, then designed a seven-version assembly fixture and a full high-volume manufacturing plan to build one million wrenches per year.',
-    filterCategory: 'Design',
-    date: '2025',
-    tools: ['Reverse Engineering', 'Fixture & Tooling Design', 'SolidWorks', 'Metrology', 'DFM', 'Lean / Value Stream Mapping', 'FMEA', 'Process & Line Balancing', 'Cost Modeling', 'CNC / Waterjet / 3D Printing'],
-    content: [
-      {
-        text: `DSGN 386 — Manufacturing Engineering & Design (Final Project, with Peter Wang). We took a commercial Bionic Wrench, reverse-engineered how it is made, and then built everything needed to manufacture it ourselves: an assembly fixture, a standard operating procedure, full process documentation, and a high-volume production plan scaled to one million wrenches per year.
-
-The work spanned five phases — reverse engineering the wrench, mapping the manufacturing and assembly workflows, developing the assembly fixture through seven versions, documenting the process (SOP, FMEA, VSM), and finally running a live 30-minute timed trial that produced four good wrenches at a 3:58 average cycle time.`,
-        images: [
-          { url: wrenchHero, caption: 'The commercial Bionic Wrench we reverse-engineered and designed a production process to build.' }
-        ]
-      },
-      {
-        heading: 'Approach',
-        text: `1. Reverse engineering — We dissected the wrench to document how each component fit together (press fit, loose, interference), the geometric relationships between parts, and every dimension using calipers, micrometers, and an optical comparator. From that we inferred a logical assembly order and the likely material and process for each part.
-
-2. Workflow creation — We built manufacturing and assembly journey maps. Mapping revealed jaw insertion and jaw riveting as the bottleneck, and showed a two-worker layout left the second worker idle — so we consolidated to a single-operator line.
-
-3. Fixture & process development — Seven fixture versions, ending in a 3D-printed body holding steel locating pins on an angled stand, with a waterjet steel plate over the rivet zone and a track that constrains the riveter.
-
-4. Manufacturing documentation — SOP, journey maps, value stream map, and production planning for scale-up to one million wrenches per year.
-
-5. Pilot testing — A 30-minute timed trial: four good wrenches, two defective, 3:58 average cycle time. Defects traced to out-of-spec jaws rather than the process.`
-      },
-      {
-        heading: 'My Role',
-        text: `Peter and I initially split the fixture work by component — I owned the track geometry, he owned the pin layout — but the two were so tightly coupled that we ended up at the bench together for nearly every iteration. I led the track design across all seven versions, drove the metrology and CAD drawings, and co-developed the SOP, FMEA, and high-volume manufacturing plan.`
-      },
-      {
-        heading: 'Fixture Design — The Problem',
-        text: `The fixture has four jobs: locate the wrench plates accurately, hold them rigidly while they are riveted, absorb the riveter's force without damaging the tooling, and constrain the riveter to the correct rivet locations via a track. Almost every design change below was driven by something we could not have predicted on a computer — that sheet metal compresses under riveter force, that a two-pin track over-constrains orientation, that inverting the whole track logic simplifies everything.`
-      },
-      {
-        heading: 'V1 — Flip-Based Locating Fixture (no track)',
-        text: `Our first version was a flat 3D-printed base with the wrench profile cut into it. Inner plates, outer plates, spacers, and rivets were all loaded face-up at once, a flat steel top plate was placed over the assembly, and the whole thing was flipped so the rivets could be set from underneath. At this stage we planned to rivet by hand and had not yet realized how critical precise rivet location would be — so there was no track.`,
-        images: [
-          { url: wrenchV1TopPlate, caption: 'V1 — flat steel top plate placed over the assembly before flipping.' },
-          { url: wrenchV1Loaded, caption: 'V1 fixture loaded with an outer and an inner plate.' },
-          { url: wrenchV1Bare, caption: 'V1 bare fixture showing the cutout geometry.' }
-        ]
-      },
-      {
-        heading: 'V2 — Flip the Plates, Not the Fixture',
-        text: `V2 was a complete redesign with four simultaneous changes:
-• We stopped flipping the fixture and instead flipped the plates onto it. The fixture sat on a stand at a fixed angle, which also meant rivets would not fall out of the plates during handling.
-• Plate location moved from a printed cutout to steel pins passing through the printed body — more rigid, still easy to remove.
-• A sheet-metal plate was bolted on top to absorb the rivet force (bare PLA would not survive).
-• Two guide pins on the back rode in two external tracks screwed to the riveter — one for inner plates, one for outer plates.`,
-        images: [
-          { url: wrenchV2Stand, caption: 'V2 fixture mounted on its angled stand, with steel pins constraining the plates.' },
-          { url: wrenchV2Back, caption: 'V2 fixture back, showing the two guide pins and four bolt holes for the steel plate.' },
-          { url: wrenchV2InnerTrack, caption: 'V2 inner-plate track that screwed onto the riveter.' },
-          { url: wrenchV2OuterTrack, caption: 'V2 outer-plate track (wrench-head geometry and handle paths).' }
-        ]
-      },
-      {
-        heading: 'V3 — Inverting the Track Logic',
-        text: `In V3 we inverted the track relationship. Instead of the fixture carrying two pins that followed external tracks on the riveter, we cut a single track into the fixture body and let it follow one fixed pin mounted to the riveter. This eliminated the orientation constraint the two-pin setup imposed, made the tracks easier to navigate, and reduced material and setup. This insight didn't come from analysis — it came from standing at the riveter and realizing the thing we thought was fixed didn't need to be.`,
-        images: [
-          { url: wrenchV3Back, caption: 'V3 back of fixture, with the track now cut directly into the fixture body.' }
-        ]
-      },
-      {
-        heading: 'V4 — Thicker Steel Plate and Separated Rivet Zones',
-        text: `V2 used sheet metal too thin to take the rivet force; V3 used 1/16" waterjet steel, better but still too thin. In V4 we waterjet a thicker, harder steel plate that finally held up under repeated riveting. We also separated the jaw and body sections on the track — visually and physically — and added clearance between rivet-stop locations to remove ambiguity about where to position the riveter.`,
-        images: [
-          { url: wrenchV4Track, caption: 'V4 fixture with redesigned track — jaw and body rivet zones separated, waterjet steel outline in orange.' }
-        ]
-      },
-      {
-        heading: 'V5 — Stand Resized, Track Entrances Opened',
-        text: `Two ergonomics-driven changes. We redesigned the stand to fit the entire wrench in its open position — previously we had to hang the fixture off the table edge to accommodate the open wrench. We also gave each rivet path an open entrance from the outside edge, letting the riveter pin slide in laterally instead of being lifted and dropped into the track each time.`,
-        images: [
-          { url: wrenchV5Stand, caption: 'V5 fixture on the redesigned wider stand that accommodates the fully-open wrench.' },
-          { url: wrenchV5Track, caption: 'V5 track with open entrances from the outside edges for lateral riveter pin entry.' }
-        ]
-      },
-      {
-        heading: 'V6 — Refinements for Dual-Riveter Operation',
-        text: `V6 introduced four refinements:
-• Rivet "corner" positions were tightened so each location slotted in positively, keeping the extra spacing V4 introduced.
-• Every track segment got its own entrance (four segments now), so the operator no longer had to pick up the fixture to start the jaw section.
-• The inner-plate region was redesigned around a 3/8" pin (vs. the 1/4" pin used elsewhere), and we built a second fixture plate carrying that pin so we could finally run both riveters simultaneously.
-• Steel pins were seated deeper into the body to remove flex at the pin tops.
-
-Running both riveters together and hitting a sub-4-minute cycle for the first time felt like the project clicking into place.`,
-        images: [
-          { url: wrenchV6, caption: 'V6; track segments separately entered, inner-plate region resized for 3/8" pin, pins seated deeper.' }
-        ]
-      },
-      {
-        heading: 'V7 — Final Fixture',
-        text: `V7 is the fixture used in the timed trial, plus one refinement added afterward: a protruding support piece that braces the handle end of the inner plates when the wrench is fully open. During the trial, the open inner-plate handles cantilevered slightly, introducing play that could affect alignment during riveting. The support piece addresses this directly, and the stand was redesigned to accommodate the new geometry.`,
-        images: [
-          { url: wrenchV7Support, caption: 'V7 fixture with support for the inner plate on the angled stand.' },
-          { url: wrenchV7Stand, caption: 'V7 fixture on the raised stand to accommodate the new supporting component.' }
-        ]
-      },
-      {
-        heading: 'Standard Operating Procedure',
-        text: `The line is run by a single worker across three co-located stations on one bench: a small riveter on the left (S2), a central assembly area (S1), and a large riveter on the right (S3). The operator assembles at the center, steps left to rivet inner plates, returns to build the outer body, steps right to rivet the body and jaws, and returns for spring, handles, and final inspection. An in-process quality check (open/close action) is performed before jaws are installed so out-of-tolerance body assemblies are caught early.
-
-Total cycle time is 246 s per wrench (3:58): S1 (all non-riveting work) = 158 s, S2 (inner-plate riveting) = 38 s, S3 (outer-body and jaw riveting plus head swap) = 50 s. All three stations are within reach of a single operator.`,
-        images: [
-          { url: wrenchEquipSetup, caption: 'Equipment setup for the single-operator line — small riveter, central assembly bench, and large riveter.' }
-        ]
-      },
-      {
-        heading: 'Process Flow Documentation',
-        text: `We built two journey maps: a manufacturing map from raw materials to finished parts, and an assembly map for the single-operator workflow. The mapping is what revealed the second worker was idle too often to justify, and where the bottleneck (jaw insertion and riveting) lived.
-
-We also documented KPIs to track at scale — cycle time, yield rate, rework rate, takt time, operator efficiency, downtime, and cost per unit — and ran an FMEA covering both process/quality failure modes (uneven rivets, plate misalignment, jaws not seating) and operator safety risks (crush injuries, dropped small parts, spring projectiles).`,
-        images: [
-          { url: wrenchMfgMap, caption: 'Manufacturing journey map — raw materials to finished parts.' },
-          { url: wrenchAsmMap, caption: 'Assembly journey map — single-operator workflow with three co-located stations.' }
-        ]
-      },
-      {
-        heading: 'High-Volume Manufacturing Plan',
-        text: `The plan targets 1,000,000 wrenches per year against a highly seasonal demand profile: 60% in Oct–Dec (holiday retail), 20% in a May–June spring surge, and 20% across the rest of the year. Capacity is flexed by activating the right number of parallel U-shaped workcells and staffing one or two operators per cell by season, with a third shift held in reserve.
-
-At peak (200,000 units/month) the takt time is 6 s/unit, requiring 25 parallel cells and 50 operators; off-peak months run as few as 4 cells. The line also supports two to three jaw-size variants with only a sub-five-minute fixture pin-plate swap between models.
-
-The value stream map covers the full flow from supplier to customer: total production lead time is 18 days against ~16 minutes of process time per wrench — highlighting the lean opportunity in the 6-day and 4-day inventory buffers at the front of the line.`,
-        images: [
-          { url: wrenchVSM, caption: 'Value stream map — information and material flow, 18-day lead time vs. ~16 min process time.' },
-          { url: wrenchLineLayout, caption: 'Production line layout — two parallel rows of U-shaped workcells sharing a central conveyor and replenishment aisle.' }
-        ]
-      },
-      {
-        heading: 'Cost & Capital Investment',
-        text: `Projected fully-loaded cost is $10.22 per unit — $7.03 direct material (9-component BOM at high-volume pricing), $1.00 direct labor (150 s/unit at $24/hr), $1.16 amortized machinery, $0.35 overhead, $0.65 packaging & shipping, and $0.03 amortized tooling.
-
-Total line investment for one million units is ~$1,196,000: $33,500 in fixtures and tooling (riveting fixtures, assembly fixtures, angled stands, spring tools, inspection gauges) and $1,162,500 in capital equipment (50 riveters, material-handling, packaging).`
-      },
-      {
-        heading: 'CAD Drawings',
-        text: `Fully dimensioned SolidWorks drawings for the wrench components and the fixture tooling.`,
-        images: [
-          { url: wrenchCadOuterPlate, caption: 'Outer plate CAD drawing.' },
-          { url: wrenchCadInnerPlate, caption: 'Inner plate CAD drawing.' },
-          { url: wrenchCadJaw, caption: 'Bionic Wrench jaw CAD drawing.' },
-          { url: wrenchCadWaterjet, caption: 'Waterjet steel plate CAD drawing.' },
-          { url: wrenchCadFixture, caption: '3D-printed fixture CAD drawing.' },
-          { url: wrenchCadStand, caption: 'Fixture stand CAD drawing.' }
-        ]
-      },
-      {
-        heading: 'Trial Run & Outcome',
-        text: `In the 30-minute timed trial we produced four good wrenches and two defective ones at a 3:58 average cycle time. We completed every assembly step except seating all six jaws on the two defective units — the professor attributed this to out-of-spec jaws rather than the process. Early in the run the jaws wouldn't seat until we learned to tap the assembled body against a steel plate to re-align the stacked plates.
-
-What worked: we hit our planned cycle time; the single-operator, co-located-riveter workflow held together with no station running dry; the angled flip-the-plates approach (V2) kept rivets seated through handling; open-entrance tracks (V5) sped up riveter navigation; and dual riveters (V6) eliminated the head-swap delay.`
-      },
-      {
-        heading: 'What I Learned',
-        text: `Two lessons no lecture could have taught: physical reality always overrules your model, and the only way to a good answer is to build something wrong first. The hardest part wasn't any single fixture version — it was the early metrology. Small errors on the optical comparator propagated into misaligned tracks, then uneven rivets, and took several iterations to trace back to their source. Precision at the measurement stage isn't optional, because every downstream decision is only as good as the data it's built on.
-
-The highest-leverage next step would be CNC-machining the fixture from a single piece of steel with integrated pins — eliminating the waterjet step and removing the small pin flex that PLA holes still allow — plus incoming-jaw inspection to catch bad parts upstream of the line.`
       }
     ]
   },
@@ -1146,44 +857,259 @@ This demonstrated scalability awareness beyond prototype design.`
     ]
   },
   {
-    id: 28,
-    title: 'Midwest EV: Openpilot Retrofit',
-    category: 'Electric Vehicles · Embedded Electronics · Enclosure Design (Work in Progress)',
-    image: '',
-    description: 'A volunteer engineering team building an openpilot retrofit for Tesla Model S cars built before factory Autopilot — custom wiring harnesses, PCBs, and enclosures. I design the enclosure for the project\'s electronics.',
-    filterCategory: 'Design',
-    inProgress: true,
+    id: 16,
+    title: 'Smart Sheet Smith',
+    category: 'Research · Manufacturing AI · Multi-Agent LLM Systems',
+    image: sheetSmithPoster,
+    description: 'An end-to-end LLM-driven multi-agent system that turns a 2D sheet-metal drawing into a verified, physics-grounded bending process plan — no 3D CAD, no labeled data. Presented at MSEC 2026 / NAMRC54.',
+    filterCategory: 'Research',
     date: '2026',
-    tools: ['Enclosure Design', 'CAD', 'Wiring Harnesses', 'PCB Design Review', 'Vehicle Integration', 'GitHub', 'Remote Team Collaboration'],
+    tools: ['Multi-Agent LLM Orchestration', 'Vision-Language Models', 'Retrieval-Augmented Generation', 'Reference-Free Evaluation', 'SolidWorks API / VBA', 'Parametric CAD', 'Sheet-Metal Bend Analysis', 'Dataset Construction'],
     content: [
       {
-        text: `Midwest EV is a small engineering group working on its main project: an openpilot retrofit for Tesla Model S cars built before factory Autopilot. The build covers the vehicle wiring, custom harnesses, and integration needed to connect openpilot to the car, with bench work and road testing along the way. The group also works on Tesla drive units, battery packs, and custom electronics, and runs a public site (midwestev.tech) for retrofit inquiries. I'm an engineer on the team, which works remotely across time zones. The project is ongoing.`
-      },
-      {
-        heading: 'How the Team Works',
-        text: `The team meets weekly for a one-hour status meeting plus a four-hour Friday work session, with work tracked in a shared GitHub repository. Each status meeting closes with a written summary of who owns what, so the electronics, software, website and hardware tracks stay coordinated.`
-      },
-      {
-        heading: 'My Role: Enclosure Design',
-        text: `I own the enclosure design for the project's electronics. The project is still early and the PCB is in design review, so the enclosure is evolving alongside it; the current iteration is incorporating team feedback, including removing the vents.`,
+        text: `Research at the Advanced Intelligent Manufacturing Laboratory, Northwestern University. Presented at MSEC 2026 / NAMRC54 (State College, PA, June 2026) and supported by the NSF ERC-HAMMER (Award EEC-2133630) — the Hybrid Autonomous Manufacturing: Moving from Evolution to Revolution Engineering Research Center, a multi-institution collaboration across Northwestern, Ohio State, Case Western Reserve, NC A&T, and UT Knoxville.
+
+Smart Sheet Smith turns a 2D sheet-metal engineering drawing into a verified, physics-grounded bending process plan — no 3D CAD model and no labeled training data required. I worked on the Tracer Agent and built the data foundation underneath it: the CAD parts, the drawings, the ground-truth geometry, the hand-checked bend math, and a SolidWorks VBA pipeline that generated hundreds of valid parametric drawings automatically.`,
         images: [
-          { url: deltaEnclosureOpenCad, caption: 'Enclosure CAD with the PCB inside, lid removed' },
-          { url: deltaEnclosureClosedCad, caption: 'Enclosure CAD, closed' },
-          { url: deltaEnclosureLidCad, caption: 'Enclosure lid' },
-          { url: deltaEnclosureTriangleCad, caption: 'Triangular enclosure concept around the board' }
+          { url: sheetSmithPoster, caption: 'Zahra Sadeghi, the graduate student I worked with, presenting our Smart Sheet Smith poster at MSEC 2026 / NAMRC54.' }
         ]
       },
       {
-        heading: 'The Board',
-        text: `The enclosure is built around the project's PCB, which is currently in design review.`,
+        heading: 'The Poster, Transcribed',
+        text: `"Smart Sheet Smith: End-to-End LLM-Driven MAS for Sheet Process Planning" — MSEC 2026 | NAMRC54, June 14–18, 2026, State College, Pennsylvania.
+
+Zahra Sadeghi¹, Ashton Dy², Asher Straus¹, Xiangyu Shi¹, Qi Zhu¹, Jamie Coble², Ping Guo¹ — ¹Northwestern University, Evanston, IL, USA; ²University of Tennessee, Knoxville, TN, USA.
+
+Abstract: Smart Sheet Smith converts a 2D engineering drawing directly into a verified sheet-metal bending process plan, no 3D CAD model required. Five specialized agents handle view classification, geometry extraction, and physics-based process planning, with two reference-free judge-patcher loops that self-correct errors by re-deriving expected values from the input drawing itself, no ground-truth labels or human intervention needed. A curated Knowledge Graph supplies deterministic physics constants to prevent hallucination, and the system emits a physics-compensated flat-pattern blueprint ready for shop-floor use. Evaluated on real industrial V-bending drawings, the closed loop achieves substantial accuracy gains over the single-pass baseline without any labeled data.
+
+Introduction: Sheet-metal bending process planning — choosing the bend order, tooling, and flat blank for a target part — remains a manual task driven by expert judgment. Commercial CAM software automates bend sequencing, but only after an engineer rebuilds the 2D drawing as a 3D CAD model. Large language models can ingest drawings directly, yet they hallucinate dimensions and produce plans with no built-in physics check. We present Smart Sheet Smith, an end-to-end multi-agent system that reads a multi-view 2D engineering drawing directly and produces a verified, physics-grounded bending process plan, no CAD model and no ground-truth labels required.
+
+Method: The Vision Agent classifies the drawing layout and identifies the master profile and sheet thickness. The Tracer Agent extracts the full geometric topology into a structured JSON, audited by the Geometric-Judge in a reference-free closed loop. The Engineering Agent retrieves physics constants from the Knowledge Graph and computes bend allowances, tonnage, and bend sequence, verified by the Performance-Judge before emitting the final process plan and flat-pattern blueprint. Six metrics across the two judge agents define the PASS/FAIL verdicts driving the self-correction loop — Geometric-Judge: segment sequence alignment (SSA), feature anchor accuracy (RAA), developed length deviation (GDD); Performance-Judge: physics math accuracy (PMA), operation sequence alignment (OSA), feasibility validation (FVA).
+
+Dataset: SIMBA (Sheet Metal Intelligent Bending Archive) — 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple to complex geometries for robust evaluation.
+
+Results — Effect of the Judge-Patcher Loop: Each patcher iteration recovers more failing parts by rewriting the agent's prompt with a targeted error description from the judge, driving accuracy higher across both the geometric and performance loops.
+
+Conclusion: Smart Sheet Smith shows that physics invariants can drive reliable self-correction in LLM-based process planning with no ground-truth labels or human intervention. The reference-free judge-patcher loop achieves substantial accuracy gains over the single-pass baseline, opening an automated path from 2D drawing to verified bending process plan for job shops that 3D-CAD pipelines cannot serve.
+
+References: [1] Duflou et al., Computer-Aided Process Planning for Sheet Metal Bending, 2005. [2] Pawar et al., Interpretable Vision-Language Models for Engineering Drawings, 2025.
+
+Acknowledgment: The authors would like to acknowledge support from the U.S. National Science Foundation Engineering Research Center for Hybrid Autonomous Manufacturing Moving from Evolution to Revolution (ERC-HAMMER) under Award Number EEC-2133630.`
+      },
+      {
+        heading: 'The Problem',
+        text: `Sheet-metal bending process planning is one of the last stubbornly manual steps in fabrication. Choosing the bend order, tooling, and flat-blank dimensions still depends on an experienced planner reading a 2D engineering drawing and applying years of shop-floor judgment.
+
+Commercial CAM software can automate bend sequencing — but only after an engineer rebuilds the 2D drawing as a 3D CAD model, a slow, expensive prerequisite job shops working from customer prints often can't justify. Large language models can ingest drawings directly, but they hallucinate dimensions and produce plans with no built-in physics check. Neither path gets you from a print to a trustworthy plan.`
+      },
+      {
+        heading: 'What We Built',
+        text: `Smart Sheet Smith reads a multi-view 2D engineering drawing and produces a verified, physics-grounded bending process plan through a five-agent pipeline:
+
+• Vision Agent — classifies the drawing layout and identifies the master profile and sheet thickness.
+• Tracer Agent — extracts the full geometric topology into a structured JSON representation.
+• Geometric-Judge — audits the traced geometry against the input drawing itself, in a reference-free loop.
+• Engineering Agent — retrieves deterministic physics constants from a curated Knowledge Graph via RAG, then computes bend allowances, tonnage, and bend sequence.
+• Performance-Judge — verifies the final plan before the system emits a physics-compensated flat-pattern blueprint ready for the shop floor.`
+      },
+      {
+        heading: 'The Judge–Patcher Loop',
+        text: `The core idea is a judge–patcher loop. Rather than scoring output against a labeled answer key, the judges re-derive expected values directly from the source drawing and compare. When a check fails, the patcher rewrites the failing agent's prompt with a targeted error description — for example, a segment extracted at 30.0 mm against a true value of 32.0 mm, or a virtual-sharp-dimension misinterpretation in the flat-pattern calculation — and the pipeline re-runs that stage.
+
+Six metrics across the two judges define the PASS/FAIL verdicts that drive self-correction: segment sequence alignment, feature anchor accuracy, developed length deviation, physics math accuracy, operation sequence alignment, and feasibility validation. This removes the labeling bottleneck — the system improves itself using invariants it can check from first principles, not human annotation.`
+      },
+      {
+        heading: 'Evaluation',
+        text: `We evaluated on SIMBA (Sheet Metal Intelligent Bending Archive), a dataset of 50 real industrial V-bending drawings with four-view orthographic projections, spanning simple through complex geometries for robustness testing.
+
+Cumulative correctness rose substantially across three patcher iterations in both the geometric and performance loops, with each iteration recovering additional failing parts. The closed loop delivered meaningful accuracy gains over the single-pass baseline — without a single labeled example.`
+      },
+      {
+        heading: 'My Contribution',
+        text: `I worked on the Tracer Agent and owned much of the data foundation it was developed and validated against.
+
+I built the evaluation corpus from the ground up: modeling the parts in CAD, producing the multi-view orthographic drawings, and hand-deriving the ground-truth geometry each drawing should resolve to. I then authored and corrected the structured JSON representations that encoded that topology, iterating on the schema and training examples as failure modes surfaced.
+
+Validating the agent meant doing the bend math by hand — bend allowances, developed lengths, segment sequences — and checking the agent's extraction against it case by case. Beyond numerical correctness, I applied a manufacturability check the math alone can't provide: reasoning through the actual forming process to judge whether a proposed plan was physically realizable on a press brake, or whether it produced a sequence that looked valid on paper but couldn't be made. That distinction drove several corrections to how the pipeline handles bend ordering and tool access.`
+      },
+      {
+        heading: 'Labeling & Reviewing the Agents',
+        text: `The Tracer Agent was only as good as the ground truth it was checked against, so labeling was shared work: the SIMBA drawings were split three ways (roughly 17 parts each) and each of us hand-labeled the segment topology, bend directions and feature positions in JSON. Early on I ran into cases the schema didn't cover — a drawing missing the dimension needed for total extrusion length, features whose segment IDs didn't line up — so I proposed a convention for flagging them (a corrected value plus a "corrected_reason" note) and wrote it up for the whole team so every labeler used the same format.
+
+While labeling I kept a running list of Tracer failure modes, which fed back into prompt design:
+• Angled flanges, angled cuts and angle callouts were the weakest area — angles were rarely reported unless they were bends.
+• Positions need one stated reference corner and a stated reference point on the feature (slot arc centers, triangle centroids), or the model can't know which way to measure.
+• The model sometimes subtracted a radius from a length when it shouldn't, and was ambiguous about which of several identical views it was reading.
+
+Later I also reviewed Engineering Agent output on five parts as the "manufacturing engineer" in the loop. Findings: the K-factor needs to be fixed before bend deduction is computed; bend deduction was being calculated from the outer radius instead of the inner radius; and V-die selection should be reported as an approximate range (e.g. 8t–10t for thickness t) rather than a single number, since real dies come in discrete sizes.`
+      },
+      {
+        heading: 'Building the Dataset & Knowledge Base',
+        text: `Beyond modeling parts, I helped keep the dataset physically realistic. Parts had to be makeable by V-bending, with bend radius sensible for the sheet thickness (a 3 mm radius on 0.1 mm stock isn't a bend, it's a curved shell, and springback makes it unpredictable), reasonable minimum widths, and no overlapping tabs that would confuse feature extraction. I first proved out automated data generation by randomizing part dimensions through SolidWorks equations, then moved to the VBA macro below for flexibility.
+
+For the Engineering Agent's RAG knowledge base, I gathered open-access papers, handbooks and tooling references as PDFs and sorted them into three groups — materials, bending machines and tooling, and bending processes — plus a separate set of computer-aided process planning (CAPP) papers kept out of retrieval.`
+      },
+      {
+        heading: 'Automated Parametric Drawing Generation',
+        text: `Manual drawing creation was the hard ceiling on dataset size, so I built a SolidWorks VBA macro pipeline to remove it. Given one base CAD model, the macro randomizes its dimensions within controlled ranges and exports each variation as a fully-dimensioned PDF — hundreds of valid drawings in minutes instead of days.
+
+The design principle that made it work: the macro only changes the values of dimensions that already exist, never adding or removing them. Any variation from a valid base drawing is therefore structurally valid by construction. That reframed the hard problem from "produce a correct drawing" to "produce geometry that rebuilds cleanly and fits on the sheet."
+
+Each iteration randomizes the parameters, force-rebuilds the part and drawing, auto-scales and centers the views, then runs a "safe box" check confirming all geometry and annotations fall inside a defined fraction of the page. Failures retry with new values rather than emitting a bad sample. The helpers are part-agnostic — adapting to a new part family means editing only the dimension names and ranges at the top of the file.`
+      },
+      {
+        heading: 'Validation Across Part Families',
+        text: `I validated across three part families and documented the failure modes:
+
+• Simple tab bracket — 20 parts, 85% success. Primary failure: dimensions off page.
+• L-bracket — 20 parts, 90% success. Primary failures: bad range → failed rebuild; dimensions off page.
+• Bracket with holes and slots — 20 parts, 74% success. Primary failures: hole diameter exceeding parent face; broken flanges; detached radius.
+
+The complex-part result was the useful one. Interdependent features — a hole that must stay inside its containing flange — fail under naive uniform sampling, and the fix isn't more retries. It's defining CAD features as relationships to parent geometry (hole diameter = 0.3 × flange width) rather than absolute values, so features scale proportionally and stay valid across the whole sampling range. Parts modeled that way were substantially more stable.`
+      },
+      {
+        heading: 'What I Took Away',
+        text: `• Constrain the generator, not the output. The strongest results in both halves of my work came from making invalid states unrepresentable rather than filtering for them after the fact — value-only randomization in the macro, ratio-defined CAD features instead of absolute ones, physics invariants instead of labeled answers.
+
+• Domain judgment is the scarce input to an AI pipeline. The model could produce a bend sequence that satisfied every numerical check and still couldn't be made on a press brake. Catching that required thinking about tooling access and forming order — the part of the loop an ME contributes that isn't automatable yet.
+
+• Failure modes are the deliverable. Cataloguing why generations failed — off-page annotations, rebuild breaks on interdependent dimensions, the mm-to-meters unit conversion in the SolidWorks API that caused the most early bugs — is what let the next person configure the tool for a new part in an afternoon.`
+      },
+      {
+        heading: 'Where It Goes Next',
+        text: `Directions I documented in the technical handoff, roughly in order of leverage:
+• Auto-detect dimension names from the part file, so a new base model needs no hand-written configuration — the key step toward full automation across arbitrary geometries.
+• Constraint-aware sampling that respects inter-dimension relationships instead of sampling each independently — the direct fix for the 74% complex-part rate.
+• A VLM evaluator agent to flag failed or unreadable PDFs automatically, replacing manual QA and doubling as a manufacturability screen.
+• A broader base-part library covering flanges, housings, and plates with hole patterns.`
+      },
+      {
+        heading: 'Poster & Team',
+        text: `Co-author on the MSEC 2026 / NAMRC54 poster as an undergraduate researcher (Tracer Agent, dataset construction and validation, automated parametric drawing generation).
+
+Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northwestern University); Jamie Coble (University of Tennessee, Knoxville); Ping Guo (Northwestern University).`
+      }
+    ]
+  },
+  {
+    id: 9,
+    title: 'ExtendIt',
+    category: 'Human-Centered Design · Product Development', 
+    image: extendItHero,
+    description: 'A permanently installed hinged desk extender that increases usable workspace by 81 sq. in. — preferred by 8/10 users over alternative concepts.',
+    tools: ['Human-Centered Design', 'Mechanical Design', 'Structural Load Testing', 'User Research', 'Rapid Iteration', 'Cost Modeling', 'Product-Market Fit Evaluation'],
+    date: '2024',
+    filterCategory: 'Design',
+    content: [
+      {
+        text: `Lecture hall desks are too small to accommodate modern student workflows (laptop + tablet + notebook). Through user research and prototyping, our team designed ExtendIt — a permanently installed hinged desk extender that increases usable workspace by 81 sq. in. without encroaching on adjacent seating.
+
+ExtendIt folds flush beneath the existing desk when not in use and locks securely at 0° and 180° during deployment.`,
         images: [
-          { url: deltaPcbPhoto, caption: 'The PCB' },
-          { url: deltaPcbOutline, caption: 'Board outline in CAD' }
+            { url: extendItHero, caption: 'Final ExtendIt prototype deployed in lecture hall configuration.' }
         ]
       },
       {
-        heading: 'The Wider Project',
-        text: `Other tracks I work alongside include PCB design (where the team compared two circuit topologies, a BJT/MOSFET stage and an LM319 comparator, with simulation to choose between them, and simplified the board for immediate production by dropping a CAN-bus detection circuit), an updated device user interface, and cleaning up the shared code repository.`
+        heading: 'Impact',
+        text: `• +50% minimum increase in usable desk surface area
+• 81 sq. in. added workspace (9″ × 9″ prototype)
+• Designed to support >30 lbs with <0.5″ deflection
+• Preferred by 8/10 users over alternative concepts`
+      },
+      {
+        heading: 'Problem',
+        text: `Students in lecture halls face insufficient desk space for modern devices, clutter from water bottles and backpacks, discomfort from inefficient workspace layout, and disruption when managing multiple materials during exams.
+
+72% of students sit over 7 hours/day, and limited workspace directly impacts comfort and productivity.`
+      },
+      {
+        heading: 'My Role',
+        text: `• Conducted user interviews (22 total participants)
+• Led opportunity evaluation and alternatives matrix analysis
+• Contributed to mechanical design and hinge selection
+• Performed structural and load testing
+• Helped develop business model & cost structure analysis
+• Participated in prototype fabrication and iteration`
+      },
+      {
+        heading: 'User Research',
+        text: `We conducted 22 exploratory interviews, ranked opportunity spaces via a weighted scoring matrix, and tested 7 physical mockups with 10 users each.
+
+Students overwhelmingly preferred a permanent, stable solution over portable attachments.`,
+        images: [
+            { url: extendItUserTestNew, caption: 'Simulated real-world loading during user durability testing.' }
+        ]
+      },
+      {
+        heading: 'Design Requirements',
+        text: `The final design needed to:
+• Be intuitive and deploy in <2 seconds
+• Withstand daily unsupervised use
+• Support body-weight leaning forces
+• Work across multiple lecture chair models
+• Fold unobtrusively beneath existing desk`
+      },
+      {
+        heading: 'Engineering & Mechanical Design',
+        text: `Core components:
+• 0.75″ melamine-covered particle board panel
+• Galvanized locking hinge (modified to remove 90° detent)
+• Black oxide #8 particle board screws
+• Custom shim to ensure flush alignment
+
+The hinge locks at 0° (stored) and 180° (deployed). We manually ground the 90° detent to ensure smooth motion.`,
+        images: [
+           { url: extendItHinge, caption: 'Modified locking hinge installed beneath existing desk.' },
+           { url: extendItSketch, caption: 'Early sketch exploring hinge motion and desk integration.' },
+        ]
+      },
+      {
+        heading: 'Structural Testing',
+        text: `We built a dedicated load-testing rig to preserve the final prototype.
+
+Testing Results:
+• 33.5 lb suspended load
+• Varied moment arm distances
+• ⅜″ deflection at 6″ from hinge
+• Target: ≤0.5″ deflection at 30 lb
+• Result: Exceeded strength requirements
+
+Seating clearance when folded: 9.5″ (exceeds 9″ design spec).`,
+        images: [
+            { url: extendItLoadTestNew, caption: 'Load-bearing and deflection testing setup.' }
+        ]
+      },
+      {
+        heading: 'Alternative Concepts Explored',
+        text: `Before finalizing the desk extension, we prototyped a backpack hook attachment, lumbar support device, tablet clamp system, armrest extension, and sliding storage drawer.
+
+While each addressed partial pain points, expanding workspace delivered the highest perceived impact and adoption likelihood.`
+      },
+      {
+        heading: 'Business & Market Strategy',
+        text: `Primary Customer: Universities (B2B model)
+Market: U.S. school furniture market >$2B
+
+Unit Economics:
+• Raw materials: $6.02
+• Labor (5 min): $4.17
+• Total cost: $10.19 per unit
+
+Revenue opportunities include standard model sales, custom sizing, branded installations, licensing to furniture manufacturers, and consulting for classroom optimization.`
+      },
+      {
+        heading: 'Ethics & Accessibility',
+        text: `We incorporated accommodation for left-handed users, height-inclusive clearance standards, rounded edges for safety, and diverse user testing (age, major, campus location).`
+      },
+      {
+        heading: 'Future Improvements',
+        text: `• Integrated cup holder
+• Custom-designed hinge (thinner, dual-lock only)
+• Alternative materials for cost optimization
+• Large-scale durability & FMEA testing`,
+        images: [
+            { url: extendItCupHolder, caption: 'Concept exploration for integrated hydration feature.' }
+        ]
       }
     ]
   },
@@ -1383,128 +1309,6 @@ Both devices are calming without overstimulation — addressing sensory overload
     ]
   },
   {
-    id: 9,
-    title: 'ExtendIt',
-    category: 'Human-Centered Design · Product Development', 
-    image: extendItHero,
-    description: 'A permanently installed hinged desk extender that increases usable workspace by 81 sq. in. — preferred by 8/10 users over alternative concepts.',
-    tools: ['Human-Centered Design', 'Mechanical Design', 'Structural Load Testing', 'User Research', 'Rapid Iteration', 'Cost Modeling', 'Product-Market Fit Evaluation'],
-    date: '2024',
-    filterCategory: 'Design',
-    content: [
-      {
-        text: `Lecture hall desks are too small to accommodate modern student workflows (laptop + tablet + notebook). Through user research and prototyping, our team designed ExtendIt — a permanently installed hinged desk extender that increases usable workspace by 81 sq. in. without encroaching on adjacent seating.
-
-ExtendIt folds flush beneath the existing desk when not in use and locks securely at 0° and 180° during deployment.`,
-        images: [
-            { url: extendItHero, caption: 'Final ExtendIt prototype deployed in lecture hall configuration.' }
-        ]
-      },
-      {
-        heading: 'Impact',
-        text: `• +50% minimum increase in usable desk surface area
-• 81 sq. in. added workspace (9″ × 9″ prototype)
-• Designed to support >30 lbs with <0.5″ deflection
-• Preferred by 8/10 users over alternative concepts`
-      },
-      {
-        heading: 'Problem',
-        text: `Students in lecture halls face insufficient desk space for modern devices, clutter from water bottles and backpacks, discomfort from inefficient workspace layout, and disruption when managing multiple materials during exams.
-
-72% of students sit over 7 hours/day, and limited workspace directly impacts comfort and productivity.`
-      },
-      {
-        heading: 'My Role',
-        text: `• Conducted user interviews (22 total participants)
-• Led opportunity evaluation and alternatives matrix analysis
-• Contributed to mechanical design and hinge selection
-• Performed structural and load testing
-• Helped develop business model & cost structure analysis
-• Participated in prototype fabrication and iteration`
-      },
-      {
-        heading: 'User Research',
-        text: `We conducted 22 exploratory interviews, ranked opportunity spaces via a weighted scoring matrix, and tested 7 physical mockups with 10 users each.
-
-Students overwhelmingly preferred a permanent, stable solution over portable attachments.`,
-        images: [
-            { url: extendItUserTestNew, caption: 'Simulated real-world loading during user durability testing.' }
-        ]
-      },
-      {
-        heading: 'Design Requirements',
-        text: `The final design needed to:
-• Be intuitive and deploy in <2 seconds
-• Withstand daily unsupervised use
-• Support body-weight leaning forces
-• Work across multiple lecture chair models
-• Fold unobtrusively beneath existing desk`
-      },
-      {
-        heading: 'Engineering & Mechanical Design',
-        text: `Core components:
-• 0.75″ melamine-covered particle board panel
-• Galvanized locking hinge (modified to remove 90° detent)
-• Black oxide #8 particle board screws
-• Custom shim to ensure flush alignment
-
-The hinge locks at 0° (stored) and 180° (deployed). We manually ground the 90° detent to ensure smooth motion.`,
-        images: [
-           { url: extendItHinge, caption: 'Modified locking hinge installed beneath existing desk.' },
-           { url: extendItSketch, caption: 'Early sketch exploring hinge motion and desk integration.' },
-        ]
-      },
-      {
-        heading: 'Structural Testing',
-        text: `We built a dedicated load-testing rig to preserve the final prototype.
-
-Testing Results:
-• 33.5 lb suspended load
-• Varied moment arm distances
-• ⅜″ deflection at 6″ from hinge
-• Target: ≤0.5″ deflection at 30 lb
-• Result: Exceeded strength requirements
-
-Seating clearance when folded: 9.5″ (exceeds 9″ design spec).`,
-        images: [
-            { url: extendItLoadTestNew, caption: 'Load-bearing and deflection testing setup.' }
-        ]
-      },
-      {
-        heading: 'Alternative Concepts Explored',
-        text: `Before finalizing the desk extension, we prototyped a backpack hook attachment, lumbar support device, tablet clamp system, armrest extension, and sliding storage drawer.
-
-While each addressed partial pain points, expanding workspace delivered the highest perceived impact and adoption likelihood.`
-      },
-      {
-        heading: 'Business & Market Strategy',
-        text: `Primary Customer: Universities (B2B model)
-Market: U.S. school furniture market >$2B
-
-Unit Economics:
-• Raw materials: $6.02
-• Labor (5 min): $4.17
-• Total cost: $10.19 per unit
-
-Revenue opportunities include standard model sales, custom sizing, branded installations, licensing to furniture manufacturers, and consulting for classroom optimization.`
-      },
-      {
-        heading: 'Ethics & Accessibility',
-        text: `We incorporated accommodation for left-handed users, height-inclusive clearance standards, rounded edges for safety, and diverse user testing (age, major, campus location).`
-      },
-      {
-        heading: 'Future Improvements',
-        text: `• Integrated cup holder
-• Custom-designed hinge (thinner, dual-lock only)
-• Alternative materials for cost optimization
-• Large-scale durability & FMEA testing`,
-        images: [
-            { url: extendItCupHolder, caption: 'Concept exploration for integrated hydration feature.' }
-        ]
-      }
-    ]
-  },
-  {
     id: 13,
     title: 'StimSpin',
     category: 'Accessible Design · Sensory Engineering · Prototyping',
@@ -1663,6 +1467,65 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     ]
   },
   {
+    id: 25,
+    title: 'Flexible Tactile Sensors',
+    category: 'Research · Soft Robotics · Sensor Fabrication',
+    image: '',
+    description: 'Hand-fabricated flexible resistive sensors — carbon nanotubes and nanoparticles embedded in Ecoflex silicone — for a soft robotic hand, plus near-field electrospinning at 10 kV. Fall 2025, AIM Lab at Northwestern.',
+    filterCategory: 'Research',
+    date: '2025',
+    tools: ['Near-Field Electrospinning (NFES)', 'Carbon Nanotube / Nanoparticle Composites', 'Ecoflex Silicone', 'Resistive Sensor Fabrication', 'High-Voltage Equipment (10 kV)', 'Literature Review', 'Lab Safety Training'],
+    content: [
+      {
+        text: `My first research project at the Advanced Intelligent Manufacturing (AIM) Laboratory at Northwestern, starting in Fall 2025, before I moved onto Smart Sheet Smith. I worked under Zahra Sadeghi, a PhD student in Prof. Ping Guo's group, continuing her work on soft tactile sensors for a robotic hand. My role was hands-on: I fabricated the sensors and ran the electrospinning setup myself.`
+      },
+      {
+        heading: 'How the Sensors Work',
+        text: `Each sensor is a flexible resistive sensor. Carbon nanotubes and nanoparticles are suspended in an alcohol solution and applied to Ecoflex silicone; as the alcohol evaporates, the particles are left embedded in the silicone and form a conductive network. When voltage is applied, current flows through that network. Stretching or pressing the sensor breaks some of the connections between particles, so its electrical resistance goes up — and that change in resistance is the signal.`
+      },
+      {
+        heading: 'What I Built',
+        text: `• Fabricated more than ten flexible resistive sensors by hand
+• Ran near-field electrospinning (NFES) myself at 10 kV, after completing the lab's safety training
+• Worked through a reading list on resistive tactile sensing, e-skin, piezoresistive strain sensors, embedded 3D-printed strain sensors, and AC near-field electrospinning`
+      },
+      {
+        heading: 'The Electrospinning Setup',
+        text: `The near-field electrospinning rig I ran: a syringe pump feeds the nozzle, a high-voltage lead energizes it, and the sample sits on a copper collector plate on a motion stage, with a microscope light for watching the fiber.`,
+        images: [
+          { url: sensorNfesSetupWide, caption: 'The full rig: syringe pump, nozzle on a clamp, and sample on a copper collector plate over a motion stage' },
+          { url: sensorNfesNozzle, caption: 'Nozzle above the silicone sample, with the high-voltage clip lead attached' },
+          { url: sensorNfesSample, caption: 'Closer view of the nozzle over a sample' },
+          { url: sensorNfesPump, caption: 'Syringe pump display during a run' }
+        ]
+      },
+      {
+        heading: 'Fabrication Photos',
+        text: `Photos from the bench: conductive networks embedded in Ecoflex, including samples that didn't come out well.`,
+        images: [
+          { url: sensorCarbonMesh1 },
+          { url: sensorCarbonMesh3 },
+          { url: sensorFailedSample1 },
+          { url: sensorFailedSample2 },
+          { url: sensorFinished1 },
+          { url: sensorFinished2 }
+        ]
+      },
+      {
+        heading: 'Lab Notes: First Electrospinning Runs',
+        text: `My first runs showed how sensitive the process is. With a 1 mL syringe on the pump at roughly 1.2 mL/h (fluctuating), the fibers came out thick and broke up — my mentor's read was that the flow rate was far too high and the result wasn't true electrospinning. The same lesson applied to sensor curing: the copper electrode pads have to go in at the right moment, and I learned that by getting the timing wrong once. I logged each sensor's measured resistance alongside likely failure causes and ideas for improvement, which turned trial-and-error into something comparable from one sensor to the next.`
+      },
+      {
+        heading: 'Directions We Explored',
+        text: `The group's next steps for the hand sensor were to add more connection pads (on the same layer and in stacked layers) so force and position could be triangulated, to cast a fingerprint-textured fingertip mold, and to add a stiffer "robotic nail" support behind the sensor, since the support material needed to be stiffer than Ecoflex.`
+      },
+      {
+        heading: 'Outcome',
+        text: `This project didn't go on to a result or publication; I stepped away from it when I moved onto the lab's sheet-metal AI work, and I left the lab in March 2026. What I took from it was hands-on practice fabricating soft sensors, working with a high-voltage electrospinning setup, and reading and applying research literature — experience I carried into the lab's sheet-metal AI work.`
+      }
+    ]
+  },
+  {
     id: 20,
     title: 'Dodecahedron Lamp',
     category: 'Digital Fabrication · Geometric Modeling',
@@ -1779,6 +1642,169 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     ]
   },
   {
+    id: 24,
+    title: 'Light Tracing Board',
+    category: 'Product Design · Laser Cutting · 3D Printing',
+    image: tracingBoardInUse,
+    description: 'A laser-cut acrylic light board with 3D-printed corner stands, sized to fit the large-format paper used in my industrial sketching class.',
+    filterCategory: 'Small Projects',
+    date: '2026',
+    tools: ['Laser Cutting', 'Acrylic Fabrication', '3D Printing (PLA)', 'Product Design', 'CAD Modeling'],
+    content: [
+      {
+        text: `Built alongside my industrial sketching class in Spring 2026 — a light table for tracing sketches, sized to exactly fit the large-format paper I was using in class. A light placed underneath shines up through the paper, making it easy to see and trace over an existing drawing.`,
+        images: [
+            { url: tracingBoardInUse, caption: 'Tracing a sketch on the light board' }
+        ]
+      },
+      {
+        heading: 'Build',
+        text: `Laser-cut acrylic sheet, held up on four 3D-printed PLA corner stands secured with M3 bolts and nuts. The stands elevate the acrylic off the table so the light underneath has room to spread evenly across the sheet before it reaches the paper.`,
+        images: [
+            { url: tracingBoardLit, caption: 'The board elevated on its corner stands, lit from underneath' },
+            { url: tracingBoardElevated, caption: 'Corner stand detail, showing the elevation off the table surface' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 28,
+    title: 'Midwest EV: Openpilot Retrofit',
+    category: 'Electric Vehicles · Embedded Electronics · Enclosure Design (Work in Progress)',
+    image: '',
+    description: 'A volunteer engineering team building an openpilot retrofit for Tesla Model S cars built before factory Autopilot — custom wiring harnesses, PCBs, and enclosures. I design the enclosure for the project\'s electronics.',
+    filterCategory: 'Design',
+    inProgress: true,
+    date: '2026',
+    tools: ['Enclosure Design', 'CAD', 'Wiring Harnesses', 'PCB Design Review', 'Vehicle Integration', 'GitHub', 'Remote Team Collaboration'],
+    content: [
+      {
+        text: `Midwest EV is a small engineering group working on its main project: an openpilot retrofit for Tesla Model S cars built before factory Autopilot. The build covers the vehicle wiring, custom harnesses, and integration needed to connect openpilot to the car, with bench work and road testing along the way. The group also works on Tesla drive units, battery packs, and custom electronics, and runs a public site (midwestev.tech) for retrofit inquiries. I'm an engineer on the team, which works remotely across time zones. The project is ongoing.`
+      },
+      {
+        heading: 'How the Team Works',
+        text: `The team meets weekly for a one-hour status meeting plus a four-hour Friday work session, with work tracked in a shared GitHub repository. Each status meeting closes with a written summary of who owns what, so the electronics, software, website and hardware tracks stay coordinated.`
+      },
+      {
+        heading: 'My Role: Enclosure Design',
+        text: `I own the enclosure design for the project's electronics. The project is still early and the PCB is in design review, so the enclosure is evolving alongside it; the current iteration is incorporating team feedback, including removing the vents.`,
+        images: [
+          { url: deltaEnclosureOpenCad, caption: 'Enclosure CAD with the PCB inside, lid removed' },
+          { url: deltaEnclosureClosedCad, caption: 'Enclosure CAD, closed' },
+          { url: deltaEnclosureLidCad, caption: 'Enclosure lid' },
+          { url: deltaEnclosureTriangleCad, caption: 'Triangular enclosure concept around the board' }
+        ]
+      },
+      {
+        heading: 'The Board',
+        text: `The enclosure is built around the project's PCB, which is currently in design review.`,
+        images: [
+          { url: deltaPcbPhoto, caption: 'The PCB' },
+          { url: deltaPcbOutline, caption: 'Board outline in CAD' }
+        ]
+      },
+      {
+        heading: 'The Wider Project',
+        text: `Other tracks I work alongside include PCB design (where the team compared two circuit topologies, a BJT/MOSFET stage and an LM319 comparator, with simulation to choose between them, and simplified the board for immediate production by dropping a CAN-bus detection circuit), an updated device user interface, and cleaning up the shared code repository.`
+      }
+    ]
+  },
+  {
+    id: 26,
+    title: 'Door Signal',
+    category: 'Accessible Design · Embedded Systems · SME NSMIC (Work in Progress)',
+    image: '',
+    description: 'A single adhesive-mounted device that tells a knock from a slam and answers with a customizable wash of light instead of sound — so Deaf and hard-of-hearing students don\'t miss a knock at a dorm door. A proposal for SME\'s National Student Manufacturing Innovation Challenge.',
+    filterCategory: 'Design',
+    inProgress: true,
+    date: '2026–2027',
+    tools: ['Accessible Design', 'Embedded Systems (ESP32-C3)', 'Accelerometer / IMU Sensing', 'Signal Discrimination', 'Power Budgeting', 'Bill of Materials', 'Prototyping', 'Team Leadership'],
+    content: [
+      {
+        text: `Door Signal is my team's entry for the National Student Manufacturing Innovation Challenge (NSMIC), hosted by SME's student chapter at Purdue. Teams of four to six students design and build a working prototype that makes everyday objects in college residence halls more accessible, and the competition is April 17–18, 2027. I'm the team lead, designer, and engineer on a team of five Northwestern students, and I also helped organize Northwestern's two NSMIC teams through the university's SME student chapter. The project is at the proposal stage — nothing is built or validated yet.`
+      },
+      {
+        heading: 'The Problem',
+        text: `Dorm rooms have no doorbells, so a knock is audible-only. Deaf and hard-of-hearing students miss it — and so does anyone asleep or wearing headphones. About 19% of undergraduates report a disability, and a missed knock can mean a locked-out roommate or a missed delivery. Commercial fixes exist, but they split into two devices and cost over $250: the Serene Innovations CentralAlert knock sensor plus a wearable pager comes to $261.72.`
+      },
+      {
+        heading: 'The Concept',
+        text: `One self-contained unit that mounts to the inside face of the door, senses a knock through the door panel, tells it apart from a slam, and answers with a wide, diffuse wash of colored light aimed at the wall and ceiling instead of a sound. A thin adhesive baseplate stays on the door while the device body clips on and off for charging, so the adhesive isn't disturbed every charge. It works with no phone, app, account, or Wi-Fi, and every control is physically distinct by size and shape, because identical buttons would themselves be an accessibility failure.`
+      },
+      {
+        heading: 'Telling a Knock from a Slam',
+        text: `Detecting an impulse is easy; rejecting the wrong ones is the real problem. A knock is a 5–20 ms high-frequency impulse delivered straight into the panel, while a door opening is a lower-frequency acceleration ending in a latch impact, and a neighbor's slam arrives attenuated through the frame as a single impulse.
+
+The plan escalates only as far as testing demands:
+• First pass: a three-axis accelerometer in low-power motion-wake mode, requiring two or more impulses within about 1.5 s, since a knock is a pattern and a slam isn't
+• If that misses the false-positive target: a 6-axis IMU, where the gyroscope turns "is the door rotating?" into a direct measurement
+• If still short: a classifier trained on the IMU's on-chip ML core`
+      },
+      {
+        heading: 'Target Specifications',
+        text: `• Detection latency under 1 s after the final knock
+• Fewer than 1 false positive per 24 hours — above that, users disable the device
+• Fewer than 5% missed normal-force knocks, including light knocks from limited grip
+• Steady, non-strobing light, because of seizure and migraine risk
+• Over 5 months of battery life per charge; the power budget works out to about 175 days on a single 18650 cell
+• Tool-free, reversible adhesive installation that works on wood and steel doors`
+      },
+      {
+        heading: 'Secondary Goals',
+        text: `In priority order: on-device customization of color, brightness, and alert pattern; optional phone or smartwatch pairing over the microcontroller's built-in Bluetooth; and fire alarm detection. Fire alarms in sleeping areas use a standardized 520 Hz low-frequency, three-pulse signal, so a microphone could match that cadence and switch the device to a dedicated fire-alert light pattern — audible-only alarms have the same blind spot as a knock. It needs its own sensor and its own validation, so it's scoped as a goal rather than a requirement.`
+      },
+      {
+        heading: 'Cost',
+        text: `A single prototype is costed at about $50 on protoboard — an ESP32-C3 microcontroller, accelerometer, RGBW light strip with a printed diffuser, an 18650 battery with charging, and a PETG enclosure — against $261.72 for the commercial two-device setup.`
+      },
+      {
+        heading: 'Validation Plan',
+        text: `• Tape a phone logging accelerometer and gyroscope data to a dorm door and record knocks, door open and close, a neighbor's door, and hallway traffic on each door type
+• Test accelerometer-only separation first and escalate only if needed
+• Compare Command strip and VHB mounting by which one best preserves the high-frequency signal
+• Run a 72-hour breadboard test on a real door and count false positives against the target
+• Photograph the light wash from the desk and bed to confirm it's noticeable
+• Get feedback from students who would actually use it`
+      },
+      {
+        heading: 'Status',
+        text: `Pre-build. The team has reached out to Northwestern's AccessibleNU office for feedback from students who would use the device. Team registration is due October 23, the concept has to be locked by the end of November, when SME submits it for ADA compliance review, and a poster is required at the competition.`
+      }
+    ]
+  },
+  {
+    id: 27,
+    title: 'P1 Motor Club Track Model',
+    category: 'Scale Modeling · 3D Printing · Civil 3D to Physical (Work in Progress)',
+    image: '',
+    description: 'A large-scale, mostly 3D-printed model of the P1 Motor Club racetrack property, built from the project civil engineer\'s Civil 3D files and sized to ride in the back of a truck as a sales tool for memberships.',
+    filterCategory: 'Design',
+    inProgress: true,
+    date: '2026',
+    tools: ['3D Printing', 'AutoCAD / Civil 3D Data', 'Scale Modeling', 'Terrain Modeling', 'Painting & Finishing', 'Prototyping'],
+    content: [
+      {
+        text: `P1 Motor Club is building a private motorsports community on Florida's Treasure Coast, with racetracks, testing areas, and homes for car enthusiasts. The club asked me to build a physical model of the property that can travel to events in the back of a truck and help sell memberships. I'm designing and building it myself, and it's still in progress.`
+      },
+      {
+        heading: 'The Brief',
+        text: `The model should be as large as possible while still fitting in the back of a truck. It is built as one rigid piece — it doesn't come apart for transport and has no moving parts — so it has to survive being driven around and look good when it arrives.`
+      },
+      {
+        heading: 'From Civil Drawings to a Physical Model',
+        text: `The model is built from AutoCAD and Civil 3D files supplied by the project's lead civil engineer, so the track layout and the terrain come from the real site data instead of being approximated by eye.`
+      },
+      {
+        heading: 'Build Approach',
+        text: `The terrain and track are mostly 3D printed, then glued together and painted. Fake modeling grass, trees, and water finish the surface so it reads as a real landscape at a glance.`
+      },
+      {
+        heading: 'Status',
+        text: `I'm currently printing a test piece and iterating on it to get the best-looking result — the print, the paint, and the grass and water — before buying enough material to build the full-size model.`
+      }
+    ]
+  },
+  {
     id: 23,
     title: 'Kerf-Bent Walnut Turntable Stand',
     category: 'Furniture Design · CNC Fabrication · Audio Equipment (Work in Progress)',
@@ -1811,32 +1837,6 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
         text: `Materials sourced, BOM finalized, CAD complete. Next step is kerfing the walnut plywood on the CNC router, plus cable management for a clean final build.`,
         images: [
             { url: turntableBom, caption: 'Bill of materials — $370.04 total across plywood, the V-groove bit, brass tubing, vibration isolation hardware, and finish' }
-        ]
-      }
-    ]
-  },
-  {
-    id: 24,
-    title: 'Light Tracing Board',
-    category: 'Product Design · Laser Cutting · 3D Printing',
-    image: tracingBoardInUse,
-    description: 'A laser-cut acrylic light board with 3D-printed corner stands, sized to fit the large-format paper used in my industrial sketching class.',
-    filterCategory: 'Small Projects',
-    date: '2026',
-    tools: ['Laser Cutting', 'Acrylic Fabrication', '3D Printing (PLA)', 'Product Design', 'CAD Modeling'],
-    content: [
-      {
-        text: `Built alongside my industrial sketching class in Spring 2026 — a light table for tracing sketches, sized to exactly fit the large-format paper I was using in class. A light placed underneath shines up through the paper, making it easy to see and trace over an existing drawing.`,
-        images: [
-            { url: tracingBoardInUse, caption: 'Tracing a sketch on the light board' }
-        ]
-      },
-      {
-        heading: 'Build',
-        text: `Laser-cut acrylic sheet, held up on four 3D-printed PLA corner stands secured with M3 bolts and nuts. The stands elevate the acrylic off the table so the light underneath has room to spread evenly across the sheet before it reaches the paper.`,
-        images: [
-            { url: tracingBoardLit, caption: 'The board elevated on its corner stands, lit from underneath' },
-            { url: tracingBoardElevated, caption: 'Corner stand detail, showing the elevation off the table surface' }
         ]
       }
     ]
