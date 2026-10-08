@@ -28,28 +28,28 @@ const experience: Entry[] = [
     title: 'Siemens Healthineers',
     role: 'Mechanical Engineering Intern, Molecular Imaging',
     where: 'Hoffman Estates, IL',
-    dates: 'Jun 2026 – Dec 2026',
+    dates: 'Jun 2026 – Present',
     bullets: [
-      'Modify SPECT/PET scanner components so they work within the larger system, including resolving a part interference, and assign tolerances and apply GD&T for manufacturability.',
-      'Design and prototype in Siemens NX with 3D-printed parts, and support hands-on assembly and troubleshooting.',
-      'Produce engineering drawings and exploded views; contribute research on mechanical subsystems for a next-generation SPECT/CT system.',
+      'Updated CAD models and drawings for mechanical components in SPECT and PET scanners to resolve interferences and improve manufacturability. Applied GD&T to fully define part requirements.',
+      'Designed fixtures and brackets in Siemens NX/Designcenter. Used 3D printing to evaluate and iterate on design.',
+      'Contributed to the development of a multi-axis stage and investigated motorized drives to support SPECT research team.',
     ],
   },
   {
     title: 'P1 Motor Club',
-    role: 'Promotional Representative, Research Assistant & Test Driver Intern',
+    role: 'Test Driver, Research & Promotions Intern',
     where: 'Tampa, FL',
     dates: 'Apr 2023 – Present',
     bullets: [
-      'Tested new track layouts in simulators and gave performance feedback to engineers to inform design changes.',
-      'Building a large-scale, mostly 3D-printed model of the track property from the civil engineer\'s Civil 3D files, sized to travel in a truck as a membership sales tool.',
+      'Test new track layouts in simulators and give performance feedback to engineers to inform design changes.',
+      'Promote the club and its track property to prospective members, including by building a large-scale, mostly 3D-printed model from the civil engineer’s Civil 3D files, sized to travel in a truck as a membership sales tool.',
     ],
   },
   {
     title: 'MIT Beaverworks Summer Institute',
     role: 'Teaching Assistant, “Basics of ASICs”',
     where: 'Cambridge, MA',
-    dates: 'Jan 2024 – Feb 2024',
+    dates: 'Jun 2024 – Aug 2024',
     bullets: ['Guided students through ASIC schematic design, simulation, and testing, and helped refine labs and curriculum.'],
   },
   {
@@ -64,12 +64,12 @@ const experience: Entry[] = [
 const projects: Entry[] = [
   {
     title: 'Advanced Intelligent Manufacturing Lab',
-    role: 'Undergraduate Researcher · NSF ERC-HAMMER · Co-author, MSEC 2026 / NAMRC54',
-    dates: 'Nov 2025 – Jun 2026',
+    role: 'Researcher · NSF ERC-HAMMER · MSEC 2026 Poster Co-author',
+    dates: 'Nov 2025 – Apr 2026',
     bullets: [
-      'Smart Sheet Smith: co-authored a paper on a five-agent AI pipeline that turns a 2D sheet-metal drawing into a verified bending process plan, with no 3D CAD or labeled data.',
+      'Smart Sheet Smith: co-author on the MSEC 2026 / NAMRC54 poster for a five-agent AI pipeline that turns a 2D sheet-metal drawing into a verified bending process plan, with no 3D CAD or labeled data.',
       'Built the Tracer Agent\'s evaluation corpus (CAD parts, multi-view drawings, hand-derived bend math) and a SolidWorks VBA pipeline that generates hundreds of valid drawings, cutting data creation from days to minutes.',
-      'Fall 2025: fabricated 10+ flexible resistive tactile sensors (carbon nanotubes in Ecoflex) and ran near-field electrospinning at 10 kV.',
+      'Fabricated 10+ flexible resistive tactile sensors (carbon nanotubes in Ecoflex) and ran near-field electrospinning at 10 kV (Fall 2025).',
     ],
   },
   {
@@ -85,14 +85,20 @@ const projects: Entry[] = [
     title: 'CT Scanner for Aquatic Animals',
     role: 'Design & Build Engineer · Major Aquarium',
     where: 'Chicago, IL',
-    dates: 'Sept 2025 – Present',
-    bullets: ['Adapting a medical CT scanner for fish with a veterinarian: stabilization and ventilation systems, and corrosion protection against saltwater.'],
+    dates: 'Sept 2025 – Mar 2026',
+    bullets: ['Adapted a medical CT scanner for fish with a veterinarian: stabilization, ventilation and saltwater corrosion protection.'],
   },
   {
     title: 'Door Signal',
     role: 'Team Lead & Designer · SME National Student Manufacturing Innovation Challenge',
     dates: 'Aug 2026 – Present',
     bullets: ['Leading a team of five on an adhesive-mounted device that tells a knock from a slam and alerts Deaf and hard-of-hearing students with light; in the proposal stage.'],
+  },
+  {
+    title: 'Midwest EV Openpilot Retrofit',
+    role: 'Enclosure Designer · Pre-Autopilot Tesla Model S retrofit',
+    dates: '2026 – Present',
+    bullets: ['Design the enclosure for the custom PCB in a Tesla Model S openpilot retrofit, iterating as the board goes through design review.'],
   },
   {
     title: 'Bionic Wrench Assembly Fixture',
@@ -112,7 +118,7 @@ const skills = [
   ['Design & Fabrication', 'Siemens NX, SolidWorks, GD&T, Engineering Drawings, 3D Printing, Machining (Lathe, CNC, Mill), Welding, Rapid Prototyping, DFM/DFR'],
   ['Analysis & Software', 'Ansys, MATLAB, Python, VBA, Unity, GitHub, Adobe Photoshop, Circuit Design, Radio Control'],
   ['Relevant Courses', 'Manufacturing Engineering Design (DFM), Computer Integrated Manufacturing, Geometry & Manufacturing, Mechanical Design & Manufacturing, Materials Selection, Mechatronics, Mechanics of Materials, Electronics Design, Human-Centered Product Design, Optimization'],
-  ['Clubs', 'Formula SAE, Combat Robotics, SME Student Chapter'],
+  ['Clubs', 'Formula SAE, Baja SAE, Combat Robotics, SME Student Chapter'],
 ];
 
 function EntryBlock({ entry }: { entry: Entry }) {

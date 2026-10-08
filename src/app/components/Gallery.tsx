@@ -81,6 +81,46 @@ import eng3dPrintTiles from 'figma:asset/eng-3d-print-tiles.webp';
 import engBajaCar from 'figma:asset/eng-baja-car.webp';
 import engCopperBrazing from 'figma:asset/eng-copper-brazing.webp';
 import engWaterjet from 'figma:asset/eng-waterjet.webp';
+import engAssemblyBench from 'figma:asset/eng-assembly-bench.webp';
+import engBrazingCloseup from 'figma:asset/eng-brazing-closeup.webp';
+import engHammerForming from 'figma:asset/eng-hammer-forming.webp';
+import engFoundryFurnace from 'figma:asset/eng-foundry-furnace.webp';
+import engIronMoldGlowing from 'figma:asset/eng-iron-mold-glowing.webp';
+import engIronPour1 from 'figma:asset/eng-iron-pour-1.webp';
+import engIronPour2 from 'figma:asset/eng-iron-pour-2.webp';
+import engIronPourCrew from 'figma:asset/eng-iron-pour-crew.webp';
+
+// Personal photos (Jordan's Tesla Repair first, then everything else)
+import personalTeslaUnderCar2 from 'figma:asset/personal-tesla-under-car-2.webp';
+import personalTeslaUnderCar from 'figma:asset/personal-tesla-under-car.webp';
+import personalCopenhagenCanal from 'figma:asset/personal-copenhagen-canal.webp';
+import personalAirportDog from 'figma:asset/personal-airport-dog.webp';
+import personalTeslaFrontOpen from 'figma:asset/personal-tesla-front-open.webp';
+import personalTeslaFrontApart from 'figma:asset/personal-tesla-front-apart.webp';
+import personalTeslaOnRamp from 'figma:asset/personal-tesla-on-ramp.webp';
+import personalLakeOverlook from 'figma:asset/personal-lake-overlook.webp';
+import personalHighlandCow from 'figma:asset/personal-highland-cow.webp';
+import personalDuskField from 'figma:asset/personal-dusk-field.webp';
+import personalTidalNet from 'figma:asset/personal-tidal-net.webp';
+import personalCoastSunset from 'figma:asset/personal-coast-sunset.webp';
+import personalRaceCarEvent from 'figma:asset/personal-race-car-event.webp';
+import personalTurtleLaser from 'figma:asset/personal-turtle-laser.webp';
+import personalBeach from 'figma:asset/personal-beach.webp';
+import personalHillsideDog from 'figma:asset/personal-hillside-dog.webp';
+import personalEiffel from 'figma:asset/personal-eiffel.webp';
+import personalTrollSculpture from 'figma:asset/personal-troll-sculpture.webp';
+import personalKitten from 'figma:asset/personal-kitten.webp';
+import personalAmsterdamBoat from 'figma:asset/personal-amsterdam-boat.webp';
+import personalGroupPark from 'figma:asset/personal-group-park.webp';
+import personalDjing from 'figma:asset/personal-djing.webp';
+import personalFountainSunset from 'figma:asset/personal-fountain-sunset.webp';
+import personalMineralMuseum from 'figma:asset/personal-mineral-museum.webp';
+import personalAnvilOutdoors from 'figma:asset/personal-anvil-outdoors.webp';
+import personalCopenhagenKayak from 'figma:asset/personal-copenhagen-kayak.webp';
+import personalDriving from 'figma:asset/personal-driving.webp';
+import personalKartingGroup from 'figma:asset/personal-karting-group.webp';
+import personalDog from 'figma:asset/personal-dog.webp';
+import personalP1Kart from 'figma:asset/personal-p1-kart.webp';
 
 // Sketchbook scans (one entry per page, in scan order) — too many to import by
 // hand, so pull the whole set in at once.
@@ -113,7 +153,7 @@ const sketchbookScans = Object.keys(sketchbookModules)
 // CT concept drawings are handled directly in standaloneImages below.)
 const projectSketchUrls = new Set([projConceptSketch]);
 
-type GalleryCategory = 'Engineering' | 'Artwork' | 'Sketches';
+type GalleryCategory = 'Engineering' | 'Artwork' | 'Sketches' | 'Personal';
 
 interface GalleryItem {
   src: string;
@@ -177,6 +217,48 @@ const standaloneImages: GalleryItem[] = [
     { src: engBajaCar, caption: 'Northwestern Baja SAE off-road racer', category: 'Engineering' },
     { src: engCopperBrazing, caption: 'Brazing copper tubing', category: 'Engineering' },
     { src: engWaterjet, caption: 'Abrasive waterjet cutting', category: 'Engineering' },
+    { src: engAssemblyBench, caption: 'Assembling a mechanism at the bench', category: 'Engineering' },
+    { src: engBrazingCloseup, caption: 'Torch-brazing a copper joint', category: 'Engineering' },
+    { src: engHammerForming, caption: 'Hand-forming metal with a hammer and clamp', category: 'Engineering' },
+    { src: engFoundryFurnace, caption: 'Tending a foundry furnace', category: 'Engineering' },
+    { src: engIronMoldGlowing, caption: 'Sand mold glowing during an iron pour', category: 'Engineering' },
+    { src: engIronPour1, caption: 'Molten iron at the furnace', category: 'Engineering' },
+    { src: engIronPour2, caption: 'Molten iron at the furnace', category: 'Engineering' },
+    { src: engIronPourCrew, caption: 'Iron pour crew in protective gear', category: 'Engineering' },
+
+    // --- PERSONAL ---
+    // Personal photos and anything that doesn't fit the other categories.
+    // Jordan's Tesla Repair photos lead; the under-the-car photo is the cover.
+    { src: personalTeslaUnderCar2, caption: "Working under a Tesla Model S at Jordan's Tesla Repair", category: 'Personal' },
+    { src: personalTeslaUnderCar, caption: "Under a Tesla at Jordan's Tesla Repair", category: 'Personal' },
+    { src: personalTeslaFrontOpen, caption: "Tesla front end open for repair, Jordan's Tesla Repair", category: 'Personal' },
+    { src: personalTeslaFrontApart, caption: "Tesla front end stripped down, Jordan's Tesla Repair", category: 'Personal' },
+    { src: personalTeslaOnRamp, caption: "Tesla Model S on ramps at Jordan's Tesla Repair", category: 'Personal' },
+    { src: personalP1Kart, category: 'Personal' },
+    { src: personalKartingGroup, category: 'Personal' },
+    { src: personalRaceCarEvent, category: 'Personal' },
+    { src: personalDjing, category: 'Personal' },
+    { src: personalAnvilOutdoors, category: 'Personal' },
+    { src: personalTurtleLaser, category: 'Personal' },
+    { src: personalTrollSculpture, category: 'Personal' },
+    { src: personalMineralMuseum, category: 'Personal' },
+    { src: personalLakeOverlook, category: 'Personal' },
+    { src: personalCoastSunset, category: 'Personal' },
+    { src: personalDuskField, category: 'Personal' },
+    { src: personalFountainSunset, category: 'Personal' },
+    { src: personalCopenhagenKayak, category: 'Personal' },
+    { src: personalAmsterdamBoat, category: 'Personal' },
+    { src: personalCopenhagenCanal, category: 'Personal' },
+    { src: personalEiffel, category: 'Personal' },
+    { src: personalTidalNet, category: 'Personal' },
+    { src: personalBeach, category: 'Personal' },
+    { src: personalHighlandCow, category: 'Personal' },
+    { src: personalHillsideDog, category: 'Personal' },
+    { src: personalKitten, category: 'Personal' },
+    { src: personalDog, category: 'Personal' },
+    { src: personalAirportDog, category: 'Personal' },
+    { src: personalGroupPark, category: 'Personal' },
+    { src: personalDriving, category: 'Personal' },
 
     // --- SKETCHES ---
     ...sketchbookScans.map(({ src, series }): GalleryItem => ({
@@ -208,13 +290,16 @@ const projectImages: GalleryItem[] = projects.flatMap(project =>
 
 const galleryImages: GalleryItem[] = [...standaloneImages, ...projectImages];
 
-const tabs: Array<'All' | GalleryCategory> = ['All', 'Engineering', 'Sketches', 'Artwork'];
+const allTabs: Array<'All' | GalleryCategory> = ['All', 'Engineering', 'Sketches', 'Artwork', 'Personal'];
+// Hide a category's tab until it has at least one image
+const tabs = allTabs.filter(t => t === 'All' || galleryImages.some(img => img.category === t));
 
 const tabLabels: Record<'All' | GalleryCategory, string> = {
   All: 'All',
   Engineering: 'Engineering',
   Sketches: 'Design Sketches',
   Artwork: 'Artwork',
+  Personal: 'Personal',
 };
 
 const COLUMN_BREAKPOINTS: Record<number, number> = { 350: 1, 750: 2, 900: 3 };

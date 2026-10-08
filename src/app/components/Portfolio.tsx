@@ -132,6 +132,26 @@ import wrenchCadStand from '../../imports/dsgn386/p29_1.webp';
 // Smart Sheet Smith — NSF HAMMER research (AIM Lab, Northwestern)
 import sheetSmithPoster from '../../imports/1781900331401__2_.webp';
 
+// Flexible Tactile Sensors — fabrication photos
+import sensorNfesSetupWide from 'figma:asset/sensor-nfes-setup-wide.webp';
+import sensorNfesNozzle from 'figma:asset/sensor-nfes-nozzle.webp';
+import sensorNfesSample from 'figma:asset/sensor-nfes-sample.webp';
+import sensorNfesPump from 'figma:asset/sensor-nfes-pump.webp';
+import sensorCarbonMesh1 from 'figma:asset/sensor-carbon-mesh-1.webp';
+import sensorCarbonMesh3 from 'figma:asset/sensor-carbon-mesh-3.webp';
+import sensorFailedSample1 from 'figma:asset/sensor-failed-sample-1.webp';
+import sensorFailedSample2 from 'figma:asset/sensor-failed-sample-2.webp';
+import sensorFinished1 from 'figma:asset/sensor-finished-1.webp';
+import sensorFinished2 from 'figma:asset/sensor-finished-2.webp';
+
+// Midwest EV — enclosure and PCB
+import deltaEnclosureTriangleCad from 'figma:asset/delta-enclosure-triangle-cad.webp';
+import deltaPcbPhoto from 'figma:asset/delta-pcb-photo.webp';
+import deltaPcbOutline from 'figma:asset/delta-pcb-outline.webp';
+import deltaEnclosureOpenCad from 'figma:asset/delta-enclosure-open-cad.webp';
+import deltaEnclosureLidCad from 'figma:asset/delta-enclosure-lid-cad.webp';
+import deltaEnclosureClosedCad from 'figma:asset/delta-enclosure-closed-cad.webp';
+
 export interface ProjectSection {
   heading?: string;
   text?: string;
@@ -159,7 +179,7 @@ export const projects: Project[] = [
     image: sheetSmithPoster,
     description: 'An end-to-end LLM-driven multi-agent system that turns a 2D sheet-metal drawing into a verified, physics-grounded bending process plan — no 3D CAD, no labeled data. Presented at MSEC 2026 / NAMRC54.',
     filterCategory: 'Research',
-    date: '2025–2026',
+    date: '2026',
     tools: ['Multi-Agent LLM Orchestration', 'Vision-Language Models', 'Retrieval-Augmented Generation', 'Reference-Free Evaluation', 'SolidWorks API / VBA', 'Parametric CAD', 'Sheet-Metal Bend Analysis', 'Dataset Construction'],
     content: [
       {
@@ -229,6 +249,23 @@ I built the evaluation corpus from the ground up: modeling the parts in CAD, pro
 Validating the agent meant doing the bend math by hand — bend allowances, developed lengths, segment sequences — and checking the agent's extraction against it case by case. Beyond numerical correctness, I applied a manufacturability check the math alone can't provide: reasoning through the actual forming process to judge whether a proposed plan was physically realizable on a press brake, or whether it produced a sequence that looked valid on paper but couldn't be made. That distinction drove several corrections to how the pipeline handles bend ordering and tool access.`
       },
       {
+        heading: 'Labeling & Reviewing the Agents',
+        text: `The Tracer Agent was only as good as the ground truth it was checked against, so labeling was shared work: the SIMBA drawings were split three ways (roughly 17 parts each) and each of us hand-labeled the segment topology, bend directions and feature positions in JSON. Early on I ran into cases the schema didn't cover — a drawing missing the dimension needed for total extrusion length, features whose segment IDs didn't line up — so I proposed a convention for flagging them (a corrected value plus a "corrected_reason" note) and wrote it up for the whole team so every labeler used the same format.
+
+While labeling I kept a running list of Tracer failure modes, which fed back into prompt design:
+• Angled flanges, angled cuts and angle callouts were the weakest area — angles were rarely reported unless they were bends.
+• Positions need one stated reference corner and a stated reference point on the feature (slot arc centers, triangle centroids), or the model can't know which way to measure.
+• The model sometimes subtracted a radius from a length when it shouldn't, and was ambiguous about which of several identical views it was reading.
+
+Later I also reviewed Engineering Agent output on five parts as the "manufacturing engineer" in the loop. Findings: the K-factor needs to be fixed before bend deduction is computed; bend deduction was being calculated from the outer radius instead of the inner radius; and V-die selection should be reported as an approximate range (e.g. 8t–10t for thickness t) rather than a single number, since real dies come in discrete sizes.`
+      },
+      {
+        heading: 'Building the Dataset & Knowledge Base',
+        text: `Beyond modeling parts, I helped keep the dataset physically realistic. Parts had to be makeable by V-bending, with bend radius sensible for the sheet thickness (a 3 mm radius on 0.1 mm stock isn't a bend, it's a curved shell, and springback makes it unpredictable), reasonable minimum widths, and no overlapping tabs that would confuse feature extraction. I first proved out automated data generation by randomizing part dimensions through SolidWorks equations, then moved to the VBA macro below for flexibility.
+
+For the Engineering Agent's RAG knowledge base, I gathered open-access papers, handbooks and tooling references as PDFs and sorted them into three groups — materials, bending machines and tooling, and bending processes — plus a separate set of computer-aided process planning (CAPP) papers kept out of retrieval.`
+      },
+      {
         heading: 'Automated Parametric Drawing Generation',
         text: `Manual drawing creation was the hard ceiling on dataset size, so I built a SolidWorks VBA macro pipeline to remove it. Given one base CAD model, the macro randomizes its dimensions within controlled ranges and exports each variation as a fully-dimensioned PDF — hundreds of valid drawings in minutes instead of days.
 
@@ -263,8 +300,8 @@ The complex-part result was the useful one. Interdependent features — a hole t
 • A broader base-part library covering flanges, housings, and plates with hole patterns.`
       },
       {
-        heading: 'Publication & Team',
-        text: `Co-author on the MSEC 2026 / NAMRC54 publication as an undergraduate researcher (Tracer Agent, dataset construction and validation, automated parametric drawing generation).
+        heading: 'Poster & Team',
+        text: `Co-author on the MSEC 2026 / NAMRC54 poster as an undergraduate researcher (Tracer Agent, dataset construction and validation, automated parametric drawing generation).
 
 Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northwestern University); Jamie Coble (University of Tennessee, Knoxville); Ping Guo (Northwestern University).`
       }
@@ -281,7 +318,7 @@ Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northweste
     tools: ['Near-Field Electrospinning (NFES)', 'Carbon Nanotube / Nanoparticle Composites', 'Ecoflex Silicone', 'Resistive Sensor Fabrication', 'High-Voltage Equipment (10 kV)', 'Literature Review', 'Lab Safety Training'],
     content: [
       {
-        text: `My first research project at the Advanced Intelligent Manufacturing (AIM) Laboratory at Northwestern, in Fall 2025 — the quarter before I moved onto Smart Sheet Smith. I worked under Zahra Sadeghi, a PhD student in Prof. Ping Guo's group, continuing her work on soft tactile sensors for a robotic hand. My role was hands-on: I fabricated the sensors and ran the electrospinning setup myself.`
+        text: `My first research project at the Advanced Intelligent Manufacturing (AIM) Laboratory at Northwestern, starting in Fall 2025, before I moved onto Smart Sheet Smith. I worked under Zahra Sadeghi, a PhD student in Prof. Ping Guo's group, continuing her work on soft tactile sensors for a robotic hand. My role was hands-on: I fabricated the sensors and ran the electrospinning setup myself.`
       },
       {
         heading: 'How the Sensors Work',
@@ -294,12 +331,38 @@ Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northweste
 • Worked through a reading list on resistive tactile sensing, e-skin, piezoresistive strain sensors, embedded 3D-printed strain sensors, and AC near-field electrospinning`
       },
       {
+        heading: 'The Electrospinning Setup',
+        text: `The near-field electrospinning rig I ran: a syringe pump feeds the nozzle, a high-voltage lead energizes it, and the sample sits on a copper collector plate on a motion stage, with a microscope light for watching the fiber.`,
+        images: [
+          { url: sensorNfesSetupWide, caption: 'The full rig: syringe pump, nozzle on a clamp, and sample on a copper collector plate over a motion stage' },
+          { url: sensorNfesNozzle, caption: 'Nozzle above the silicone sample, with the high-voltage clip lead attached' },
+          { url: sensorNfesSample, caption: 'Closer view of the nozzle over a sample' },
+          { url: sensorNfesPump, caption: 'Syringe pump display during a run' }
+        ]
+      },
+      {
+        heading: 'Fabrication Photos',
+        text: `Photos from the bench: conductive networks embedded in Ecoflex, including samples that didn't come out well.`,
+        images: [
+          { url: sensorCarbonMesh1 },
+          { url: sensorCarbonMesh3 },
+          { url: sensorFailedSample1 },
+          { url: sensorFailedSample2 },
+          { url: sensorFinished1 },
+          { url: sensorFinished2 }
+        ]
+      },
+      {
+        heading: 'Lab Notes: First Electrospinning Runs',
+        text: `My first runs showed how sensitive the process is. With a 1 mL syringe on the pump at roughly 1.2 mL/h (fluctuating), the fibers came out thick and broke up — my mentor's read was that the flow rate was far too high and the result wasn't true electrospinning. The same lesson applied to sensor curing: the copper electrode pads have to go in at the right moment, and I learned that by getting the timing wrong once. I logged each sensor's measured resistance alongside likely failure causes and ideas for improvement, which turned trial-and-error into something comparable from one sensor to the next.`
+      },
+      {
         heading: 'Directions We Explored',
         text: `The group's next steps for the hand sensor were to add more connection pads (on the same layer and in stacked layers) so force and position could be triangulated, to cast a fingerprint-textured fingertip mold, and to add a stiffer "robotic nail" support behind the sensor, since the support material needed to be stiffer than Ecoflex.`
       },
       {
         heading: 'Outcome',
-        text: `This project didn't go on to a result or publication, and I chose not to continue into the following quarter. What I took from it was hands-on practice fabricating soft sensors, working with a high-voltage electrospinning setup, and reading and applying research literature — experience I carried into the lab's sheet-metal AI work.`
+        text: `This project didn't go on to a result or publication; I stepped away from it when I moved onto the lab's sheet-metal AI work, and I left the lab in March 2026. What I took from it was hands-on practice fabricating soft sensors, working with a high-voltage electrospinning setup, and reading and applying research literature — experience I carried into the lab's sheet-metal AI work.`
       }
     ]
   },
@@ -597,7 +660,7 @@ The work spanned five phases — reverse engineering the wrench, mapping the man
 
 2. Workflow creation — We built manufacturing and assembly journey maps. Mapping revealed jaw insertion and jaw riveting as the bottleneck, and showed a two-worker layout left the second worker idle — so we consolidated to a single-operator line.
 
-3. Fixture & process development — Six major fixture versions plus several minor revisions, ending in a 3D-printed body holding steel locating pins on an angled stand, with a waterjet steel plate over the rivet zone and a track that constrains the riveter.
+3. Fixture & process development — Seven fixture versions, ending in a 3D-printed body holding steel locating pins on an angled stand, with a waterjet steel plate over the rivet zone and a track that constrains the riveter.
 
 4. Manufacturing documentation — SOP, journey maps, value stream map, and production planning for scale-up to one million wrenches per year.
 
@@ -1079,6 +1142,48 @@ This demonstrated scalability awareness beyond prototype design.`
 • Optimized via simulation before fabrication
 • Demonstrated real-world braking functionality
 • Iterative refinement based on test data`
+      }
+    ]
+  },
+  {
+    id: 28,
+    title: 'Midwest EV: Openpilot Retrofit',
+    category: 'Electric Vehicles · Embedded Electronics · Enclosure Design (Work in Progress)',
+    image: '',
+    description: 'A volunteer engineering team building an openpilot retrofit for Tesla Model S cars built before factory Autopilot — custom wiring harnesses, PCBs, and enclosures. I design the enclosure for the project\'s electronics.',
+    filterCategory: 'Design',
+    inProgress: true,
+    date: '2026',
+    tools: ['Enclosure Design', 'CAD', 'Wiring Harnesses', 'PCB Design Review', 'Vehicle Integration', 'GitHub', 'Remote Team Collaboration'],
+    content: [
+      {
+        text: `Midwest EV is a small engineering group working on its main project: an openpilot retrofit for Tesla Model S cars built before factory Autopilot. The build covers the vehicle wiring, custom harnesses, and integration needed to connect openpilot to the car, with bench work and road testing along the way. The group also works on Tesla drive units, battery packs, and custom electronics, and runs a public site (midwestev.tech) for retrofit inquiries. I'm an engineer on the team, which works remotely across time zones. The project is ongoing.`
+      },
+      {
+        heading: 'How the Team Works',
+        text: `The team meets weekly for a one-hour status meeting plus a four-hour Friday work session, with work tracked in a shared GitHub repository. Each status meeting closes with a written summary of who owns what, so the electronics, software, website and hardware tracks stay coordinated.`
+      },
+      {
+        heading: 'My Role: Enclosure Design',
+        text: `I own the enclosure design for the project's electronics. The project is still early and the PCB is in design review, so the enclosure is evolving alongside it; the current iteration is incorporating team feedback, including removing the vents.`,
+        images: [
+          { url: deltaEnclosureOpenCad, caption: 'Enclosure CAD with the PCB inside, lid removed' },
+          { url: deltaEnclosureClosedCad, caption: 'Enclosure CAD, closed' },
+          { url: deltaEnclosureLidCad, caption: 'Enclosure lid' },
+          { url: deltaEnclosureTriangleCad, caption: 'Triangular enclosure concept around the board' }
+        ]
+      },
+      {
+        heading: 'The Board',
+        text: `The enclosure is built around the project's PCB, which is currently in design review.`,
+        images: [
+          { url: deltaPcbPhoto, caption: 'The PCB' },
+          { url: deltaPcbOutline, caption: 'Board outline in CAD' }
+        ]
+      },
+      {
+        heading: 'The Wider Project',
+        text: `Other tracks I work alongside include PCB design (where the team compared two circuit topologies, a BJT/MOSFET stage and an LM319 comparator, with simulation to choose between them, and simplified the board for immediate production by dropping a CAN-bus detection circuit), an updated device user interface, and cleaning up the shared code repository.`
       }
     ]
   },
