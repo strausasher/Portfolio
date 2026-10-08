@@ -3,8 +3,11 @@ import { Layout } from './components/Layout';
 import { HomePage } from './components/HomePage';
 import { GalleryPage } from './components/GalleryPage';
 import { ResumePage } from './components/ResumePage';
+import { PortfolioPdfPage } from './components/PortfolioPdfPage';
 
 export const router = createBrowserRouter([
+  // Print-only layout rendered to public/Asher_Straus_Portfolio.pdf
+  { path: '/portfolio-pdf', Component: PortfolioPdfPage },
   {
     path: '/',
     Component: Layout,
