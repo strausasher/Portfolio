@@ -144,6 +144,10 @@ import sensorFailedSample2 from 'figma:asset/sensor-failed-sample-2.webp';
 import sensorFinished1 from 'figma:asset/sensor-finished-1.webp';
 import sensorFinished2 from 'figma:asset/sensor-finished-2.webp';
 
+// P1 Motor Club Track Model
+import p1MasterPlan from 'figma:asset/p1-master-plan.webp';
+import p1Logo from 'figma:asset/p1-logo.webp';
+
 // Midwest EV — enclosure and PCB
 import deltaEnclosureTriangleCad from 'figma:asset/delta-enclosure-triangle-cad.webp';
 import deltaPcbPhoto from 'figma:asset/delta-pcb-photo.webp';
@@ -1776,7 +1780,7 @@ The plan escalates only as far as testing demands:
     id: 27,
     title: 'P1 Motor Club Track Model',
     category: 'Scale Modeling · 3D Printing · Civil 3D to Physical (Work in Progress)',
-    image: '',
+    image: p1MasterPlan,
     description: 'A large-scale, mostly 3D-printed model of the P1 Motor Club racetrack property, built from the project civil engineer\'s Civil 3D files and sized to ride in the back of a truck as a sales tool for memberships.',
     filterCategory: 'Design',
     inProgress: true,
@@ -1784,7 +1788,11 @@ The plan escalates only as far as testing demands:
     tools: ['3D Printing', 'AutoCAD / Civil 3D Data', 'Scale Modeling', 'Terrain Modeling', 'Painting & Finishing', 'Prototyping'],
     content: [
       {
-        text: `P1 Motor Club is building a private motorsports community on Florida's Treasure Coast, with racetracks, testing areas, and homes for car enthusiasts. The club asked me to build a physical model of the property that can travel to events in the back of a truck and help sell memberships. I'm designing and building it myself, and it's still in progress.`
+        text: `P1 Motor Club is building a private motorsports community on Florida's Treasure Coast, with racetracks, testing areas, and homes for car enthusiasts. The club asked me to build a physical model of the property that can travel to events in the back of a truck and help sell memberships. I'm designing and building it myself, and it's still in progress.`,
+        images: [
+          { url: p1MasterPlan, caption: 'The P1 Motor Club property master plan (club rendering), the site the model represents' },
+          { url: p1Logo }
+        ]
       },
       {
         heading: 'The Brief',
