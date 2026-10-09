@@ -17,7 +17,7 @@ interface Entry {
 const education = {
   school: 'Northwestern University',
   detail: 'McCormick School of Engineering  |  Evanston, IL',
-  dates: 'Sept 2023 – Jun 2027',
+  dates: 'Sept 2023 – Mar 2028 (expected)',
   degree: 'B.S. Manufacturing & Design Engineering',
   extras: 'Minor in Art  |  Segal Design Certificate  |  Robotics Certificate',
   gpa: 'GPA: 3.6 / 4.0 cumulative  ·  3.9 / 4.0 since sophomore year',
