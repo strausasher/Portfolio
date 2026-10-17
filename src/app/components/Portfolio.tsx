@@ -67,6 +67,8 @@ import patchworkMockup from 'figma:asset/2db359936a3d16f421f5cdfeb24d599ebbb304b
 import patchworkCrossSection from 'figma:asset/3d1001aaaadf39cac5581426cd1b1ce32f967ffa.webp';
 import patchworkSensoryRoom from 'figma:asset/9ef7d8d4e2fe940d318007df98509c59079bb4ca.webp';
 import patchworkBookCover from 'figma:asset/b0b82af46ce1e6db6a9a0a3fccd9728443f1195e.webp';
+import patchworkFinalPatches from 'figma:asset/patchwork-final-patches.webp';
+import patchworkFinalFront from 'figma:asset/patchwork-final-front.webp';
 import lampImg from 'figma:asset/6f4325245aa689e63a3b4eb0653b90c207882c29.webp';
 import lampLitGlow from 'figma:asset/lamp-lit-glow.webp';
 import lampHanging from 'figma:asset/lamp-hanging.webp';
@@ -1283,6 +1285,8 @@ No electronics → zero seizure risk. No sharp edges. Withstands dropping and th
 
 Fully soft construction → no injury risk if thrown. Machine-washable components. No electronics. Under $15 per unit. Scalable production.`,
         images: [
+            { url: patchworkFinalPatches, caption: 'Final prototype, patch side — four texture patches attached by Velcro, chosen from a larger assortment of swappable patches.' },
+            { url: patchworkFinalFront, caption: 'Final prototype, microfiber side — the soft side of the pillow at the huggable 20″ × 30″ scale.' },
             { url: patchworkPillowDim },
             { url: patchworkCrossSection },
         ]
