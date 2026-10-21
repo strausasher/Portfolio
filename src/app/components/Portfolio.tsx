@@ -158,6 +158,8 @@ import deltaEnclosureOpenCad from 'figma:asset/delta-enclosure-open-cad.webp';
 import deltaEnclosureLidCad from 'figma:asset/delta-enclosure-lid-cad.webp';
 import deltaEnclosureClosedCad from 'figma:asset/delta-enclosure-closed-cad.webp';
 import deltaEnclosureMinimalCad from 'figma:asset/delta-enclosure-minimal-cad.webp';
+import deltaEnclosureEndcapCad from 'figma:asset/delta-enclosure-endcap-cad.webp';
+import deltaEnclosureInternalCad from 'figma:asset/delta-enclosure-internal-cad.webp';
 
 export interface ProjectSection {
   heading?: string;
@@ -1484,10 +1486,15 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     description: 'Hand-fabricated flexible resistive sensors — carbon nanotubes and nanoparticles embedded in Ecoflex silicone — for a soft robotic hand, plus near-field electrospinning at 10 kV. Fall 2025, AIM Lab at Northwestern.',
     filterCategory: 'Research',
     date: '2025',
+    link: { url: 'https://pingguo.mech.northwestern.edu/projects/nfes/', label: 'Micro/Nano-scale Direct Writing (lab project page)' },
     tools: ['Near-Field Electrospinning (NFES)', 'Carbon Nanotube / Nanoparticle Composites', 'Ecoflex Silicone', 'Resistive Sensor Fabrication', 'High-Voltage Equipment (10 kV)', 'Literature Review', 'Lab Safety Training'],
     content: [
       {
         text: `My first research project at the Advanced Intelligent Manufacturing (AIM) Laboratory at Northwestern, starting in Fall 2025, before I moved onto Smart Sheet Smith. I worked under Zahra Sadeghi, a PhD student in Prof. Ping Guo's group, continuing her work on soft tactile sensors for a robotic hand. My role was hands-on: I fabricated the sensors and ran the electrospinning setup myself.`
+      },
+      {
+        heading: 'Research Context: Micro/Nano-scale Direct Writing',
+        text: `My electrospinning work was part of the lab's Micro/Nano-scale Direct Writing research. That research targets 3D printing of micro- and nanoscale structures at sub-micron resolution and low cost, which existing 3D printing techniques struggle to do. Near-field electrospinning is the group's approach. A polymer jet is pulled from the needle tip by a high voltage and stays stable over the few millimeters to the collector, so fibers can be written continuously in a defined pattern and stacked layer by layer. The group has studied steering the jet with external electric fields and demonstrated microscale 3D printing with near-field melt electrospinning. More recently it has worked on immersed electrohydrodynamic direct writing (Sadeghi & Guo, 2026), which runs near-field electrospinning inside a liquid bath to control fiber shape and placement for printing fiber-reinforced composites.`
       },
       {
         heading: 'How the Sensors Work',
@@ -1707,6 +1714,8 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
 The first 25 boards have been ordered and are on their way, and the next step is printing the enclosure and test-fitting it on a real board.`,
         images: [
           { url: deltaEnclosureMinimalCad, caption: 'Current enclosure: compact box with the USB-C port opening' },
+          { url: deltaEnclosureEndcapCad, caption: 'Current enclosure, back end: screwed-on end cap and the wire cutout by the lid' },
+          { url: deltaEnclosureInternalCad, caption: 'Current enclosure with the PCB seated inside, showing the four screw bosses' },
           { url: deltaEnclosureOpenCad, caption: 'Earlier vented version with the PCB inside, lid removed' },
           { url: deltaEnclosureClosedCad, caption: 'Earlier vented version, closed' },
           { url: deltaEnclosureLidCad, caption: 'Enclosure lid' },
