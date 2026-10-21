@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, forwardRef } from 'react';
 import { useSearchParams } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Calendar, Wrench, ZoomIn, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Calendar, Wrench, ZoomIn, ArrowRight, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { dimsFor } from './imageDimensions';
 
@@ -157,6 +157,7 @@ import deltaPcbOutline from 'figma:asset/delta-pcb-outline.webp';
 import deltaEnclosureOpenCad from 'figma:asset/delta-enclosure-open-cad.webp';
 import deltaEnclosureLidCad from 'figma:asset/delta-enclosure-lid-cad.webp';
 import deltaEnclosureClosedCad from 'figma:asset/delta-enclosure-closed-cad.webp';
+import deltaEnclosureMinimalCad from 'figma:asset/delta-enclosure-minimal-cad.webp';
 
 export interface ProjectSection {
   heading?: string;
@@ -175,6 +176,7 @@ export interface Project {
   date?: string;
   filterCategory: 'Design' | 'Small Projects' | 'Research';
   inProgress?: boolean;
+  link?: { url: string; label: string };
 }
 
 export const projects: Project[] = [
@@ -182,7 +184,7 @@ export const projects: Project[] = [
     id: 15,
     title: 'Bionic Wrench Manufacturing',
     category: 'Manufacturing Engineering · Fixture Design · Production Planning',
-    image: wrenchHero,
+    image: wrenchV7Support,
     description: 'Reverse-engineered the Bionic Wrench, then designed a seven-version assembly fixture and a full high-volume manufacturing plan to build one million wrenches per year.',
     filterCategory: 'Design',
     date: '2025',
@@ -730,7 +732,7 @@ The modeling tools and design framework developed also allow future team members
     id: 11,
     title: 'Performance Bicycle Brake Caliper',
     category: 'Simulation-Driven Design · Structural Optimization',
-    image: bikeCaliperImg,
+    image: bikePrintedCaliper,
     description: 'Designed, simulated, prototyped, and tested a high-performance bicycle brake caliper meeting ISO 4210 safety standards while minimizing weight.',
     filterCategory: 'Design',
     date: '2025',
@@ -1478,7 +1480,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     id: 25,
     title: 'Flexible Tactile Sensors',
     category: 'Research · Soft Robotics · Sensor Fabrication',
-    image: '',
+    image: sensorNfesNozzle,
     description: 'Hand-fabricated flexible resistive sensors — carbon nanotubes and nanoparticles embedded in Ecoflex silicone — for a soft robotic hand, plus near-field electrospinning at 10 kV. Fall 2025, AIM Lab at Northwestern.',
     filterCategory: 'Research',
     date: '2025',
@@ -1537,7 +1539,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     id: 20,
     title: 'Dodecahedron Lamp',
     category: 'Digital Fabrication · Geometric Modeling',
-    image: lampImg,
+    image: lampLitGlow,
     description: 'A modular geometric lamp exploring 3D printing constraints and reflective material design.',
     filterCategory: 'Small Projects',
     date: '2026',
@@ -1653,7 +1655,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     id: 24,
     title: 'Light Tracing Board',
     category: 'Product Design · Laser Cutting · 3D Printing',
-    image: tracingBoardInUse,
+    image: tracingBoardLit,
     description: 'A laser-cut acrylic light board with 3D-printed corner stands, sized to fit the large-format paper used in my industrial sketching class.',
     filterCategory: 'Small Projects',
     date: '2026',
@@ -1677,17 +1679,18 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
   },
   {
     id: 28,
-    title: 'Midwest EV: Openpilot Retrofit',
+    title: 'Midwest EV: Project Delta Retrofit',
     category: 'Electric Vehicles · Embedded Electronics · Enclosure Design (Work in Progress)',
-    image: '',
-    description: 'A volunteer engineering team building an openpilot retrofit for Tesla Model S cars built before factory Autopilot — custom wiring harnesses, PCBs, and enclosures. I design the enclosure for the project\'s electronics.',
+    image: deltaEnclosureMinimalCad,
+    description: 'Project Delta is a driver-assistance retrofit for Tesla Model S cars built before factory Autopilot, built on openpilot with custom wiring harnesses, PCBs and enclosures. I design the enclosure for the project\'s electronics.',
     filterCategory: 'Design',
     inProgress: true,
     date: '2026',
-    tools: ['Enclosure Design', 'CAD', 'Wiring Harnesses', 'PCB Design Review', 'Vehicle Integration', 'GitHub', 'Remote Team Collaboration'],
+    link: { url: 'https://midwestev.com/products.html', label: 'Project Delta on midwestev.com' },
+    tools: ['Enclosure Design', 'Siemens NX', 'SolidWorks', 'Design for 3D Printing', 'Heat-Set Inserts / Fasteners', 'Wiring Harnesses', 'PCB Design Review', 'Vehicle Integration', 'GitHub', 'Remote Team Collaboration'],
     content: [
       {
-        text: `Midwest EV is a small engineering group working on its main project: an openpilot retrofit for Tesla Model S cars built before factory Autopilot. The build covers the vehicle wiring, custom harnesses, and integration needed to connect openpilot to the car, with bench work and road testing along the way. The group also works on Tesla drive units, battery packs, and custom electronics, and runs a public site (midwestev.tech) for retrofit inquiries. I'm an engineer on the team, which works remotely across time zones. The project is ongoing.`
+        text: `Midwest EV is an independent EV repair and engineering business. Its main engineering project is Project Delta, a driver-assistance retrofit for Tesla Model S cars built before factory Autopilot. Project Delta is built on openpilot and covers the custom hardware, wiring harnesses and vehicle integration needed to connect it to the car, with bench work and road testing along the way. The project is now listed as a product on the company's public site, midwestev.com, which also covers its battery, drive unit and suspension repair work. I'm an engineer on the team, which works remotely across time zones. The project is ongoing.`
       },
       {
         heading: 'How the Team Works',
@@ -1695,17 +1698,28 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
       },
       {
         heading: 'My Role: Enclosure Design',
-        text: `I own the enclosure design for the project's electronics. The project is still early and the PCB is in design review, so the enclosure is evolving alongside it; the current iteration is incorporating team feedback, including removing the vents.`,
+        text: `I own the enclosure design for the project's electronics, starting from the PCB's STEP model once the board layout was ready. The design has gone through several iterations driven by team feedback:
+
+• A vented first version with the PCB inside, plus a triangular concept with a logo-inspired shape
+• A more minimal enclosure, with the vents removed after team review
+• The current version: a compact box with a USB-C port opening, a cutout by the lid for the wiring, and a lid held on with M2 self-tapping screws (heat-set inserts for M2 screws were the earlier plan)
+
+The first 25 boards have been ordered and are on their way, and the next step is printing the enclosure and test-fitting it on a real board.`,
         images: [
-          { url: deltaEnclosureOpenCad, caption: 'Enclosure CAD with the PCB inside, lid removed' },
-          { url: deltaEnclosureClosedCad, caption: 'Enclosure CAD, closed' },
+          { url: deltaEnclosureMinimalCad, caption: 'Current enclosure: compact box with the USB-C port opening' },
+          { url: deltaEnclosureOpenCad, caption: 'Earlier vented version with the PCB inside, lid removed' },
+          { url: deltaEnclosureClosedCad, caption: 'Earlier vented version, closed' },
           { url: deltaEnclosureLidCad, caption: 'Enclosure lid' },
           { url: deltaEnclosureTriangleCad, caption: 'Triangular enclosure concept around the board' }
         ]
       },
       {
+        heading: 'Branding & Website',
+        text: `I'm also on the website team. I worked on early logo ideas, such as a Project Delta mark with lane-line cues that hint at what the product does, and I review new versions of the public site before they go live.`
+      },
+      {
         heading: 'The Board',
-        text: `The enclosure is built around the project's PCB, which is currently in design review.`,
+        text: `The enclosure is built around the project's PCB. Components for 25 boards were ordered, and the first production boards are in transit.`,
         images: [
           { url: deltaPcbPhoto, caption: 'The PCB' },
           { url: deltaPcbOutline, caption: 'Board outline in CAD' }
@@ -2285,6 +2299,24 @@ export function Portfolio() {
                             Date
                           </h5>
                           <p className="text-[#1B2D5B]/70 font-medium">{selectedProject.date}</p>
+                        </div>
+                      )}
+
+                      {selectedProject.link && (
+                        <div>
+                          <h5 className="flex items-center gap-2 text-sm font-bold text-[#1B2D5B] uppercase tracking-wider mb-4 border-b border-[#1B2D5B]/10 pb-2">
+                            <ExternalLink size={16} />
+                            Website
+                          </h5>
+                          <a
+                            href={selectedProject.link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-[#3B5998] hover:text-[#1B2D5B] font-medium underline underline-offset-4 break-all"
+                          >
+                            {selectedProject.link.label}
+                            <ExternalLink size={14} />
+                          </a>
                         </div>
                       )}
                     </div>
