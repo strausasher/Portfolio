@@ -16,7 +16,8 @@ import extendItHinge from 'figma:asset/d57e0cf4c5c508756bddc826ab9044e1fd9a743e.
 import extendItCupHolder from 'figma:asset/4beb1f92bb835754bb2566c92a7370ee22877fbb.webp';
 import extendItLoadTestNew from 'figma:asset/1d18a7808e8709de495f1254f14773c637ad686b.webp';
 import extendItUserTestNew from 'figma:asset/cd5d7ada40db3d957daea1ac3cff6db6d8e80c86.webp';
-
+import extendItV2HingeVsLinkage from 'figma:asset/extendit-v2-hinge-vs-linkage.webp';
+import extendItV2SideView from 'figma:asset/extendit-v2-side-view.webp';
 import ctScannerImg from 'figma:asset/4912cd11da20c60b00c965ea83b87634b57600b8.webp';
 import ctFrustum from 'figma:asset/3b5611915cfa8c0522559efe6b31ea2a9eb1adc0.webp';
 import ctLinerSide from 'figma:asset/d49ce2b4da6a0e33e564535e6cc619d30f5b5dcd.webp';
@@ -160,6 +161,9 @@ import deltaEnclosureClosedCad from 'figma:asset/delta-enclosure-closed-cad.webp
 import deltaEnclosureMinimalCad from 'figma:asset/delta-enclosure-minimal-cad.webp';
 import deltaEnclosureEndcapCad from 'figma:asset/delta-enclosure-endcap-cad.webp';
 import deltaEnclosureInternalCad from 'figma:asset/delta-enclosure-internal-cad.webp';
+import deltaEnclosureV11Logo from 'figma:asset/delta-enclosure-v11-logo.webp';
+import deltaEnclosureV11Back from 'figma:asset/delta-enclosure-v11-back.webp';
+import deltaEnclosureV11Slicer from 'figma:asset/delta-enclosure-v11-slicer.webp';
 
 export interface ProjectSection {
   heading?: string;
@@ -167,24 +171,70 @@ export interface ProjectSection {
   images?: { url: string; caption?: string }[];
 }
 
+// Where a project came from, shown as a label on its card
+export type ProjectContext = 'Class' | 'Club' | 'Research' | 'Personal' | 'Industry' | 'Client';
+
 export interface Project {
   id: number;
   title: string;
   category: string;
   image: string;
   description: string;
-  content: ProjectSection[]; 
+  content: ProjectSection[];
   tools: string[];
   date?: string;
   filterCategory: 'Design' | 'Small Projects' | 'Research';
   inProgress?: boolean;
   link?: { url: string; label: string };
+  context: ProjectContext;
+  contextDetail?: string; // course, club, lab or company name
+  tldr: string;
+  why?: string;
+  learned?: string[];
 }
+
+const contextLabels: Record<ProjectContext, string> = {
+  Class: 'Class Project',
+  Club: 'Club',
+  Research: 'Research',
+  Personal: 'Personal Project',
+  Industry: 'Industry',
+  Client: 'Client Project',
+};
+
+const contextStyles: Record<ProjectContext, string> = {
+  Class: 'bg-[#3B5998]/10 text-[#3B5998]',
+  Club: 'bg-[#B5651D]/12 text-[#8A4B12]',
+  Research: 'bg-[#2E7D6B]/12 text-[#25645A]',
+  Personal: 'bg-[#8E4A8A]/12 text-[#74396F]',
+  Industry: 'bg-[#1B2D5B] text-white',
+  Client: 'bg-[#1B2D5B]/10 text-[#1B2D5B]',
+};
+
+// Display order on the site: projects that show the most iteration and learning come first
+const displayOrder = [15, 11, 10, 12, 9, 16, 13, 14, 17, 25, 28, 26, 27, 23, 20, 22, 24, 21];
+const byDisplayOrder = (a: Project, b: Project) => {
+  const rank = (p: Project) => {
+    const i = displayOrder.indexOf(p.id);
+    return i === -1 ? displayOrder.length : i;
+  };
+  return rank(a) - rank(b);
+};
 
 export const projects: Project[] = [
   {
     id: 15,
     title: 'Bionic Wrench Manufacturing',
+    context: 'Class',
+    contextDetail: 'DSGN 386',
+    tldr: `We took apart a commercial Bionic Wrench, then designed the fixture, SOP and production plan to build it ourselves. Seven fixture versions got us to a single-operator line that made four good wrenches at a 3:58 cycle time in a live trial, plus a plan for one million wrenches a year.`,
+    why: `This is the project where manufacturing clicked for me. Every fixture version came from standing at the riveter and seeing what went wrong, and running both riveters together for the first time, under four minutes a wrench, was the moment it all came together.`,
+    learned: [
+      `Physical testing overrules the model. Sheet metal compressing under the riveter and an over-constrained two-pin track only showed up at the bench.`,
+      `Precision has to start at measurement. Small optical-comparator errors turned into misaligned tracks and uneven rivets, and took several versions to trace back.`,
+      `Sometimes the fix is removing a constraint. Inverting the track logic in V3 made everything after it simpler.`,
+      `Map the workflow before building the line. The journey map showed a second operator would mostly sit idle, so we designed for one.`,
+    ],
     category: 'Manufacturing Engineering · Fixture Design · Production Planning',
     image: wrenchV7Support,
     description: 'Reverse-engineered the Bionic Wrench, then designed a seven-version assembly fixture and a full high-volume manufacturing plan to build one million wrenches per year.',
@@ -217,7 +267,7 @@ The work spanned five phases — reverse engineering the wrench, mapping the man
         text: `Peter and I initially split the fixture work by component — I owned the track geometry, he owned the pin layout — but the two were so tightly coupled that we ended up at the bench together for nearly every iteration. I led the track design across all seven versions, drove the metrology and CAD drawings, and co-developed the SOP, FMEA, and high-volume manufacturing plan.`
       },
       {
-        heading: 'Fixture Design — The Problem',
+        heading: 'Fixture Design — The Challenge',
         text: `The fixture has four jobs: locate the wrench plates accurately, hold them rigidly while they are riveted, absorb the riveter's force without damaging the tooling, and constrain the riveter to the correct rivet locations via a track. Almost every design change below was driven by something we could not have predicted on a computer — that sheet metal compresses under riveter force, that a two-pin track over-constrains orientation, that inverting the whole track logic simplifies everything.`
       },
       {
@@ -342,7 +392,7 @@ Total line investment for one million units is ~$1,196,000: $33,500 in fixtures 
 What worked: we hit our planned cycle time; the single-operator, co-located-riveter workflow held together with no station running dry; the angled flip-the-plates approach (V2) kept rivets seated through handling; open-entrance tracks (V5) sped up riveter navigation; and dual riveters (V6) eliminated the head-swap delay.`
       },
       {
-        heading: 'What I Learned',
+        heading: 'Reflection & Next Steps',
         text: `Two lessons no lecture could have taught: physical reality always overrules your model, and the only way to a good answer is to build something wrong first. The hardest part wasn't any single fixture version — it was the early metrology. Small errors on the optical comparator propagated into misaligned tracks, then uneven rivets, and took several iterations to trace back to their source. Precision at the measurement stage isn't optional, because every downstream decision is only as good as the data it's built on.
 
 The highest-leverage next step would be CNC-machining the fixture from a single piece of steel with integrated pins — eliminating the waterjet step and removing the small pin flex that PLA holes still allow — plus incoming-jaw inspection to catch bad parts upstream of the line.`
@@ -352,6 +402,16 @@ The highest-leverage next step would be CNC-machining the fixture from a single 
   {
     id: 10,
     title: 'Water Guard',
+    context: 'Client',
+    contextDetail: 'Major Chicago aquarium',
+    tldr: `A removable, reusable waterproof liner that protects a ~$1M CT scanner while it images aquatic animals. Aquarium staff installed our prototype in under 4 minutes, compared with 45+ minutes for their old plastic-and-tape method.`,
+    why: `It's the project I'm proudest of. We had a real client, a nearly irreplaceable machine, and animals from small fish up to beluga whales. Staff told us they worried every scan that the scanner was never fully protected, and we got to hand them something that fixes that.`,
+    learned: [
+      `Design for real-world conditions, not ideal ones. We set the slope from a wrinkled liner mockup, not a taut one, which gave the final 12.5° angle.`,
+      `Test the assumption that worries you most. 24 hours in saltwater didn't weaken the welds (94.8 N dry vs. 106.4 N after soaking).`,
+      `On-site user testing finds what you missed. The liner blurred the positioning laser, which led to the clear PETG window.`,
+      `Seam geometry matters. Creases and folded corners were where leaks started, so overlapped welds became the standard.`,
+    ],
     category: 'Design for Reliability · Medical Equipment · Polymer Testing',
     image: wgInstalledFront,
     description: 'A fully removable waterproofing system that protects a ~$1M CT scanner at a major Chicago aquarium during aquatic animal imaging.',
@@ -527,6 +587,15 @@ The only remaining step is for the aquarium to run a quality scan confirming the
   {
     id: 12,
     title: 'Formula SAE Brake System',
+    context: 'Club',
+    contextDetail: 'Northwestern Formula Racing',
+    tldr: `I worked across the brake system for Northwestern's Formula SAE car. I hand-calculated the pedal force needed for a 1 G stop (~690 lbf at the tires takes ~42 lbf at the pedal), improved the team's MATLAB sim, and designed and simulated the rotors, then machined them and installed the system on the car.`,
+    why: `Brakes are where the math meets the car. One chain of equations runs from the driver's foot to the tires, and I got to follow it all the way from a whiteboard calculation to bleeding the lines on the car.`,
+    learned: [
+      `How a system chains together. Pedal ratio, master cylinder, caliper and rotor radius each multiply into the final braking force.`,
+      `Balance matters as much as total force. The front/rear crossover point decides whether the rear wheels lock up.`,
+      `Good tools outlast the car. Making the MATLAB sim easier to use means future members can test rotor and master-cylinder changes quickly.`,
+    ],
     category: 'Automotive Systems · Rotor Engineering · Manufacturing Integration',
     image: formulaBrakeImg,
     description: 'Contributed to rotor design, simulation, and manufacturing for a Formula SAE braking system.',
@@ -550,8 +619,8 @@ My contributions spanned the full development pipeline:
 This work required integrating vehicle dynamics, simulation, mechanical design, and hands-on fabrication.`
       },
       {
-        heading: 'Design Target: 1G Deceleration',
-        text: `One of the primary design targets was achieving 1G vehicle deceleration, meaning the braking force equals the vehicle's weight.
+        heading: 'Hand Check: Pedal Force for a 1G Stop',
+        text: `On the whiteboard, I worked out how hard the driver would have to press the pedal to stop the car at 1G, meaning a braking force equal to the vehicle's weight.
 
 Using Newton's second law:
 F = ma
@@ -568,9 +637,9 @@ This means the tires must generate approximately 690 pounds of braking force to 
 Working backwards through the brake system, this corresponds to approximately:
 42 lbf of driver pedal force
 
-This results in an overall brake system gain of ~16×, produced by the pedal ratio and hydraulic amplification.`,
+That implies an overall brake system gain of ~16×, produced by the pedal ratio and hydraulic amplification.`,
         images: [
-            { url: brakeWhiteboardCalc }
+            { url: brakeWhiteboardCalc, caption: "Whiteboard hand calculation of the pedal force needed for a 1G stop" }
         ]
       },
       {
@@ -615,7 +684,7 @@ The simulation allowed rapid exploration of design variables including:
 
 I also improved the MATLAB code used by the team, making it easier to evaluate design changes and system tradeoffs.`,
         images: [
-            { url: brakePedalForcePlot }
+            { url: brakePedalForcePlot, caption: "MATLAB sim output: front and rear pedal force across vehicle speed" }
         ]
       },
       {
@@ -630,10 +699,10 @@ Design considerations included:
 
 The rotor geometry balances braking torque capability with minimal rotational inertia, which improves vehicle performance.`,
         images: [
-            { url: brakeRotorCAD1 },
-            { url: brakeRotorCAD2 },
-            { url: brakeFrontRotorDwg },
-            { url: brakeRearRotorDwg }
+            { url: brakeRotorCAD1, caption: "Rotor CAD model" },
+            { url: brakeRotorCAD2, caption: "Rotor CAD model with a drilled pattern" },
+            { url: brakeFrontRotorDwg, caption: "Front rotor drawing" },
+            { url: brakeRearRotorDwg, caption: "Rear rotor drawing" }
         ]
       },
       {
@@ -647,7 +716,7 @@ The simulation evaluated:
 
 This ensured the rotor could withstand repeated braking events without cracking or excessive deformation.`,
         images: [
-            { url: brakeStressFEA }
+            { url: brakeStressFEA, caption: "ANSYS FEA: stress concentration at a slot in the rear rotor" }
         ]
       },
       {
@@ -665,7 +734,7 @@ Ensuring adequate thermal capacity prevents:
 • Pad degradation
 • Rotor warping`,
         images: [
-            { url: brakeThermalSim }
+            { url: brakeThermalSim, caption: "Thermal simulation of the slotted rear rotor at t = 20 s" }
         ]
       },
       {
@@ -680,7 +749,7 @@ The routing diagram was used to determine:
 
 This ensured the brake system could be assembled efficiently and serviced easily.`,
         images: [
-            { url: brakeLineRouting }
+            { url: brakeLineRouting, caption: "Hand-drawn brake line routing with every fitting called out" }
         ]
       },
       {
@@ -694,8 +763,8 @@ Fabrication steps included:
 
 The rotor surfaces were finished on a lathe to ensure flatness and proper braking contact.`,
         images: [
-            { url: brakeMilling },
-            { url: brakeGrinding }
+            { url: brakeMilling, caption: "Machining a rotor on the mill" },
+            { url: brakeGrinding, caption: "Grinding the rotor braking surfaces" }
         ]
       },
       {
@@ -710,12 +779,12 @@ This included:
 
 Proper bleeding removes air from the hydraulic lines and ensures consistent braking pressure transmission.`,
         images: [
-            { url: brakeIntegration }
+            { url: brakeIntegration, caption: "Rotor installed on the car" }
         ]
       },
       {
         heading: 'Skills Demonstrated',
-        text: `• Vehicle Dynamics: Brake force modeling and deceleration analysis
+        text: `• Vehicle Dynamics: Hand calculation of braking and pedal force
 • Programming: MATLAB brake system simulation and improvements
 • Mechanical Design: Rotor CAD modeling and packaging
 • Simulation: ANSYS structural and thermal analysis
@@ -724,7 +793,7 @@ Proper bleeding removes air from the hydraulic lines and ensures consistent brak
       },
       {
         heading: 'Impact',
-        text: `This work contributed to the development of a fully modeled, simulated, and manufactured braking system capable of achieving the required vehicle deceleration while maintaining thermal reliability and predictable driver control.
+        text: `This work contributed to a fully modeled, simulated, and manufactured braking system, from hand calculations and simulation through machining and installation on the car.
 
 The modeling tools and design framework developed also allow future team members to quickly evaluate changes to rotor size, master cylinders, or brake bias.`
       }
@@ -733,6 +802,16 @@ The modeling tools and design framework developed also allow future team members
   {
     id: 11,
     title: 'Performance Bicycle Brake Caliper',
+    context: 'Class',
+    contextDetail: 'Mechanical Design & Manufacturing',
+    tldr: `We designed a topology-optimized bike brake caliper, printed it in SLS nylon and tested it on a bike. It weighed 41 g, stopped in 11.3 m and passed every requirement. A lighter second version failed the hand-force limit, which showed us where to stop cutting weight.`,
+    why: `Every number traced back to a real requirement (ISO 4210, stopping distance, how hard a rider can squeeze), and we tested the part on an actual bike instead of trusting the simulation.`,
+    learned: [
+      `Lighter isn't always better. Saving 6 g raised the rider's input force by 48% and broke the 70 N limit.`,
+      `Run FEA on the full design envelope first. It showed how much material we could remove before optimizing.`,
+      `Turn vague needs into numbers before designing, so every decision has a target to check against.`,
+      `The right manufacturing process depends on volume: die casting at 50k a year, forged and CNC machined at 10k, 3D printed at 200.`,
+    ],
     category: 'Simulation-Driven Design · Structural Optimization',
     image: bikePrintedCaliper,
     description: 'Designed, simulated, prototyped, and tested a high-performance bicycle brake caliper meeting ISO 4210 safety standards while minimizing weight.',
@@ -869,7 +948,17 @@ This demonstrated scalability awareness beyond prototype design.`
   {
     id: 16,
     title: 'Smart Sheet Smith',
-    category: 'Research · Manufacturing AI · Multi-Agent LLM Systems',
+    context: 'Research',
+    contextDetail: 'AIM Lab · NSF ERC-HAMMER',
+    tldr: `An AI pipeline that reads a 2D sheet-metal drawing and outputs a verified bending plan, with no 3D CAD and no labeled data. I built the Tracer Agent's dataset and ground truth plus a SolidWorks VBA tool that generates hundreds of drawings in minutes, and co-authored the MSEC 2026 poster.`,
+    why: `It put my manufacturing background to work in an AI project. The model could pass every number check and still propose a bend order no press brake could make, and catching that took someone who thinks like a manufacturing engineer.`,
+    learned: [
+      `Constrain the generator, not the output. Changing only existing dimension values meant every generated drawing was valid by construction.`,
+      `Define CAD features relative to their parent (hole = 0.3 × flange width) so they stay valid across the whole sampling range.`,
+      `Domain judgment is the scarce input to an AI pipeline. Manufacturability isn't something the math catches on its own.`,
+      `Writing down failure modes is part of the deliverable. It let the next person set up a new part family in an afternoon.`,
+    ],
+    category: 'Manufacturing AI · Multi-Agent LLM Systems',
     image: sheetSmithPoster,
     description: 'An end-to-end LLM-driven multi-agent system that turns a 2D sheet-metal drawing into a verified, physics-grounded bending process plan — no 3D CAD, no labeled data. Presented at MSEC 2026 / NAMRC54.',
     filterCategory: 'Research',
@@ -907,7 +996,7 @@ References: [1] Duflou et al., Computer-Aided Process Planning for Sheet Metal B
 Acknowledgment: The authors would like to acknowledge support from the U.S. National Science Foundation Engineering Research Center for Hybrid Autonomous Manufacturing Moving from Evolution to Revolution (ERC-HAMMER) under Award Number EEC-2133630.`
       },
       {
-        heading: 'The Problem',
+        heading: 'The Challenge',
         text: `Sheet-metal bending process planning is one of the last stubbornly manual steps in fabrication. Choosing the bend order, tooling, and flat-blank dimensions still depends on an experienced planner reading a 2D engineering drawing and applying years of shop-floor judgment.
 
 Commercial CAM software can automate bend sequencing — but only after an engineer rebuilds the 2D drawing as a 3D CAD model, a slow, expensive prerequisite job shops working from customer prints often can't justify. Large language models can ingest drawings directly, but they hallucinate dimensions and produce plans with no built-in physics check. Neither path gets you from a print to a trustworthy plan.`
@@ -935,7 +1024,7 @@ Six metrics across the two judges define the PASS/FAIL verdicts that drive self-
 Cumulative correctness rose substantially across three patcher iterations in both the geometric and performance loops, with each iteration recovering additional failing parts. The closed loop delivered meaningful accuracy gains over the single-pass baseline — without a single labeled example.`
       },
       {
-        heading: 'My Contribution',
+        heading: 'My Role',
         text: `I worked on the Tracer Agent and owned much of the data foundation it was developed and validated against.
 
 I built the evaluation corpus from the ground up: modeling the parts in CAD, producing the multi-view orthographic drawings, and hand-deriving the ground-truth geometry each drawing should resolve to. I then authored and corrected the structured JSON representations that encoded that topology, iterating on the schema and training examples as failure modes surfaced.
@@ -1004,6 +1093,17 @@ Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northweste
   {
     id: 9,
     title: 'ExtendIt',
+    context: 'Class',
+    contextDetail: 'Human-Centered Product Design',
+    tldr: `A fold-away desk extension for lecture-hall seats that adds 81 sq in of workspace. After 22 interviews and 7 mockups, 8 of 10 users preferred it over our other concepts, and it held 33.5 lb with only ⅜″ of deflection. I've since designed v2, a full-size version that slides out and lifts flush on a linkage instead of flipping on a hinge.`,
+    why: `Every student knows the laptop, tablet and notebook on a tiny desk problem. I wanted to see if we could fix it with something simple enough to install on the desks lecture halls already have.`,
+    learned: [
+      `Test cheap versions early. Seven rough mockups with 10 users each taught us more than one polished prototype would have.`,
+      `Listen for what users rule out. Students wanted something permanent and stable, which killed the portable clip-on ideas early.`,
+      `Off-the-shelf parts often need changing. We ground the hinge's 90° detent off by hand to get smooth motion.`,
+      `Build a separate test rig so load testing doesn't destroy the prototype.`,
+      `A mechanism that works small may not scale. On a full-size leaf, the 180° hinge would swing through your knees, which is why v2 slides out and lifts instead.`,
+    ],
     category: 'Human-Centered Design · Product Development', 
     image: extendItHero,
     description: 'A permanently installed hinged desk extender that increases usable workspace by 81 sq. in. — preferred by 8/10 users over alternative concepts.',
@@ -1027,7 +1127,7 @@ ExtendIt folds flush beneath the existing desk when not in use and locks securel
 • Preferred by 8/10 users over alternative concepts`
       },
       {
-        heading: 'Problem',
+        heading: 'The Challenge',
         text: `Students in lecture halls face insufficient desk space for modern devices, clutter from water bottles and backpacks, discomfort from inefficient workspace layout, and disruption when managing multiple materials during exams.
 
 72% of students sit over 7 hours/day, and limited workspace directly impacts comfort and productivity.`
@@ -1108,11 +1208,11 @@ Unit Economics:
 Revenue opportunities include standard model sales, custom sizing, branded installations, licensing to furniture manufacturers, and consulting for classroom optimization.`
       },
       {
-        heading: 'Ethics & Accessibility',
+        heading: 'Accessibility & Inclusive Testing',
         text: `We incorporated accommodation for left-handed users, height-inclusive clearance standards, rounded edges for safety, and diverse user testing (age, major, campus location).`
       },
       {
-        heading: 'Future Improvements',
+        heading: 'v1 Next Steps',
         text: `• Integrated cup holder
 • Custom-designed hinge (thinner, dual-lock only)
 • Alternative materials for cost optimization
@@ -1120,12 +1220,44 @@ Revenue opportunities include standard model sales, custom sizing, branded insta
         images: [
             { url: extendItCupHolder, caption: 'Concept exploration for integrated hydration feature.' }
         ]
+      },
+      {
+        heading: 'Next: ExtendIt v2 (In Design)',
+        text: `I designed ExtendIt v2, a full-size extension for a standard 60 × 30 in desk with a 52 × 25 in leaf.
+
+Why the hinge had to go: v1 flips its leaf 180° on a hinge. That works for a 9 in lecture-hall leaf, but on a 25 in leaf the far edge swings down to 2.6 in above the floor, straight through your knees and chair.
+
+The new mechanism works in two stages, and the leaf stays level the whole time:
+1. Locking drawer slides carry the leaf straight out from under the desk (28 in of travel).
+2. A short parallelogram linkage lifts it 1.25 in and moves it 2.4 in back, so it seats flush with the desktop with a 1/16 in gap.
+
+I designed it to be held open three ways: the slide's lock-out, links that rest 5° past vertical (over-center), and a spring plunger that pins one link. A plain linkage can't make the full 28 in stroke without hitting the desk underside, so I split the job: the slides handle the long travel and the linkage only handles the lift, seating and lock.
+
+What I've worked out so far:
+• Motion: I swept the full 30° to 95° lift. The leaf never hits the desk, peaks only 0.010 in above flush, and every part keeps at least 0.31 in of clearance.
+• Loads: the mechanism has at least 1.6× margin with 100 lb leaning on the front edge. The real limit is the desk tipping, so I built a tipping table and a tip test into the plan.
+• Parts: I detailed every part for waterjet 6061 aluminum links and rails, bent 5052 aluminum leaf rails, 3D-printed PETG/TPU stops, and a walnut-edged plywood leaf, with a full BOM at about $850–1,150.
+
+Next I'm modeling it in SolidWorks with a motion study and proving the linkage with 3D-printed links. Then I'll order the metal parts in one batch, build it, tune it flush to ±0.010 in, and run a full test checklist before anything goes on it.`,
+        images: [
+            { url: extendItV2HingeVsLinkage, caption: 'Why v1’s hinge doesn’t scale: on a full-size leaf, the flip swings through your knees, while the v2 leaf stays level.' },
+            { url: extendItV2SideView, caption: 'The v2 motion to scale: stowed, slid out, then lifted and locked flush with the desktop.' }
+        ]
       }
     ]
   },
   {
     id: 17,
     title: 'Drivetrain Efficiency Test Rig',
+    context: 'Club',
+    contextDetail: 'Baja SAE',
+    tldr: `A proposed bench-top rig to measure how much power the Baja car's CVT and gearbox lose, using a magnetic powder brake as the load and a Teensy 4.1 to log torque and RPM. I wrote the proposal, chose the sensors, and built the BOM and a sponsor outreach list.`,
+    why: `The team was tuning the drivetrain by feel. I wanted real numbers on where the power goes before parts go back on the car.`,
+    learned: [
+      `You can't measure efficiency without a load. Torque only exists if something resists it, and that shaped the whole design.`,
+      `Pick sensors whose outputs your DAQ can read directly, so you don't need extra software or hardware.`,
+      `Plan in phases. Start with one sensor and baseline subtraction, then add a second sensor later without rebuilding.`,
+    ],
     category: 'Drivetrain Testing · Instrumentation & DAQ · Baja SAE · Mechanical Design',
     image: drivetrainBajaCar,
     description: 'A bench-top drivetrain efficiency test rig for Baja SAE, designed to measure power losses across individual components — CVT and gearbox — under repeatable, controlled-load conditions using torque sensors and a Teensy 4.1 DAQ.',
@@ -1208,6 +1340,15 @@ Plan 3 — Reaction Torque (alternative): Load cells instead of inline sensors f
   {
     id: 14,
     title: 'Patchwork Plush',
+    context: 'Class',
+    contextDetail: 'For Misericordia',
+    tldr: `Two low-cost sensory devices for adults with developmental disabilities at Misericordia: a durable texture book (about $25) and a huggable pillow with swappable Velcro texture patches (under $15). Both came out of on-site mockup testing with four residents.`,
+    why: `Residents relied on sensory devices that were expensive, fragile and often overstimulating. I wanted to make something calming that could survive being thrown or hit by a wheelchair and still cost almost nothing.`,
+    learned: [
+      `Watch people use it. One resident accidentally skipping pages led to the staggered page tabs.`,
+      `When testing shows mixed preferences, build in the choice. That's why the pillow takes either quiet foam or crinkly paper filling.`,
+      `Size changes how people use something. Residents strongly preferred the bigger, huggable 20″ × 30″ pillow.`,
+    ],
     category: 'Accessible Design · Sensory Engineering · Textile Fabrication',
     image: patchworkFinalPatches,
     description: 'Two complementary sensory devices — a tactile texture book and customizable textured pillow — designed for adults with developmental disabilities at Misericordia.',
@@ -1226,11 +1367,11 @@ We developed two complementary solutions:
 
 Both prioritize universal accessibility, durability, and affordability.`,
         images: [
-            { url: patchworkMockup },
+            { url: patchworkMockup, caption: "Early textured mockup" },
         ]
       },
       {
-        heading: 'The Problem',
+        heading: 'The Challenge',
         text: `Current sensory devices cost hundreds to thousands of dollars, break easily, use bright flickering lights (overstimulating), can cause injury if thrown, and require staff assistance.
 
 From our stakeholder interview, key constraints included:
@@ -1241,7 +1382,7 @@ From our stakeholder interview, key constraints included:
 • Must withstand being "rammed into by a wheelchair"
 • Easily sanitized`,
         images: [
-            { url: patchworkSensoryRoom }
+            { url: patchworkSensoryRoom, caption: "The devices residents used before: bubble tubes, fiber-optic strings and other sensory items" }
         ]
       },
       {
@@ -1249,7 +1390,7 @@ From our stakeholder interview, key constraints included:
         text: `We conducted stakeholder interviews (Registered Behavior Technician), observation analysis (sensory processing case studies), on-site mockup testing with four residents, and behavioral feedback analysis (facial expression, engagement time, body language).`
       },
       {
-        heading: 'My Contributions',
+        heading: 'My Role',
         text: `• Conducted stakeholder interview synthesis
 • Led mockup testing & behavioral analysis
 • Developed design implications from user behavior
@@ -1271,8 +1412,8 @@ From our stakeholder interview, key constraints included:
 
 No electronics → zero seizure risk. No sharp edges. Withstands dropping and throwing. Easily repairable. Costs approximately $25 to build.`,
         images: [
-            { url: patchworkBookCover },
-            { url: patchworkMaze },
+            { url: patchworkBookCover, caption: "Texturescape cover" },
+            { url: patchworkMaze, caption: "The mesh maze page one resident traced for an extended time" },
         ]
       },
       {
@@ -1291,8 +1432,8 @@ Fully soft construction → no injury risk if thrown. Machine-washable component
         images: [
             { url: patchworkFinalPatches, caption: 'Final prototype, patch side — four texture patches attached by Velcro, chosen from a larger assortment of swappable patches.' },
             { url: patchworkFinalFront, caption: 'Final prototype, microfiber side — the soft side of the pillow at the huggable 20″ × 30″ scale.' },
-            { url: patchworkPillowDim },
-            { url: patchworkCrossSection },
+            { url: patchworkPillowDim, caption: "Pillow layout sketch" },
+            { url: patchworkCrossSection, caption: "Pillow cross-section: texture patches, cotton top, microfiber base and filling" },
         ]
       },
       {
@@ -1323,8 +1464,17 @@ Both devices are calming without overstimulation — addressing sensory overload
   {
     id: 13,
     title: 'StimSpin',
+    context: 'Class',
+    contextDetail: 'For Misericordia',
+    tldr: `An 18-inch handheld spinning wheel for adults with cerebral palsy at Misericordia. Large knobs let residents spin it without fine motor control, and swappable whiteboard, texture, music and science overlays make it a classroom tool. Built for about $150.`,
+    why: `Most sensory devices need a grip or small hand movements that many residents don't have. I liked designing around what they could do, like resting a hand on a knob and pushing, so they could choose and play on their own.`,
+    learned: [
+      `Mockups beat assumptions. A cardboard wheel showed the format worked, but also that the knobs had to be bigger.`,
+      `Choice is a feature. Letting residents pick the song or the day's science topic made them more engaged.`,
+      `Safety rules shape everything: no flashing lights, no small parts, and it has to survive being thrown.`,
+    ],
     category: 'Accessible Design · Sensory Engineering · Prototyping',
-    image: stimSpinSketch,
+    image: stimSpinInUse,
     description: 'A fully interactive, customizable spinning wheel designed for adults with cerebral palsy at Misericordia — enabling autonomy through gross motor interaction.',
     filterCategory: 'Design',
     date: '2024',
@@ -1335,12 +1485,12 @@ Both devices are calming without overstimulation — addressing sensory overload
 
 The final product balances accessibility, education, and durability within a $150 budget and 10-week timeline.`,
         images: [
-            { url: stimSpinInUse },
-            { url: stimSpinSketch }
+            { url: stimSpinInUse, caption: "The finished StimSpin" },
+            { url: stimSpinSketch, caption: "Concept sketch of the wheel and a swappable overlay" }
         ]
       },
       {
-        heading: 'The Problem',
+        heading: 'The Challenge',
         text: `Adults with cerebral palsy often have limited fine motor control. Many existing sensory devices require gripping or small hand movements, are overstimulating (flashing lights), are not portable, are difficult to sanitize, and do not support educational integration.
 
 Teachers needed a device that was interactive, classroom-friendly, portable, and accessible to users across a wide mobility spectrum.`
@@ -1369,7 +1519,7 @@ Design solution:
 
 Users can rest their hand on a knob, hit or push it, and spin the wheel without fine motor control. This design directly increases accessibility and autonomy.`,
         images: [
-            { url: stimSpinKnob }
+            { url: stimSpinKnob, caption: "An extruding wooden knob, sized so residents can push it without gripping" }
         ]
       },
       {
@@ -1378,7 +1528,7 @@ Users can rest their hand on a knob, hit or push it, and spin the wheel without 
 
 Teachers can write vocabulary, create games, assign categories, and adapt content daily. StimSpin becomes a dynamic classroom tool rather than a static toy.`,
         images: [
-            { url: stimSpinWhiteboard }
+            { url: stimSpinWhiteboard, caption: "The clear acrylic whiteboard layer over the color segments" }
         ]
       },
       {
@@ -1387,7 +1537,7 @@ Teachers can write vocabulary, create games, assign categories, and adapt conten
 
 Residents can spin to land on a texture and freely explore tactile stimulation. Designed based on user testing showing preference for squishy and crinkly materials.`,
         images: [
-            { url: stimSpinTexture }
+            { url: stimSpinTexture, caption: "Texture overlay" }
         ]
       },
       {
@@ -1396,14 +1546,14 @@ Residents can spin to land on a texture and freely explore tactile stimulation. 
 
 Choice increases engagement and reduces frustration.`,
         images: [
-            { url: stimSpinDisney }
+            { url: stimSpinDisney, caption: "Disney overlay" }
         ]
       },
       {
         heading: 'Science Overlay — Educational Integration',
         text: `Enables residents to choose the day's science topic and participate in classroom direction. This bridges entertainment with structured learning.`,
         images: [
-            { url: stimSpinScience }
+            { url: stimSpinScience, caption: "Science overlay" }
         ]
       },
       {
@@ -1417,7 +1567,7 @@ Features:
 
 This allows teachers to safely position the device for each individual.`,
         images: [
-            { url: stimSpinHandle }
+            { url: stimSpinHandle, caption: "Rear handle for one-handed carrying" }
         ]
       },
       {
@@ -1426,7 +1576,7 @@ This allows teachers to safely position the device for each individual.`,
 
 Avoided flashing lights to reduce seizure risk.`,
         images: [
-            { url: stimSpinClicker }
+            { url: stimSpinClicker, caption: "Soft rubber clicker" }
         ]
       },
       {
@@ -1454,7 +1604,7 @@ Final build cost: ~$150
 Total weight: 10 lbs`
       },
       {
-        heading: 'My Contributions',
+        heading: 'My Role',
         text: `• User observation & stakeholder interviews
 • Mockup prototyping & testing
 • Knob design + mechanical assembly
@@ -1481,7 +1631,16 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
   {
     id: 25,
     title: 'Flexible Tactile Sensors',
-    category: 'Research · Soft Robotics · Sensor Fabrication',
+    context: 'Research',
+    contextDetail: 'AIM Lab',
+    tldr: `My first research project. I hand-made 10+ flexible resistive sensors (carbon nanotubes and nanoparticles in Ecoflex silicone) for a soft robotic hand, and ran near-field electrospinning at 10 kV.`,
+    why: `It was my way into research: hands-on lab work on soft sensors, and a high-voltage process I had never used before.`,
+    learned: [
+      `Small process settings make big differences. A flow rate that was too high gave thick, broken fibers instead of true electrospinning.`,
+      `Timing matters in curing. The electrode pads have to go in at the right moment, which I learned by getting it wrong once.`,
+      `Logging every sample's resistance with likely failure causes turned trial and error into something I could compare.`,
+    ],
+    category: 'Soft Robotics · Sensor Fabrication',
     image: sensorNfesNozzle,
     description: 'Hand-fabricated flexible resistive sensors — carbon nanotubes and nanoparticles embedded in Ecoflex silicone — for a soft robotic hand, plus near-field electrospinning at 10 kV. Fall 2025, AIM Lab at Northwestern.',
     filterCategory: 'Research',
@@ -1520,12 +1679,12 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
         heading: 'Fabrication Photos',
         text: `Photos from the bench: conductive networks embedded in Ecoflex, including samples that didn't come out well.`,
         images: [
-          { url: sensorCarbonMesh1 },
-          { url: sensorCarbonMesh3 },
-          { url: sensorFailedSample1 },
-          { url: sensorFailedSample2 },
-          { url: sensorFinished1 },
-          { url: sensorFinished2 }
+          { url: sensorCarbonMesh1, caption: "Conductive network embedded in Ecoflex" },
+          { url: sensorCarbonMesh3, caption: "Another conductive network sample" },
+          { url: sensorFailedSample1, caption: "A sample that didn’t come out well" },
+          { url: sensorFailedSample2, caption: "Another failed sample" },
+          { url: sensorFinished1, caption: "Finished sensor" },
+          { url: sensorFinished2, caption: "Finished sensor" }
         ]
       },
       {
@@ -1545,6 +1704,14 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
   {
     id: 20,
     title: 'Dodecahedron Lamp',
+    context: 'Personal',
+    tldr: `A mirrored dodecahedron lamp I designed and built in one day: laser-cut mirrored acrylic panels joined with 3D-printed PLA joints, plus a hinged top panel for changing the light.`,
+    why: `I wanted to see how far I could get in a single day, and to work out the geometry myself.`,
+    learned: [
+      `Calculating the dihedral angles up front made the panels meet cleanly.`,
+      `Fitting the printer bed is part of the design. Splitting the structure into pieces had to be planned from the start.`,
+      `Plan for maintenance. The hinged panel means the light can be replaced.`,
+    ],
     category: 'Digital Fabrication · Geometric Modeling',
     image: lampLitGlow,
     description: 'A modular geometric lamp exploring 3D printing constraints and reflective material design.',
@@ -1556,7 +1723,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
         heading: 'Concept & Rapid Fabrication',
         text: `Designed and fabricated a modular mirrored dodecahedron lamp in one day.`,
         images: [
-            { url: lampCADSketch }
+            { url: lampCADSketch, caption: "Pentagon panel sketch in CAD" }
         ]
       },
       {
@@ -1567,21 +1734,21 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
 • Heat-welded PLA joints
 • Added hinged upper panel to enable future light replacement`,
         images: [
-            { url: lampAcrylicSheet },
-            { url: lampLaserCut },
-            { url: lampPanelsTable },
-            { url: lampSlicer },
-            { url: lampPrintFail },
-            { url: lampWelding }
+            { url: lampAcrylicSheet, caption: "Mirrored acrylic sheet" },
+            { url: lampLaserCut, caption: "Laser-cutting the pentagon panels" },
+            { url: lampPanelsTable, caption: "The cut panels" },
+            { url: lampSlicer, caption: "Joint frames split to fit the print bed" },
+            { url: lampPrintFail, caption: "A failed print along the way" },
+            { url: lampWelding, caption: "Heat-welding the PLA joints" }
         ]
       },
       {
-        heading: 'Completed Lamp & Lessons Learned',
+        heading: 'The Finished Lamp',
         text: `Created a structurally accurate modular lamp integrating geometry, fabrication constraints, and functional access.`,
         images: [
-            { url: lampHinged },
+            { url: lampHinged, caption: "The hinged panel open for changing the light" },
             { url: lampLitGlow, caption: 'Lit from within, string lights diffused through the mirrored acrylic panels' },
-            { url: lampHanging }
+            { url: lampHanging, caption: "Hanging in place" }
         ]
       }
     ]
@@ -1589,6 +1756,13 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
   {
     id: 21,
     title: 'Iron Sand Casting',
+    context: 'Class',
+    tldr: `We built a coke-fired furnace and cast iron. When my binder-jet sand mold didn't arrive in time, I pressed a 3D-printed pattern of my name into sand by hand and poured an iron nameplate instead.`,
+    why: `Pouring molten iron from a furnace we built ourselves is about as hands-on as manufacturing gets.`,
+    learned: [
+      `Have a backup plan. When the mold didn't ship, a hand-pressed sand mold still got me a complete casting.`,
+      `Ordering parts from outside adds schedule risk, so plan around the delivery date.`,
+    ],
     category: 'Metal Casting · Furnace Fabrication · Foundry Practice',
     image: castFurnaceHero,
     description: "Built a coke-fired furnace to cast iron, and hand-embossed a nameplate in sand when a binder-jet mold order didn't arrive in time.",
@@ -1624,6 +1798,13 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
   {
     id: 22,
     title: 'Snap-Fit Projector Mounts',
+    context: 'Personal',
+    tldr: `Two 3D-printed PETG projector mounts: a snap-fit stand that clips onto my bed frame for movies, and a clamp-on stand for projecting maps onto the table at D&D game nights.`,
+    why: `I wanted movies from bed and maps on the table for game nights, and it was a good excuse to design my first snap-fit.`,
+    learned: [
+      `A quick wood mockup clamped in place is a cheap way to check fit before printing.`,
+      `My first compliant mechanism taught me that the arm's angle and thickness decide whether it clips on and holds.`,
+    ],
     category: 'Compliant Mechanisms · 3D Printing · Product Design',
     image: projBedClipFinished,
     description: 'Two PETG 3D-printed projector mounts — a cantilever snap-fit stand that clips onto a bed frame, and a clamp-on stand that slides onto a table edge for game nights.',
@@ -1661,6 +1842,12 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
   {
     id: 24,
     title: 'Light Tracing Board',
+    context: 'Personal',
+    tldr: `A light board for tracing sketches, sized for the large paper in my industrial sketching class: laser-cut acrylic on 3D-printed corner stands.`,
+    why: `I needed one for class, sized exactly to the paper I was using, so I made it.`,
+    learned: [
+      `Raising the acrylic off the table lets the light spread evenly before it reaches the paper.`,
+    ],
     category: 'Product Design · Laser Cutting · 3D Printing',
     image: tracingBoardLit,
     description: 'A laser-cut acrylic light board with 3D-printed corner stands, sized to fit the large-format paper used in my industrial sketching class.',
@@ -1687,40 +1874,73 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
   {
     id: 28,
     title: 'Midwest EV: Project Delta Retrofit',
+    context: 'Industry',
+    contextDetail: 'Midwest EV',
+    tldr: `Project Delta adds driver assistance to Tesla Model S cars built before Autopilot existed, using the open-source openpilot system plus custom hardware. I own the enclosure for the project's custom circuit board. It has gone through five versions, each shaped by the team's weekly reviews, and the current one, V1.1, is a slide-in case with the Project Delta logo raised on its face.`,
+    why: `It's a real product going into real cars, and the enclosure is the part people actually see and handle. I own it from the board's CAD model to the printed part, on a remote team where my design has to work with everyone else's.`,
+    learned: [
+      `Design from real data. Starting from the board's STEP model means the case fits the board as designed, not as estimated.`,
+      `Bring work to review early. Team feedback changed the design more than any single idea of mine; the vents came out because the team asked.`,
+      `On a remote team, decisions have to be written down. Every meeting ends with a summary of who owns what.`,
+    ],
     category: 'Electric Vehicles · Embedded Electronics · Enclosure Design (Work in Progress)',
-    image: deltaEnclosureMinimalCad,
+    image: deltaEnclosureV11Back,
     description: 'Project Delta is a driver-assistance retrofit for Tesla Model S cars built before factory Autopilot, built on openpilot with custom wiring harnesses, PCBs and enclosures. I design the enclosure for the project\'s electronics.',
     filterCategory: 'Design',
     inProgress: true,
     date: '2026',
     link: { url: 'https://midwestev.com/products.html', label: 'Project Delta on midwestev.com' },
-    tools: ['Enclosure Design', 'Siemens NX', 'SolidWorks', 'Design for 3D Printing', 'Heat-Set Inserts / Fasteners', 'Wiring Harnesses', 'PCB Design Review', 'Vehicle Integration', 'GitHub', 'Remote Team Collaboration'],
+    tools: ['Enclosure Design', 'Autodesk Inventor', 'Siemens NX', 'SolidWorks', 'Design for 3D Printing', 'Multi-Color Printing', 'Heat-Set Inserts / Fasteners', 'Remote Team Collaboration'],
     content: [
       {
-        text: `Midwest EV is an independent EV repair and engineering business. Its main engineering project is Project Delta, a driver-assistance retrofit for Tesla Model S cars built before factory Autopilot. Project Delta is built on openpilot and covers the custom hardware, wiring harnesses and vehicle integration needed to connect it to the car, with bench work and road testing along the way. The project is now listed as a product on the company's public site, midwestev.com, which also covers its battery, drive unit and suspension repair work. I'm an engineer on the team, which works remotely across time zones. The project is ongoing.`
+        text: `Midwest EV is an independent EV repair and engineering business. Its main engineering project, Project Delta, brings driver assistance to Tesla Model S cars built before factory Autopilot. Those cars never got the hardware for it, so Project Delta builds on openpilot, an open-source driver-assistance system, and supplies the custom hardware, wiring harnesses and vehicle integration needed to connect it to these older cars. The work runs from the bench to road testing, and the project is now listed as a product on midwestev.com.
+
+I'm an engineer on the team, which works remotely across time zones, and the project is ongoing.`
       },
       {
-        heading: 'How the Team Works',
-        text: `The team meets weekly for a one-hour status meeting plus a four-hour Friday work session, with work tracked in a shared GitHub repository. Each status meeting closes with a written summary of who owns what, so the electronics, software, website and hardware tracks stay coordinated.`
+        heading: 'What I Own: The Enclosure',
+        text: `The project has its own custom circuit board, and I design the enclosure it lives in. I start from the board's STEP model, design the case around it in CAD, and bring each version to the team's weekly review.
+
+The enclosure has to:
+• Hold the board securely
+• Leave the USB-C port reachable from outside
+• Give the wiring a clean way out
+• Close with simple fasteners so the board can be serviced
+• Look like a finished product, not a project box`
       },
       {
-        heading: 'My Role: Enclosure Design',
-        text: `I own the enclosure design for the project's electronics, starting from the PCB's STEP model once the board layout was ready. The design has gone through several iterations driven by team feedback:
+        heading: 'The Current Design: V1.1',
+        text: `V1.1 is a slide-in case. The board slides into rails from the open back, and a rear cover with a cable slot screws on at the four corners, so the board comes out by removing one part. The USB-C port is reachable through the closed front end.
 
-• A vented first version with the PCB inside, plus a triangular concept with a logo-inspired shape
-• A more minimal enclosure, with the vents removed after team review
-• The current version: a compact box with a USB-C port opening, a cutout by the lid for the wiring, and a lid held on with M2 self-tapping screws (heat-set inserts for M2 screws were the earlier plan)
-
-The first 25 boards have been ordered and are on their way, and the next step is printing the enclosure and test-fitting it on a real board.`,
+It's also the first version that looks like a product. The Project Delta logo is raised on the face, laid out with a script I wrote to size the mark and lettering to the 50 × 102 mm face, and V1.1 is set up as a two-color print: a black body with a blue logo.`,
         images: [
-          { url: deltaEnclosureMinimalCad, caption: 'Current enclosure: compact box with the USB-C port opening' },
-          { url: deltaEnclosureEndcapCad, caption: 'Current enclosure, back end: screwed-on end cap and the wire cutout by the lid' },
-          { url: deltaEnclosureInternalCad, caption: 'Current enclosure with the PCB seated inside, showing the four screw bosses' },
+          { url: deltaEnclosureV11Logo, caption: 'V1.1 in Inventor: the raised Project Delta logo on the face, and the USB-C opening on the front end' },
+          { url: deltaEnclosureV11Back, caption: 'V1.1, open back end: the board slides in on internal rails, and the four corner holes take the rear cover screws' },
+          { url: deltaEnclosureV11Slicer, caption: 'V1.1 sliced for a two-color print, with the rear cover and its cable slot beside it' }
+        ]
+      },
+      {
+        heading: 'How the Design Evolved',
+        text: `Each version came out of a team review:
+
+1. Vented box: the first version, with the board inside and vents in the lid.
+2. Triangular concept: an exploration that borrowed the triangle from the Project Delta logo, to see if the case itself could carry the brand.
+3. Minimal box: the team asked for the vents to come out, so the case became simpler and cleaner.
+4. Compact box: a USB-C opening, a cutout by the lid for the wiring, a screwed-on end cap, and four screw bosses holding the board. Fastening moved from heat-set inserts to M2 self-tapping screws.
+5. V1.1 (current): the slide-in case with the rear cover and the raised logo, above.`,
+        images: [
+          { url: deltaEnclosureMinimalCad, caption: 'Version 4: compact box with the USB-C port opening' },
+          { url: deltaEnclosureEndcapCad, caption: 'Version 4, back end: screwed-on end cap and the wire cutout by the lid' },
+          { url: deltaEnclosureInternalCad, caption: 'Version 4 with the PCB seated inside, showing the four screw bosses' },
           { url: deltaEnclosureOpenCad, caption: 'Earlier vented version with the PCB inside, lid removed' },
           { url: deltaEnclosureClosedCad, caption: 'Earlier vented version, closed' },
           { url: deltaEnclosureLidCad, caption: 'Enclosure lid' },
           { url: deltaEnclosureTriangleCad, caption: 'Triangular enclosure concept around the board' }
         ]
+      },
+      {
+        heading: 'How the Team Works',
+        text: `The team meets weekly for a one-hour status meeting plus a four-hour Friday work session, with work tracked in a shared GitHub repository. Each status meeting closes with a written summary of who owns what, so the electronics, software, website and hardware tracks stay coordinated.`
       },
       {
         heading: 'Branding & Website',
@@ -1736,13 +1956,26 @@ The first 25 boards have been ordered and are on their way, and the next step is
       },
       {
         heading: 'The Wider Project',
-        text: `Other tracks I work alongside include PCB design (where the team compared two circuit topologies, a BJT/MOSFET stage and an LM319 comparator, with simulation to choose between them, and simplified the board for immediate production by dropping a CAN-bus detection circuit), an updated device user interface, and cleaning up the shared code repository.`
+        text: `My teammates own the other tracks, including the PCB design, the device's user interface and the shared code repository. The enclosure has to keep up with their work, so changes to the board feed straight into my next enclosure version.`
+      },
+      {
+        heading: "What's Next",
+        text: `The first 25 boards have been ordered and are on their way. Next is printing V1.1 and test-fitting it on a real board, then folding what I learn back into the design.`
       }
     ]
   },
   {
     id: 26,
     title: 'SME Dorm Accessibility Competition Project',
+    context: 'Club',
+    contextDetail: 'SME at Northwestern',
+    tldr: `I'm leading Northwestern's team in SME's national competition to make college residence halls more accessible (Purdue, April 2027). We're still choosing a concept. The first, Door Signal, turns a knock into a wash of light for students who can't hear it.`,
+    why: `Accessible design is where I started, with StimSpin and Patchwork Plush. This time I'm leading the team through the whole process, from picking the problem to building the prototype.`,
+    learned: [
+      `Detecting a knock is easy. The hard part is rejecting slams, a neighbor's door and hallway noise.`,
+      `Escalate the sensing only as far as testing demands: accelerometer first, then an IMU, then a classifier.`,
+      `Budget shapes scope. What we can build depends on the funding we secure.`,
+    ],
     category: 'Accessible Design · Concept Development · SME NSMIC (Work in Progress)',
     image: '',
     description: "My team's entry in SME's National Student Manufacturing Innovation Challenge: designing something that makes college residence halls more accessible. We're back at concept brainstorming while we learn what budget we can get; an early concept, Door Signal, is documented below.",
@@ -1755,7 +1988,7 @@ The first 25 boards have been ordered and are on their way, and the next step is
         text: `This is my team's entry for the National Student Manufacturing Innovation Challenge (NSMIC), hosted by SME's student chapter at Purdue. Teams of four to six students design and build a working prototype that makes everyday objects in college residence halls more accessible, and the competition is April 17–18, 2027. I'm the team lead, designer, and engineer on a team of five Northwestern students, and I also helped organize Northwestern's two NSMIC teams through the university's SME student chapter. The project is at the concept stage — nothing is built or validated yet. Our first proposal was a door-knock alert called Door Signal, but we're stepping back to brainstorm while we find out what budget we can secure; a larger budget could let us take on something bigger than that first idea. The sections below document that first concept.`
       },
       {
-        heading: 'First Concept: The Problem',
+        heading: 'First Concept: The Challenge',
         text: `Dorm rooms have no doorbells, so a knock is audible-only. Deaf and hard-of-hearing students miss it — and so does anyone asleep or wearing headphones. About 19% of undergraduates report a disability, and a missed knock can mean a locked-out roommate or a missed delivery. Commercial fixes exist, but they split into two devices and cost over $250: the Serene Innovations CentralAlert knock sensor plus a wearable pager comes to $261.72.`
       },
       {
@@ -1806,6 +2039,13 @@ The plan escalates only as far as testing demands:
   {
     id: 27,
     title: 'P1 Motor Club Track Model',
+    context: 'Client',
+    contextDetail: 'P1 Motor Club',
+    tldr: `A large, mostly 3D-printed model of P1 Motor Club's racetrack property, built from the civil engineer's Civil 3D files to travel in a truck and help sell memberships. I'm testing print, paint and landscaping on a sample piece first.`,
+    why: `It combines cars and making: turning real site data into something people can stand around and point at.`,
+    learned: [
+      `Test a small piece before buying material for the whole model. The print, paint, grass and water all have to look right together.`,
+    ],
     category: 'Scale Modeling · 3D Printing · Civil 3D to Physical (Work in Progress)',
     image: p1MasterPlan,
     description: 'A large-scale, mostly 3D-printed model of the P1 Motor Club racetrack property, built from the project civil engineer\'s Civil 3D files and sized to ride in the back of a truck as a sales tool for memberships.',
@@ -1842,6 +2082,13 @@ The plan escalates only as far as testing demands:
   {
     id: 23,
     title: 'Kerf-Bent Walnut Turntable Stand',
+    context: 'Personal',
+    tldr: `A turntable stand kerf-bent from one sheet of walnut plywood into an S-curve with three platforms, with brass accents and layered vibration isolation. The CAD and the $370 BOM are done, and I'm waiting on CNC router time.`,
+    why: `My first audio project. I wanted furniture that looks good and actually helps the record sound better.`,
+    learned: [
+      `Practice kerfs on scrap first to see how far the plywood will bend before committing to the real piece.`,
+      `Looks and structure can be separate jobs. The brass tubing is just an accent; a hidden threaded rod carries the load.`,
+    ],
     category: 'Furniture Design · CNC Fabrication · Audio Equipment (Work in Progress)',
     image: turntableCadRender,
     description: 'A kerf-bent walnut veneer plywood turntable stand — an S-curved form with two bends and three platforms, accented with brass tubing and tuned for vibration isolation. Currently finalized in CAD and BOM, awaiting CNC router time.',
@@ -1939,16 +2186,11 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
         )}
         <div className="absolute inset-0 bg-[#1B2D5B]/0 group-hover:bg-[#1B2D5B]/10 transition-colors duration-300" />
 
-        {/* Work-in-progress treatment: darken the thumbnail and stamp it */}
+        {/* Work-in-progress badge (these cards already sit in the In Progress section) */}
         {project.inProgress && (
-          <>
-            <div className="absolute inset-0 bg-black/35 pointer-events-none" />
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span className="-rotate-12 border-[3px] border-[#F7F3ED] text-[#F7F3ED] text-xs font-bold tracking-[0.2em] uppercase px-4 py-1.5 shadow-lg">
-                Work In Progress
-              </span>
-            </div>
-          </>
+          <span className="absolute top-3 left-3 z-10 pointer-events-none bg-[#F7F3ED]/95 text-[#1B2D5B] text-[10px] font-bold tracking-[0.15em] uppercase px-2.5 py-1 rounded-full shadow-md">
+            In Progress
+          </span>
         )}
 
         {/* Chevron arrows for cycling images */}
@@ -1992,6 +2234,14 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
         )}
       </div>
       <div className={compact ? 'p-4' : 'p-6'} onClick={() => onSelect(project.id)}>
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full whitespace-nowrap ${contextStyles[project.context]}`}>
+            {contextLabels[project.context]}
+          </span>
+          {project.date && (
+            <span className="text-xs font-semibold text-[#1B2D5B]/50 whitespace-nowrap">{project.date}</span>
+          )}
+        </div>
         <p className="text-xs font-bold text-[#3B5998] uppercase tracking-wider mb-2">{project.category.split('·')[0]}</p>
         <h3 className={`${compact ? 'text-base mb-0' : 'text-xl mb-3'} font-bold text-[#1B2D5B] group-hover:text-[#3B5998] transition-colors flex items-center gap-2`}>
           {project.title}
@@ -2010,8 +2260,14 @@ export function Portfolio() {
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<'All' | Project['filterCategory']>('All');
-  const mainProjects = projects.filter(p => p.filterCategory !== 'Small Projects' && (activeTab === 'All' || p.filterCategory === activeTab));
-  const smallProjects = activeTab === 'All' || activeTab === 'Small Projects' ? projects.filter(p => p.filterCategory === 'Small Projects') : [];
+  const tabProjects = projects
+    .filter(p => p.filterCategory !== 'Small Projects' && (activeTab === 'All' || p.filterCategory === activeTab))
+    .sort(byDisplayOrder);
+  const mainProjects = tabProjects.filter(p => !p.inProgress);
+  const inProgressProjects = tabProjects.filter(p => p.inProgress);
+  const smallProjects = activeTab === 'All' || activeTab === 'Small Projects'
+    ? projects.filter(p => p.filterCategory === 'Small Projects').sort(byDisplayOrder)
+    : [];
 
   const selectedProject = projects.find(p => p.id === selectedId);
 
@@ -2038,7 +2294,7 @@ export function Portfolio() {
 
   // Step through projects in the order they appear on the page (falls back to all projects
   // if the open one isn't in the current tab, e.g. when linked from the Gallery)
-  const orderedProjects = [...mainProjects, ...smallProjects];
+  const orderedProjects = [...mainProjects, ...inProgressProjects, ...smallProjects];
   const navList = orderedProjects.some(p => p.id === selectedId) ? orderedProjects : projects;
   const goToProject = (delta: number) => {
     const i = navList.findIndex(p => p.id === selectedId);
@@ -2137,9 +2393,34 @@ export function Portfolio() {
           </motion.div>
         )}
 
+        {/* In-progress projects */}
+        {inProgressProjects.length > 0 && (
+          <div className={mainProjects.length > 0 ? 'mt-20' : ''}>
+            <div className="flex items-center gap-4 mb-8">
+              <h3 className="text-sm font-bold tracking-widest uppercase text-[#1B2D5B]">In Progress</h3>
+              <div className="flex-1 h-px bg-[#1B2D5B]/15" />
+            </div>
+            <motion.div
+              layout
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              <AnimatePresence mode='popLayout'>
+                {inProgressProjects.map((project, i) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    onSelect={setSelectedId}
+                    index={i}
+                  />
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+        )}
+
         {/* Small projects */}
         {smallProjects.length > 0 && (
-          <div className={mainProjects.length > 0 ? 'mt-20' : ''}>
+          <div className={mainProjects.length + inProgressProjects.length > 0 ? 'mt-20' : ''}>
             <div className="flex items-center gap-4 mb-8">
               <h3 className="text-sm font-bold tracking-widest uppercase text-[#1B2D5B]">Small Projects</h3>
               <div className="flex-1 h-px bg-[#1B2D5B]/15" />
@@ -2223,11 +2504,40 @@ export function Portfolio() {
                     <div className={`absolute bottom-0 left-0 right-0 p-8 ${selectedProject.image ? 'bg-gradient-to-t from-[#1B2D5B]/90 to-transparent' : 'bg-transparent flex flex-col justify-end h-full'}`}>
                        <p className="text-[#7B9ACC] font-bold tracking-widest uppercase text-sm mb-2">{selectedProject.category}</p>
                        <h2 className="text-2xl md:text-4xl font-bold text-white">{selectedProject.title}</h2>
+                       <p className="text-white/80 text-sm font-medium mt-2">
+                         {[contextLabels[selectedProject.context], selectedProject.contextDetail, selectedProject.date].filter(Boolean).join(' · ')}
+                       </p>
                     </div>
                   </div>
 
                   <div className="p-8 md:p-12 grid grid-cols-1 md:grid-cols-3 gap-12">
                     <div className="md:col-span-2 space-y-12">
+                      <div className="bg-white/60 border border-[#1B2D5B]/10 rounded-lg p-6 md:p-8 space-y-6">
+                        <div>
+                          <h5 className="text-xs font-bold text-[#3B5998] uppercase tracking-widest mb-2">TL;DR</h5>
+                          <p className="text-[#1B2D5B] text-lg leading-relaxed font-medium">{selectedProject.tldr}</p>
+                        </div>
+                        {selectedProject.why && (
+                          <div>
+                            <h5 className="text-xs font-bold text-[#3B5998] uppercase tracking-widest mb-2">Why I Did It</h5>
+                            <p className="text-[#1B2D5B]/75 leading-relaxed">{selectedProject.why}</p>
+                          </div>
+                        )}
+                        {selectedProject.learned && selectedProject.learned.length > 0 && (
+                          <div>
+                            <h5 className="text-xs font-bold text-[#3B5998] uppercase tracking-widest mb-3">What I Learned</h5>
+                            <ul className="space-y-2">
+                              {selectedProject.learned.map(item => (
+                                <li key={item} className="flex gap-3 text-[#1B2D5B]/75 leading-relaxed">
+                                  <span className="text-[#3B5998] font-bold shrink-0">→</span>
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+
                       <div className="space-y-6">
                         <h4 className="text-xl font-bold text-[#1B2D5B] border-l-4 border-[#3B5998] pl-4">Project Overview</h4>
                         

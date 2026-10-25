@@ -401,11 +401,11 @@ export function PortfolioPdfPage() {
             title="Formula SAE Brake System"
             org="Northwestern Formula Racing — Suspension Member"
             year="2024 – Present"
-            lead="Designed the braking system to a 1 G deceleration target, from the analytical force model through ANSYS structural and thermal verification — then machined the rotors, routed the lines and bled the system on the car."
+            lead="Worked across the braking system, from a hand calculation of the pedal force needed for a 1 G stop through ANSYS structural and thermal verification — then machined the rotors, routed the lines and bled the system on the car."
           />
           <Metrics
             items={[
-              ['1 G', 'Deceleration target'],
+              ['1 G', 'Hand-check stop'],
               ['690 lbf', 'Tire braking force'],
               ['42 lbf', 'Driver pedal force'],
               ['~16×', 'System gain'],
