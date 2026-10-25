@@ -164,6 +164,8 @@ import deltaEnclosureInternalCad from 'figma:asset/delta-enclosure-internal-cad.
 import deltaEnclosureV11Logo from 'figma:asset/delta-enclosure-v11-logo.webp';
 import deltaEnclosureV11Back from 'figma:asset/delta-enclosure-v11-back.webp';
 import deltaEnclosureV11Slicer from 'figma:asset/delta-enclosure-v11-slicer.webp';
+import deltaEnclosurePrintedRear from 'figma:asset/delta-enclosure-printed-rear.webp';
+import deltaEnclosurePrintedFront from 'figma:asset/delta-enclosure-printed-front.webp';
 
 export interface ProjectSection {
   heading?: string;
@@ -1920,6 +1922,14 @@ It's also the first version that looks like a product. The Project Delta logo is
         ]
       },
       {
+        heading: 'Printed and Wired Up',
+        text: `The slide-in case has already been printed and assembled on its wiring harness. The harness exits cleanly through the rear cover's cable slot, the four cover screws hold everything closed, and the USB-C port lines up with the opening at the front end. Seeing it on a real harness confirmed the layout works, and V1.1 builds on it with the two-color logo.`,
+        images: [
+          { url: deltaEnclosurePrintedRear, caption: 'The printed case on its harness: the cable exits through the rear cover, held on by four screws' },
+          { url: deltaEnclosurePrintedFront, caption: 'The front end, with the USB-C opening and the raised Project Delta lettering' }
+        ]
+      },
+      {
         heading: 'How the Design Evolved',
         text: `Each version came out of a team review:
 
@@ -1960,7 +1970,7 @@ It's also the first version that looks like a product. The Project Delta logo is
       },
       {
         heading: "What's Next",
-        text: `The first 25 boards have been ordered and are on their way. Next is printing V1.1 and test-fitting it on a real board, then folding what I learn back into the design.`
+        text: `The first 25 boards have been ordered and are on their way. Next is printing V1.1 in two colors and test-fitting it on one of those boards, then folding what I learn back into the design.`
       }
     ]
   },
