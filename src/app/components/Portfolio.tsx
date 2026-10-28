@@ -18,6 +18,7 @@ import extendItLoadTestNew from 'figma:asset/1d18a7808e8709de495f1254f14773c637a
 import extendItUserTestNew from 'figma:asset/cd5d7ada40db3d957daea1ac3cff6db6d8e80c86.webp';
 import extendItV2HingeVsLinkage from 'figma:asset/extendit-v2-hinge-vs-linkage.webp';
 import extendItV2SideView from 'figma:asset/extendit-v2-side-view.webp';
+import extendItV2OverCenter from 'figma:asset/extendit-v2-over-center.webp';
 import ctScannerImg from 'figma:asset/4912cd11da20c60b00c965ea83b87634b57600b8.webp';
 import ctFrustum from 'figma:asset/3b5611915cfa8c0522559efe6b31ea2a9eb1adc0.webp';
 import ctLinerSide from 'figma:asset/d49ce2b4da6a0e33e564535e6cc619d30f5b5dcd.webp';
@@ -173,8 +174,8 @@ export interface ProjectSection {
   images?: { url: string; caption?: string }[];
 }
 
-// Where a project came from, shown as a label on its card
-export type ProjectContext = 'Class' | 'Club' | 'Research' | 'Personal' | 'Industry' | 'Client';
+// Where a project came from: the card label, and what the filter tabs filter on
+export type ProjectContext = 'Class' | 'Client' | 'Club' | 'Research' | 'Personal';
 
 export interface Project {
   id: number;
@@ -197,24 +198,22 @@ export interface Project {
 
 const contextLabels: Record<ProjectContext, string> = {
   Class: 'Class Project',
-  Club: 'Club',
+  Client: 'Client Project',
+  Club: 'Club Project',
   Research: 'Research',
   Personal: 'Personal Project',
-  Industry: 'Industry',
-  Client: 'Client Project',
 };
 
 const contextStyles: Record<ProjectContext, string> = {
   Class: 'bg-[#3B5998]/10 text-[#3B5998]',
+  Client: 'bg-[#1B2D5B]/12 text-[#1B2D5B]',
   Club: 'bg-[#B5651D]/12 text-[#8A4B12]',
   Research: 'bg-[#2E7D6B]/12 text-[#25645A]',
   Personal: 'bg-[#8E4A8A]/12 text-[#74396F]',
-  Industry: 'bg-[#1B2D5B] text-white',
-  Client: 'bg-[#1B2D5B]/10 text-[#1B2D5B]',
 };
 
 // Display order on the site: projects that show the most iteration and learning come first
-const displayOrder = [15, 11, 10, 12, 9, 16, 13, 14, 17, 25, 28, 26, 27, 23, 20, 22, 24, 21];
+const displayOrder = [15, 11, 10, 12, 9, 16, 13, 14, 17, 25, 29, 28, 31, 26, 30, 27, 23, 20, 22, 24, 21];
 const byDisplayOrder = (a: Project, b: Project) => {
   const rank = (p: Project) => {
     const i = displayOrder.indexOf(p.id);
@@ -1224,27 +1223,103 @@ Revenue opportunities include standard model sales, custom sizing, branded insta
         ]
       },
       {
-        heading: 'Next: ExtendIt v2 (In Design)',
-        text: `I designed ExtendIt v2, a full-size extension for a standard 60 × 30 in desk with a 52 × 25 in leaf.
+        heading: 'Where It Went Next',
+        text: `ExtendIt stuck with me, so I took it full size. ExtendIt v2 is a 52 × 25 in extension for a real desk, and it drops the hinge entirely for a slide-and-lift linkage. It's a separate project in this portfolio.`
+      }
+    ]
+  },
+  {
+    id: 29,
+    title: 'ExtendIt v2',
+    context: 'Personal',
+    tldr: `A full-size desk extension that slides out from under the desk and then lifts flush with the desktop, so a 52 × 25 in leaf never swings through your knees the way a hinged one would. The mechanism, load math and full bill of materials are done; parts are next.`,
+    why: `ExtendIt v1 was a class project sized for a lecture-hall seat, and I always wanted the version I'd actually use at my own desk. Scaling it up broke the hinge that made v1 work, which turned out to be the interesting part.`,
+    learned: [
+      `A mechanism that works small may not scale. The 180° flip is fine on a 9 in leaf and impossible on a 25 in one.`,
+      `When one joint can't do the job, split the job. A prismatic slide takes the 28 in of travel and the linkage only does the 1.25 in lift, seating and lock.`,
+      `Design the lock before the motion feels finished. Over-center alone unlatches under a 2 lb pull, so the plunger isn't optional.`,
+      `Check the failure that isn't in your part. The mechanism has margin to spare; the desk tipping over is the real limit.`,
+    ],
+    category: 'Mechanism Design · Furniture · Design for Manufacture (Work in Progress)',
+    image: extendItV2SideView,
+    description: 'A full-size desk extension that slides out and lifts flush on a parallelogram linkage, keeping the leaf level the whole way instead of flipping it on a hinge.',
+    filterCategory: 'Design',
+    inProgress: true,
+    date: '2026',
+    tools: ['Mechanism Design', 'Four-Bar Linkage', 'SolidWorks', 'Sheet Metal Design', 'Design for Manufacture', 'Load & Stress Analysis', 'Python (Motion Sweep)', 'Bill of Materials', '3D Printing'],
+    content: [
+      {
+        text: `ExtendIt v2 is the full-size version of my ExtendIt desk extension: a 52 × 25 in leaf that lives under a standard 60 × 30 in desk, slides straight out, then rises 1.25 in and seats flush with the desktop. The leaf stays level the entire time.
 
-Why the hinge had to go: v1 flips its leaf 180° on a hinge. That works for a 9 in lecture-hall leaf, but on a 25 in leaf the far edge swings down to 2.6 in above the floor, straight through your knees and chair.
-
-The new mechanism works in two stages, and the leaf stays level the whole time:
-1. Locking drawer slides carry the leaf straight out from under the desk (28 in of travel).
-2. A short parallelogram linkage lifts it 1.25 in and moves it 2.4 in back, so it seats flush with the desktop with a 1/16 in gap.
-
-I designed it to be held open three ways: the slide's lock-out, links that rest 5° past vertical (over-center), and a spring plunger that pins one link. A plain linkage can't make the full 28 in stroke without hitting the desk underside, so I split the job: the slides handle the long travel and the linkage only handles the lift, seating and lock.
-
-What I've worked out so far:
-• Motion: I swept the full 30° to 95° lift. The leaf never hits the desk, peaks only 0.010 in above flush, and every part keeps at least 0.31 in of clearance.
-• Loads: the mechanism has at least 1.6× margin with 100 lb leaning on the front edge. The real limit is the desk tipping, so I built a tipping table and a tip test into the plan.
-• Parts: I detailed every part for waterjet 6061 aluminum links and rails, bent 5052 aluminum leaf rails, 3D-printed PETG/TPU stops, and a walnut-edged plywood leaf, with a full BOM at about $850–1,150.
-
-Next I'm modeling it in SolidWorks with a motion study and proving the linkage with 3D-printed links. Then I'll order the metal parts in one batch, build it, tune it flush to ±0.010 in, and run a full test checklist before anything goes on it.`,
+The design, the numbers and the bill of materials are finished. Nothing is built yet.`,
         images: [
-            { url: extendItV2HingeVsLinkage, caption: 'Why v1’s hinge doesn’t scale: on a full-size leaf, the flip swings through your knees, while the v2 leaf stays level.' },
-            { url: extendItV2SideView, caption: 'The v2 motion to scale: stowed, slid out, then lifted and locked flush with the desktop.' }
+            { url: extendItV2SideView, caption: 'The v2 motion to scale: stowed, slid out 28 in, then lifted and locked flush with the desktop' }
         ]
+      },
+      {
+        heading: 'The Challenge: Why the Hinge Had To Go',
+        text: `v1 flips its leaf 180° on a hinge. That's fine for a 9 in lecture-hall leaf, but geometry punishes it at full size: a leaf stowed flat under the desk can only end up flush after rotating about a pivot at the desk edge, so its far edge sweeps a full leaf-length arc underneath. On a 25 in leaf at a 29 in desk, that edge passes 2.6 in above the floor, straight through your knees and your chair.
+
+A plain four-bar can't fix it either. A coupler that has to translate 25+ in needs links at least half that long, and the only place to anchor them is below the path, where the arc bulges up into the desk underside while the leaf is still stowed.`,
+        images: [
+            { url: extendItV2HingeVsLinkage, caption: 'The hinge arc in orange sweeps through the knee zone; the v2 leaf stays level in a 2.25 in band' }
+        ]
+      },
+      {
+        heading: 'My Solution: Split the Motion in Two',
+        text: `So I stopped asking one joint to do everything:
+
+1. Locking drawer slides carry the leaf straight out, 28.13 in of travel, still tucked under the desk line.
+2. A short parallelogram linkage — four 2.52 in links, two per side — lifts it the last 1.25 in and pulls it 2.4 in back, seating it against the desk face with a 1/16 in gap.
+
+Because the leaf is the coupler of a parallelogram, it never rotates. The only vertical motion in the whole cycle is that final 1.25 in rise, against the hinged version's 26 in swing toward the floor.`
+      },
+      {
+        heading: 'Three Locks, Because One Isn’t Enough',
+        text: `Open, the leaf is held three ways: the slide's own lock-out at full extension, the links resting 5° past vertical so the load pushes them into a stop, and a hand-retractable plunger whose pin drops into a lobe on the front-left link.
+
+The plunger is a requirement, not a nicety. I ran the numbers on the over-center geometry: at 5° past vertical, a forward pull of only about 2 lb is enough to unlatch it. With the plunger engaged, a 50 lb forward pull puts roughly 100 lb on a 1/4 in steel pin rated near 2,000 lb in shear.`,
+        images: [
+            { url: extendItV2OverCenter, caption: 'The front link through the lock: resting on the lower stop, straight up at the peak, then 5° past vertical with the plunger in' }
+        ]
+      },
+      {
+        heading: 'Checking the Motion',
+        text: `I swept the full lift, 30° to 95°, in 650 steps and checked every pair that could collide:
+
+• The leaf's back edge stays in front of the desk face for the whole rise and only closes to the 1/16 in gap in the last few degrees.
+• The leaf peaks 0.010 in above flush at 90°, then settles — a soft click, not a step you'd feel.
+• Near the stop, height changes only 0.004 in per degree, so stop wear or a degree of slop never shows. Flush height gets set with slotted hanger brackets instead.
+• The tightest clearance anywhere in the swing is 0.31 in, between the link's top end and the leaf rail flange.`
+      },
+      {
+        heading: 'Loads, and the Failure That Isn’t the Mechanism',
+        text: `With 100 lb leaning on the front edge, the mechanism keeps at least 1.6× margin everywhere — pin bearing stress is 1,020 psi against a limit near 56 ksi, so the pins are 50× oversized and the real constraints are the slides and the screws into the desk.
+
+The actual failure mode is the desk tipping forward, because the load sits 28 in in front of the front legs. That depends on what the desk weighs, not on how the leaf got there, so I put a tipping table in the spec: a bare 60 lb desk lifts its back legs under 13 lb at the leaf's front edge, while a 150 lb loaded desk takes 66 lb. The build ends with a luggage-scale tip test before anything goes on the leaf.`
+      },
+      {
+        heading: 'Designed to Be Ordered, Not Machined',
+        text: `Every part is cut plate, bought stock, or printed — nothing needs a mill:
+
+• Carriage rails and lift links: waterjet 6061-T6
+• Leaf rails: 5052-H32 bent to a 90° angle, because 6061 cracks when bent and 5052 is what bending shops stock
+• Stops: printed PETG with a TPU face, on slotted holes so the angle tunes ±3°
+• Leaf: 3/4 in plywood with a solid walnut edge
+
+One detail I'm happy with: the plunger hole isn't dimensioned at all. The block and the top pivot sit on the same laser-cut part, and the hole gets transfer-marked from the installed plunger, so the pin and its hole line up by construction instead of by tolerance stack.
+
+Total BOM is about $850–1,150, roughly a third of it the locking slides.`
+      },
+      {
+        heading: 'Status & Build Plan',
+        text: `Designed, calculated and specified; nothing cut yet. The plan, in order:
+
+1. Model the assembly in SolidWorks and run a motion study with interference detection
+2. Print four links and a leaf rail section in PETG and confirm the 1.25 in rise, the 2.40 in back-shift and the over-center click on a scrap stand-in
+3. Order links, carriage rails and leaf rails in one batch from one shop, so every pivot spacing is cut on the same machine
+4. Assemble, hang the leaf last so it conforms to the linkage, then tune flush to ±0.010 in
+5. Run the test checklist, starting with the tip test`
       }
     ]
   },
@@ -1876,7 +1951,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
   {
     id: 28,
     title: 'Midwest EV: Project Delta Retrofit',
-    context: 'Industry',
+    context: 'Personal',
     contextDetail: 'Midwest EV',
     tldr: `Project Delta adds driver assistance to Tesla Model S cars built before Autopilot existed, using the open-source openpilot system plus custom hardware. I own the enclosure for the project's custom circuit board. It has gone through five versions, each shaped by the team's weekly reviews, and the current one, V1.1, is a slide-in case with the Project Delta logo raised on its face.`,
     why: `It's a real product going into real cars, and the enclosure is the part people actually see and handle. I own it from the board's CAD model to the printed part, on a remote team where my design has to work with everyone else's.`,
@@ -1977,32 +2052,63 @@ It's also the first version that looks like a product. The Project Delta logo is
   {
     id: 26,
     title: 'SME Dorm Accessibility Competition Project',
-    context: 'Club',
+    context: 'Personal',
     contextDetail: 'SME at Northwestern',
-    tldr: `I'm leading Northwestern's team in SME's national competition to make college residence halls more accessible (Purdue, April 2027). We're still choosing a concept. The first, Door Signal, turns a knock into a wash of light for students who can't hear it.`,
-    why: `Accessible design is where I started, with StimSpin and Patchwork Plush. This time I'm leading the team through the whole process, from picking the problem to building the prototype.`,
+    tldr: `I'm leading a team of six in SME's national manufacturing competition, designing something that makes college residence halls more accessible (Purdue, April 2027). We've done the secondary research across four problem spaces and the evidence keeps pointing at one place: the laundry room.`,
+    why: `Accessible design is where I started, with StimSpin and Patchwork Plush. This time I'm running the whole thing — picking the problem, raising the money, and leading five other people through to a built prototype.`,
     learned: [
-      `Detecting a knock is easy. The hard part is rejecting slams, a neighbor's door and hallway noise.`,
-      `Escalate the sensing only as far as testing demands: accelerometer first, then an IMU, then a classifier.`,
-      `Budget shapes scope. What we can build depends on the funding we secure.`,
+      `Research the problem before you fall in love with a solution. Our first concept was a door-knock light; the evidence pushed us somewhere else entirely.`,
+      `Label your evidence. Separating verified statistics from forum posts from my own interpretation made it obvious which problems we actually understood.`,
+      `Look for where problems overlap. Three of our four problem spaces met at the laundry room, which gave us a sharper problem statement than any one of them.`,
+      `Leading a team is mostly logistics: funding, registration deadlines, and making sure six people's independent research can actually be compared.`,
     ],
-    category: 'Accessible Design · Concept Development · SME NSMIC (Work in Progress)',
+    category: 'Accessible Design · User Research · SME NSMIC (Work in Progress)',
     image: '',
-    description: "My team's entry in SME's National Student Manufacturing Innovation Challenge: designing something that makes college residence halls more accessible. We're back at concept brainstorming while we learn what budget we can get; an early concept, Door Signal, is documented below.",
+    description: "I'm leading Northwestern's team in SME's National Student Manufacturing Innovation Challenge: designing and building something that makes college residence halls more accessible. We've finished secondary research across four problem spaces and are converging on dorm laundry.",
     filterCategory: 'Design',
     inProgress: true,
     date: '2026–2027',
-    tools: ['Accessible Design', 'Concept Development', 'Budget Scoping', 'Team Leadership', 'Embedded Systems (ESP32-C3, early concept)', 'Accelerometer / IMU Sensing', 'Bill of Materials'],
+    tools: ['Accessible Design', 'Secondary Research', 'User Interviews', 'Evidence Matrices', 'Team Leadership', 'Grant Writing & Budgeting', 'Concept Development', 'Embedded Systems (early concept)'],
     content: [
       {
-        text: `This is my team's entry for the National Student Manufacturing Innovation Challenge (NSMIC), hosted by SME's student chapter at Purdue. Teams of four to six students design and build a working prototype that makes everyday objects in college residence halls more accessible, and the competition is April 17–18, 2027. I'm the team lead, designer, and engineer on a team of five Northwestern students, and I also helped organize Northwestern's two NSMIC teams through the university's SME student chapter. The project is at the concept stage — nothing is built or validated yet. Our first proposal was a door-knock alert called Door Signal, but we're stepping back to brainstorm while we find out what budget we can secure; a larger budget could let us take on something bigger than that first idea. The sections below document that first concept.`
+        text: `This is my team's entry for the National Student Manufacturing Innovation Challenge (NSMIC), hosted by SME's student chapter at Purdue on April 17–18, 2027. Teams of four to six students design and build a working prototype that makes everyday objects in college residence halls more accessible.
+
+I'm the team lead on a team of six Northwestern students, and I also helped organize Northwestern's two NSMIC teams through the university's SME chapter. Nothing is built yet — we're deep in research, and that research has already moved us off our first idea.`
       },
       {
-        heading: 'First Concept: The Challenge',
+        heading: 'How We Picked the Problem',
+        text: `Our first proposal was a door-knock alert, and I nearly ran with it. Instead the team stepped back and did real secondary research first, across four problem spaces, each of us working independently so we could compare findings rather than talk each other into something.
+
+I wrote a shared research prompt so all six of us used the same method: social listening, literature review, patent and solution benchmarking, market research, behavioral research, and regulatory research — 15 to 25 sources per problem, written up as a report plus an evidence matrix.
+
+The part that mattered most was labelling every claim: *verified* for a peer-reviewed study or official statistic, *user-reported* for a forum post or survey, *interpretation* for my own reading, *hypothesis* for something untested. Once the evidence was labelled it was obvious which problems we actually understood and which we'd just assumed.`
+      },
+      {
+        heading: 'The Four Problem Spaces',
+        text: `I researched all four myself, and the rest of the team did the same in parallel:
+
+1. Knowing when a shared machine is free or done. Status apps have existed for about 20 years, and residents still walk down to check. Nothing handles the "finished but nobody emptied it" handoff, and no machine signal is built for deaf or blind students.
+2. Moving laundry. Stair trips dominate the effort — a single load meant about six trips in both of our interviews. Carry aids are designed for houses, not shared rooms with vendor machines.
+3. Reaching amenities on floors you don't live on. Crutch walking costs about twice the energy of walking, and accommodations are space-available only. Between "install an elevator" and a $38,000 stair-climbing chair there is nothing.
+4. Room space and storage. Hall rules ban the usual fixes, raised beds are a known injury source, and mobility aids have nowhere to live or charge.`
+      },
+      {
+        heading: 'Where the Evidence Points',
+        text: `Three of the four problems meet in the same room. The laundry room is the amenity students visit most often on a floor they don't live on, and it's what they carry the most to. Framing it that way gives a much sharper problem statement than any one of the four on its own, and it's where we're focused now.
+
+What we still need is primary research, not more reading:
+• AccessibleNU, on temporary-injury and laundry-related accommodation requests
+• A map of Northwestern halls: elevator or not, and which floor laundry, mail and water are on
+• Observation of one busy laundry room on a weekend evening — wasted trips, loads left sitting, how people carry and unload
+• Interviews with students who lived in a hall while injured or with a mobility limit
+• Residential Services, on what may legally be attached to vendor machines and to room walls`
+      },
+      {
+        heading: 'Earlier Concept: The Challenge',
         text: `Dorm rooms have no doorbells, so a knock is audible-only. Deaf and hard-of-hearing students miss it — and so does anyone asleep or wearing headphones. About 19% of undergraduates report a disability, and a missed knock can mean a locked-out roommate or a missed delivery. Commercial fixes exist, but they split into two devices and cost over $250: the Serene Innovations CentralAlert knock sensor plus a wearable pager comes to $261.72.`
       },
       {
-        heading: 'First Concept: Door Signal',
+        heading: 'Earlier Concept: Door Signal',
         text: `One self-contained unit that mounts to the inside face of the door, senses a knock through the door panel, tells it apart from a slam, and answers with a wide, diffuse wash of colored light aimed at the wall and ceiling instead of a sound. A thin adhesive baseplate stays on the door while the device body clips on and off for charging, so the adhesive isn't disturbed every charge. It works with no phone, app, account, or Wi-Fi, and every control is physically distinct by size and shape, because identical buttons would themselves be an accessibility failure.`
       },
       {
@@ -2042,7 +2148,117 @@ The plan escalates only as far as testing demands:
       },
       {
         heading: 'Status',
-        text: `Pre-build and re-brainstorming. The team has reached out to Northwestern's AccessibleNU office for feedback from students who would use the device. Team registration is due October 23, the concept has to be locked by the end of November, when SME submits it for ADA compliance review, and a poster is required at the competition.`
+        text: `Registered and researching. Six of us have each finished secondary research across the four problem spaces, and we're converging on dorm laundry. Next is the primary research above, then a locked concept.
+
+The deadlines shape everything: the concept has to be locked by the end of November, when SME submits it for ADA compliance review, and the build has to be a working prototype with a poster by April. Funding is in place — a $1,000 Segal Pam Daniels Flex Fund award covers registration, travel, hotel and materials, plus a $250 gift from SME Chicagoland.`
+      }
+    ]
+  },
+  {
+    id: 30,
+    title: 'MaDE Capstone: Problem Discovery',
+    context: 'Class',
+    contextDetail: 'MaDE Capstone',
+    tldr: `My senior capstone, in its needs-finding phase — so this one is about method rather than a product. I researched three candidate problem spaces end to end against a common standard of evidence: ear pressure on a plane, seeing the bottom of what you're cooking, and opening a door with your feet. The team hasn't picked one yet.`,
+    why: `This is the year-long project I finish my degree with, so the problem we pick matters more than anything we build afterward. I'd rather spend October proving which problem is real than spend March discovering ours wasn't.`,
+    learned: [
+      `A product being popular doesn't mean it works. The best-selling flight earplugs failed to prevent barotrauma in a double-blind trial — which is exactly the kind of gap worth designing into.`,
+      `Nobody describes a problem the way you framed it. No source called it "can't see the bottom of the pot"; people say their food scorched. The framing has to come from the evidence, not from the solution you have in mind.`,
+      `Prevalence data is the thing you're usually missing. The hands-full door case is the most relevant to students and has no numbers at all.`,
+      `Labeling evidence by strength makes prioritization almost mechanical.`,
+    ],
+    category: 'Needs-Finding · Secondary Research · Product Development (Work in Progress)',
+    image: '',
+    description: 'My year-long MaDE senior capstone, currently in needs-finding. I researched three candidate problem spaces against a common method and recommended which one the team should take forward.',
+    filterCategory: 'Design',
+    inProgress: true,
+    date: '2026–2027',
+    tools: ['Needs-Finding', 'Secondary Research', 'Evidence Matrices', 'AEIOU Observation', 'Patent & Solution Benchmarking', 'Literature Review', 'Opportunity Framing'],
+    content: [
+      {
+        text: `The MaDE capstone runs the full year: needs-finding in the fall, product development in the winter. We're a team of five, and right now the job is to pick the right problem.
+
+Each of us took the same set of candidate problem spaces and researched them independently against a shared method, so that when we came back together we were comparing evidence rather than enthusiasm.`
+      },
+      {
+        heading: 'The Method',
+        text: `Six research angles per problem space: social listening, academic and technical literature, existing solution and patent benchmarking, market and industry research, behavioral and workflow research, and regulatory and standards research. Fifteen to twenty-five sources each, written up as a structured report plus an evidence matrix.
+
+Every claim carries a label — *verified*, *user-reported*, *interpretation*, or *hypothesis* — and problem IDs stay consistent between each report and its matrix, so a finding can be traced back to the source it came from. My own primary research going in was an AEIOU observation I ran at the airport on October 9.`
+      },
+      {
+        heading: 'Problem 1: Ear Pressure on a Plane',
+        text: `Ear barotrauma in flight is common and well documented: eardrum changes in roughly 10% of adults and 22% of children, and barotitis in about 14% of passengers in an airport study. Among aircrew it's far worse — in a survey of 1,789 Finnish commercial aircrew, 85% reported middle-ear barotrauma and 48% of those had taken sick leave for it.
+
+The interesting part is the gap. The most visible product, pressure-regulating earplugs, did not prevent barotrauma in a double-blind trial. The best-supported treatment is a drug that only works for adults. The devices that do work — nasal balloons, the prescription EarPopper — are little known, awkward to use in a seat, or gated behind a prescription. And travelers get no cue that descent has begun, which is exactly when they need to start equalizing.`
+      },
+      {
+        heading: 'Problem 2: Seeing the Bottom of What You’re Cooking',
+        text: `Cooks find out their food has scorched by smell, by sound, or by scraping the pan — always after the damage is done, and stirring then spreads the burnt taste through the whole pot.
+
+The framing had to change here. No source describes this as "I can't see the bottom"; people describe scorching and sticking. So the real need is early warning, and seeing the bottom is one way to get there. Existing solutions either take over the stirring or sense temperature through special cookware and cooktops. Nothing works with an ordinary pot on an ordinary stove, and leaving the stove to check is itself the leading cause of US home cooking fires.`
+      },
+      {
+        heading: 'Problem 3: Opening a Door With Your Feet',
+        text: `This one sits where three needs meet: full hands, hygiene, and accessibility. The hygiene evidence is the strongest — a tracer virus placed on an office door plate reached 40–60% of employees within 2–4 hours, and about 62% of Americans say they use a paper towel to avoid touching restroom door handles.
+
+Commercial foot pulls exist but only work on latch-less doors and have to be screwed on. Devices that actually turn an ordinary knob or lever exist only as patents, several of them expired. Automatic operators run $1,500–6,500 per door. The hands-full case, the one most relevant to students, has no prevalence data at all.`
+      },
+      {
+        heading: 'What I Recommended, and Why',
+        text: `My vote was ear pressure, for three reasons: it has the strongest evidence of the three, it has a clear and specific product gap in that the best-selling product failed a controlled trial, and it has a reachable expert user group — aircrew, through a teammate's pilot contacts — which means the primary research we'd need next is actually gettable.
+
+The most promising directions inside it are timing cues for when to equalize, assisted equalization that works in an airline seat, and children, who can't equalize on demand at all.
+
+That's a recommendation, not a decision. The team is still researching, and I'd rather it be argued out on evidence than settled because I wrote the longest report.`
+      },
+      {
+        heading: 'Status',
+        text: `Needs-finding, fall quarter. Nothing is chosen and nothing is built — we won't lock a problem until the end of the quarter, and there's no product until the end of the year.
+
+What exists right now is the method and the evidence: three structured reports with matrices, shared with the team, each ending in the specific primary research it would take to be sure. That's the part I'd want someone to look at.`
+      }
+    ]
+  },
+  {
+    id: 31,
+    title: 'Tesla Drive Unit Coolant Rerouting Kit',
+    context: 'Personal',
+    contextDetail: 'Midwest EV',
+    tldr: `A replacement oil and coolant routing part for Tesla large drive units, designed in-house at Midwest EV. The factory rotor seal is a known failure point, and when it lets go, coolant floods the drive unit and can take out the motor and the inverter together. Our part routes coolant away from that area, with a design meant to outlast the factory one rather than delete the system.`,
+    why: `It's a repair shop's problem turned into a product. Midwest EV sees what's left after this failure, and a part that prevents it is worth far more to an owner than the repair that follows it.`,
+    learned: [
+      `The most valuable part to design is sometimes the one that prevents a repair rather than performing it.`,
+      `Designing a replacement for a factory part means working inside someone else's packaging — the coolant has to go somewhere the drive unit already has room for.`,
+      `"Delete the thing that fails" is the easy answer and usually the wrong one. Keeping the function and fixing the routing is harder and worth more.`,
+    ],
+    category: 'Electric Vehicles · Drivetrain · Failure Prevention (Work in Progress)',
+    image: '',
+    description: 'An in-house replacement for the oil and coolant routing in Tesla large drive units, designed to keep coolant away from the factory rotor seal — the failure point that floods and destroys drive units.',
+    filterCategory: 'Design',
+    inProgress: true,
+    date: '2026',
+    link: { url: 'https://midwestev.com/products.html', label: 'Midwest EV' },
+    tools: ['Autodesk Inventor', 'Drivetrain Systems', 'Design for Sealing', 'Reverse Engineering', 'EV Repair'],
+    content: [
+      {
+        text: `The second project I work on at Midwest EV, alongside the Project Delta enclosure. This one is a replacement part for the large drive unit (LDU) used in Tesla Model S and Model X.`
+      },
+      {
+        heading: 'The Challenge',
+        text: `The LDU's rotor seal is a notorious failure point. When it fails, coolant floods into the drive unit — and because the motor and the inverter share that housing, a single seal can take out both. What starts as a worn seal ends as a catastrophic, extremely expensive repair, and it's common enough to be well known among owners.
+
+The factory design puts the seal in the path of the coolant, so the seal is the only thing standing between normal operation and a flooded drive unit.`
+      },
+      {
+        heading: 'The Approach',
+        text: `Rather than build a better seal, we're changing where the coolant goes: the part routes it away from the area where the factory seal is prone to failing. If coolant isn't sitting against that seal, a worn seal stops being a catastrophic event.
+
+Two things this deliberately isn't. It isn't a delete — the LDU coolant delete is a common shop fix, and deleting a system is the easy answer. We keep the function and replace the routing. And it isn't somebody else's kit: this is our own design, built to be better than the factory part rather than equivalent to it.`
+      },
+      {
+        heading: 'Status',
+        text: `In progress. The current CAD is at V5, modeled in Inventor.`
       }
     ]
   },
@@ -2263,21 +2479,19 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
   );
 });
 
-const filterTabs: Array<'All' | Project['filterCategory']> = ['All', 'Design', 'Research', 'Small Projects'];
+const filterTabs: Array<'All' | ProjectContext> = ['All', 'Class', 'Client', 'Club', 'Research', 'Personal'];
 
 export function Portfolio() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState<'All' | Project['filterCategory']>('All');
+  const [activeTab, setActiveTab] = useState<'All' | ProjectContext>('All');
   const tabProjects = projects
-    .filter(p => p.filterCategory !== 'Small Projects' && (activeTab === 'All' || p.filterCategory === activeTab))
+    .filter(p => activeTab === 'All' || p.context === activeTab)
     .sort(byDisplayOrder);
-  const mainProjects = tabProjects.filter(p => !p.inProgress);
+  const mainProjects = tabProjects.filter(p => !p.inProgress && p.filterCategory !== 'Small Projects');
   const inProgressProjects = tabProjects.filter(p => p.inProgress);
-  const smallProjects = activeTab === 'All' || activeTab === 'Small Projects'
-    ? projects.filter(p => p.filterCategory === 'Small Projects').sort(byDisplayOrder)
-    : [];
+  const smallProjects = tabProjects.filter(p => !p.inProgress && p.filterCategory === 'Small Projects');
 
   const selectedProject = projects.find(p => p.id === selectedId);
 
@@ -2372,7 +2586,7 @@ export function Portfolio() {
                   : 'text-[#1B2D5B]/40 hover:text-[#1B2D5B]/70'
               }`}
             >
-              {tab}
+              {tab === 'All' ? 'All' : contextLabels[tab]}
               {activeTab === tab && (
                 <motion.span
                   layoutId="portfolio-tab-underline"
