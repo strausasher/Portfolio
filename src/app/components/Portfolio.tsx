@@ -155,8 +155,8 @@ import sensorFinished2 from 'figma:asset/sensor-finished-2.webp';
 import p1MasterPlan from 'figma:asset/p1-master-plan.webp';
 import p1Logo from 'figma:asset/p1-logo.webp';
 import p1SurveyPlan from 'figma:asset/p1-survey-plan.webp';
-import deltaOilPumpIso from 'figma:asset/delta-oil-pump-iso.webp';
-import deltaOilPumpBack from 'figma:asset/delta-oil-pump-back.webp';
+import deltaOilPartIso from 'figma:asset/delta-oil-part-iso.webp';
+import deltaOilPartBack from 'figma:asset/delta-oil-part-back.webp';
 import turntableKerfTest from 'figma:asset/turntable-kerf-test.webp';
 import deltaEnclosurePrintedIrl from 'figma:asset/delta-enclosure-printed-irl.webp';
 import projectorMountRoom from 'figma:asset/projector-mount-room.webp';
@@ -2274,14 +2274,13 @@ What exists right now is the method and the evidence: three structured reports w
     title: 'Tesla Drive Unit Rotor Oil Cooling Kit',
     context: 'Personal',
     contextDetail: 'Midwest EV',
-    tldr: `Tesla's large drive unit cools its rotor with glycol coolant, behind a seal that was never designed for glycol and gets no lubrication from it. When that seal fails — and it does — coolant floods the motor and rusts the stator. Our kit runs oil through the rotor instead and routes the coolant around it, so the seal is lubricated and a leak is harmless. That meant designing the oil pump to drive it.`,
+    tldr: `Tesla's large drive unit cools its rotor with glycol coolant, behind a seal that was never designed for glycol and gets no lubrication from it. When that seal fails — and it does — coolant floods the motor and rusts the stator. Our kit runs oil through the rotor instead and routes the coolant around it, so the seal is lubricated and a leak is harmless.`,
     why: `It's a repair shop's problem turned into a product. Midwest EV sees what's left of these drive units, and a part that prevents the failure is worth far more to an owner than the repair that follows it. It's also a rare case where the fix makes the car better rather than just less likely to break.`,
     learned: [
       `Find the root cause, not the symptom. The seal doesn't fail because it's worn out — it fails because it's sealing the wrong fluid, one that can't lubricate it.`,
       `Change the fluid, not the part. Once the rotor runs oil, a leaking seal stops being a catastrophic failure, because oil in a motor is harmless where glycol is not.`,
       `"Delete the thing that fails" is the easy answer. Tesla's own later revision deletes rotor cooling; keeping the cooling and fixing the fluid is harder and worth more.`,
       `Heat is usually a catalyst, not a cause. Motor heat accelerates this failure but isn't what starts it.`,
-      `A fluid swap is never just a fluid swap. Coolant arrived with the car's own pump; oil doesn't, so a change of fluid grew into designing a pump.`,
     ],
     category: 'Electric Vehicles · Drivetrain · Thermal Management (Work in Progress)',
     image: '',
@@ -2290,7 +2289,7 @@ What exists right now is the method and the evidence: three structured reports w
     inProgress: true,
     date: '2026',
     link: { url: 'https://midwestev.com/products.html', label: 'Midwest EV' },
-    tools: ['Autodesk Inventor', 'Drivetrain Systems', 'Pump Design', 'Design for Sealing', 'Design for Machining', 'Desktop CNC', 'Reverse Engineering', 'EV Repair'],
+    tools: ['Autodesk Inventor', 'Drivetrain Systems', 'Design for Sealing', 'Design for Machining', 'Desktop CNC', 'Reverse Engineering', 'EV Repair'],
     content: [
       {
         text: `The second project I work on at Midwest EV, alongside the Project Delta enclosure. This one is a replacement part for the large drive unit (LDU) used in Tesla Model S and Model X.`
@@ -2325,13 +2324,13 @@ In an induction motor, torque comes from the rotating field slipping past the ro
 Keeping the rotor actively cooled holds that resistance down, which is where the efficiency gain lives. How much it's worth in practice is something I'd rather measure on the car than estimate, so putting a number on it is part of what the testing is for.`
       },
       {
-        heading: 'The Oil Pump',
-        text: `Running oil through the rotor meant we needed something to move it. The coolant came with the car's own pump; the oil doesn't, so the fluid change grew into designing the pump that drives the loop.
+        heading: 'The Part',
+        text: `The current design, V5 in Inventor. It's the piece that replaces the factory oil and coolant routing: a machined body about 101 × 32 × 96 mm that bolts onto the drive unit through four ears around a round flange, with a raised central boss carrying the ports, a recessed pocket on the back face, and a large offset bore through the side.
 
-It's a machined body about 101 × 32 × 96 mm — four bolt ears around a round flange, a raised central boss carrying the drive and port holes, and a large offset bore through the side. The whole part is 63 faces, nearly all cylindrical with 1–2 mm fillets, which is what you want when the plan is to cut it yourself rather than send it out. The oil line press-fits onto it instead of threading in, so the pipe isn't part of this model.`,
+The whole thing is 63 faces, nearly all cylindrical with 1–2 mm fillets — simple, machinable geometry, which is what you want when the plan is to cut it on our own desktop CNC and iterate rather than send it out and wait. The oil line press-fits onto the central spigot instead of threading in, so the pipe isn't part of this model.`,
         images: [
-          { url: deltaOilPumpIso, caption: 'The pump body in Inventor: bolt ears around the flange, the raised central boss with its drive and port holes, and the offset bore through the side' },
-          { url: deltaOilPumpBack, caption: 'The other face, showing the pocket and the central spigot the oil line press-fits onto' }
+          { url: deltaOilPartIso, caption: 'V5 in Inventor: bolt ears around the flange, the raised central boss with its ports, and the offset bore through the side' },
+          { url: deltaOilPartBack, caption: 'The back face, with the recessed pocket and the central spigot the oil line press-fits onto' }
         ]
       },
       {
