@@ -94,10 +94,14 @@ const projects: Entry[] = [
     ],
   },
   {
-    title: 'SME Dorm Accessibility Competition Project',
-    role: 'Team Lead · SME National Student Manufacturing Innovation Challenge',
-    dates: 'Aug 2026 – Present',
-    bullets: ['Leading a team of five on a residence-hall accessibility project; in concept stage while we scope budget and ideas.'],
+    title: 'Performance Bicycle Brake Caliper',
+    role: 'Simulation-Driven Design',
+    dates: '2025',
+    bullets: [
+      'Turned rider needs into specs (≤70 N input, ≤11 mm deflection, 15 m stop, ISO 4210); cut mass with FEA and topology optimization.',
+      'SLS Nylon-12 prototype passed every metric on the bike: 41.3 g, 11.3 m stop at 68.9 N input, $8.26 per part.',
+      'Led the stiffness–mass trade-off: a 14% lighter v2 needed 102 N at the lever, so we kept the first.',
+    ],
   },
 
   {
@@ -189,7 +193,7 @@ export function ResumePage() {
   return (
     <div className="resume-page relative min-h-screen bg-[#F0EBE3]">
       <style>{`
-        .paper { width: ${PAPER_W}px; min-height: 1056px; padding: 30px 44px; box-sizing: border-box;
+        .paper { width: ${PAPER_W}px; min-height: 1056px; padding: 24px 44px; box-sizing: border-box;
           background: #fff; color: #1a1a1a; font-size: 11.7px; line-height: 1.24; }
         .paper h1 { font-size: 26px; line-height: 1.1; font-weight: 700; letter-spacing: .02em; color: #1B2D5B; text-align: center; margin: 0; }
         .paper .contact { text-align: center; font-size: 10.8px; color: #333; margin-top: 3px; }
