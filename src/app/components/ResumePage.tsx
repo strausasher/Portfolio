@@ -82,11 +82,16 @@ const projects: Entry[] = [
     ],
   },
   {
-    title: 'CT Scanner for Aquatic Animals',
+    title: 'WaterGuard: CT Scanner for Aquatic Animals',
     role: 'Design & Build Engineer · Major Aquarium',
     where: 'Chicago, IL',
     dates: 'Sept 2025 – Mar 2026',
-    bullets: ['Adapted a medical CT scanner for fish with a veterinarian: stabilization, ventilation and saltwater corrosion protection.'],
+    bullets: [
+      'Designed a removable, reusable LDPE liner and runoff collector that waterproofs a ~$1M CT scanner used to image aquatic animals.',
+      'Led liner geometry: an oblique frustum with a 12.5° runoff slope inside 6″ of table clearance, set by full-scale wrinkled-liner tests.',
+      'Tensile-tested heat-welded seams: 94.8 N dry vs. 106.4 N after 24 h in saltwater, no weld separation; co-wrote the FMEA.',
+      'On-site tests with veterinary staff cut setup from 45+ min to under 4; their laser-visibility feedback drove a clear PETG window.',
+    ],
   },
   {
     title: 'SME Dorm Accessibility Competition Project',
@@ -96,10 +101,13 @@ const projects: Entry[] = [
   },
 
   {
-    title: 'Midwest EV Openpilot Retrofit',
-    role: 'Enclosure Designer · Pre-Autopilot Tesla Model S retrofit',
+    title: 'Midwest EV',
+    role: 'Mechanical Engineer · Tesla retrofit hardware and drive unit parts',
     dates: '2026 – Present',
-    bullets: ['Design the enclosure for the custom PCB in a Tesla Model S openpilot retrofit, iterating as the board goes through design review.'],
+    bullets: [
+      'Own the enclosure for the custom PCB in a Model S openpilot retrofit now sold at $2,280; five versions driven by weekly design reviews.',
+      'Designing a replacement oil/coolant routing part for the Tesla large drive unit: converts rotor cooling from glycol to oil, so the rotor seal is lubricated and a leak can no longer rust the stator.',
+    ],
   },
   {
     title: 'Bionic Wrench Assembly Fixture',
@@ -108,17 +116,28 @@ const projects: Entry[] = [
     bullets: ['Iterated 7 fixture versions; wrote the SOP, value stream map and line balance for a 1M-unit/year plan, with a pilot cycle time of 3:58.'],
   },
   {
-    title: 'ExtendIt Desk Extension and Assistive Devices',
-    role: 'Designer & Engineer · Project Manager (Misericordia)',
-    dates: 'Jan 2024 – Mar 2025',
-    bullets: ['ExtendIt: locking lecture-hall desk extension (+50% surface) after 22 user interviews and 7 mockups. StimSpin and Pillowscape: sensory devices for adults with cerebral palsy, tested with users.'],
+    title: 'ExtendIt Desk Extension',
+    role: 'Designer & Engineer · Human-Centered Product Design',
+    dates: '2024',
+    bullets: [
+      'Ran 22 user interviews and tested 7 mockups with 10 users each; 8 of 10 preferred the final locking desk extension (+50% surface).',
+      'Built a load-test rig: held 33.5 lb at 3/8″ deflection against a 30 lb / 0.5″ target. Costed at $10.19 per unit for sale to universities.',
+    ],
+  },
+  {
+    title: 'Pillowscape Sensory Pillow',
+    role: 'Designer & Project Manager · Misericordia',
+    dates: '2024 – Mar 2025',
+    bullets: [
+      'Designed a customizable multi-texture sensory pillow for adults with developmental disabilities: swappable Velcro patches and a choice of filling, under $15 per unit against hundreds for commercial sensory devices.',
+      'On-site testing with residents drove the huggable 20 × 30″ format; residents picked their own patches at handoff.',
+    ],
   },
 ];
 
 const skills = [
   ['Design & Fabrication', 'Siemens NX/Designcenter, SolidWorks, Onshape, AutoCAD/Civil 3D, GD&T, Engineering Drawings, Fixture & Jig Design, 3D Printing, Laser Cutting, Waterjet, Machining (Lathe/CNC/Mill), Welding, Sand/Iron Casting, Sheet Metal, Metrology, Snap-Fit/Compliant Design, Rapid Prototyping, DFM/DFR'],
   ['Analysis & Software', 'Ansys, FEA/Topology Opt., Thermal Sim., MATLAB, Python, VBA, SolidWorks API, LLM Pipelines, Embedded Systems/Raspberry Pi, FMEA, Cost Modeling, Lean/VSM, Line Balancing, Excel, Unity, GitHub, Photoshop, Circuit Design, Radio Control'],
-  ['Relevant Courses', 'Manufacturing Engineering Design (DFM), Computer Integrated Manufacturing, Geometry & Manufacturing, Mechanical Design & Manufacturing, Materials Selection, Mechatronics, Mechanics of Materials, Electronics Design, Human-Centered Product Design, Optimization'],
   ['Clubs', 'Formula SAE, Baja SAE, Combat Robotics, SME Student Chapter'],
 ];
 
@@ -170,14 +189,14 @@ export function ResumePage() {
   return (
     <div className="resume-page relative min-h-screen bg-[#F0EBE3]">
       <style>{`
-        .paper { width: ${PAPER_W}px; min-height: 1056px; padding: 34px 44px; box-sizing: border-box;
-          background: #fff; color: #1a1a1a; font-size: 12px; line-height: 1.31; }
+        .paper { width: ${PAPER_W}px; min-height: 1056px; padding: 30px 44px; box-sizing: border-box;
+          background: #fff; color: #1a1a1a; font-size: 11.7px; line-height: 1.24; }
         .paper h1 { font-size: 26px; line-height: 1.1; font-weight: 700; letter-spacing: .02em; color: #1B2D5B; text-align: center; margin: 0; }
         .paper .contact { text-align: center; font-size: 10.8px; color: #333; margin-top: 3px; }
         .paper .contact a { color: #1B2D5B; font-weight: 600; text-decoration: none; }
         .paper h2 { font-size: 11.6px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #1B2D5B;
-          border-bottom: 1.5px solid #1B2D5B; padding-bottom: 1px; margin: 8px 0 4px; }
-        .paper .entry { margin-top: 4px; }
+          border-bottom: 1.5px solid #1B2D5B; padding-bottom: 1px; margin: 7px 0 3px; }
+        .paper .entry { margin-top: 3px; }
         .paper .entry-head { display: flex; justify-content: space-between; gap: 12px; }
         .paper .dates { white-space: nowrap; color: #333; }
         .paper ul { margin: 1px 0 0; padding-left: 15px; list-style: disc; }

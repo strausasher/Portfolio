@@ -1844,7 +1844,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
   {
     id: 21,
     title: 'Iron Sand Casting',
-    context: 'Class',
+    context: 'Personal',
     tldr: `We built a coke-fired furnace and cast iron. When my binder-jet sand mold didn't arrive in time, I pressed a 3D-printed pattern of my name into sand by hand and poured an iron nameplate instead.`,
     why: `Pouring molten iron from a furnace we built ourselves is about as hands-on as manufacturing gets. I wanted to cast a bacteriophage, and I was genuinely disappointed when it didn't happen — but I wasn't going to stand at a pour I'd helped build the furnace for and come away with nothing.`,
     learned: [
