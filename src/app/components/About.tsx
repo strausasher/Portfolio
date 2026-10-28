@@ -38,7 +38,7 @@ export function About() {
                   I practically grew up on a racetrack. Being surrounded by engines, chassis setups, and the constant pursuit of mechanical perfection sparked a fascination with understanding how everything works. At 13, I started working at a karting track—wrenching on engines, troubleshooting mechanical issues, and getting my first real taste of hands-on problem solving.
                 </p>
                 <p>
-                  That experience shaped how I approach engineering today. I believe every problem is an invitation to create a solution that hasn't been invented yet, and every new manufacturing process I learn unlocks a wider range of possibilities for creation.
+                  That experience shaped how I approach engineering today. I work through the scientific method, letting data and research guide the decisions, while still exploring several different paths before settling on the best one. I believe every problem is an invitation to create a solution that hasn't been invented yet, and every new manufacturing process I learn unlocks a wider range of possibilities for creation.
                 </p>
                 <p>
                   When I'm not building things, I'm usually either at the track, DJ-ing, or listening to science podcasts (my favorite is StarTalk) and making my own theories about the physics behind everyday events before diving into the science. My dream job is getting paid to tinker and explore, and my ultimate goal is to establish my own workshop—a space dedicated to craftsmanship, experimentation, and the joy of making things real.

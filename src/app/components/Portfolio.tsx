@@ -19,6 +19,9 @@ import extendItUserTestNew from 'figma:asset/cd5d7ada40db3d957daea1ac3cff6db6d8e
 import extendItV2HingeVsLinkage from 'figma:asset/extendit-v2-hinge-vs-linkage.webp';
 import extendItV2SideView from 'figma:asset/extendit-v2-side-view.webp';
 import extendItV2OverCenter from 'figma:asset/extendit-v2-over-center.webp';
+import extendItV2Model from 'figma:asset/extendit-v2-model.webp';
+import smeProblemMatrix from 'figma:asset/sme-problem-matrix.webp';
+import capstoneProblemMatrix from 'figma:asset/capstone-problem-matrix.webp';
 import ctScannerImg from 'figma:asset/4912cd11da20c60b00c965ea83b87634b57600b8.webp';
 import ctFrustum from 'figma:asset/3b5611915cfa8c0522559efe6b31ea2a9eb1adc0.webp';
 import ctLinerSide from 'figma:asset/d49ce2b4da6a0e33e564535e6cc619d30f5b5dcd.webp';
@@ -541,7 +544,9 @@ Conclusion: short-term saltwater exposure does not weaken LDPE heat-welded seams
       },
       {
         heading: 'Prototype User Testing On-Site',
-        text: `We ran an on-site session with Dr. Megan Strobel (Veterinary) and Richard Kasbee (Veterinary Technician), who regularly operate the scanner.
+        text: `The scanner lives in the working area underneath the aquarium — rough, grainy epoxy floors, the back-of-house side of a place most people only see from the front. We ran an on-site session there with Dr. Megan Strobel (Veterinary) and Richard Kasbee (Veterinary Technician), who regularly operate the scanner.
+
+We never saw a scan happen. We watched the whole setup, got walked out before the X-rays started, and came straight back in afterward — which is its own useful constraint, because it means the liner has to be understood and trusted by people who will be alone with it.
 
 Key findings that shaped the final design:
 • Installation: Staff installed the liner in under 4 minutes and removed it in under 2 — versus 45+ minutes for the current taped-sheet method. They praised its pre-formed shape, single-piece coverage, and reusability.
@@ -952,7 +957,7 @@ This demonstrated scalability awareness beyond prototype design.`
     context: 'Research',
     contextDetail: 'AIM Lab · NSF ERC-HAMMER',
     tldr: `An AI pipeline that reads a 2D sheet-metal drawing and outputs a verified bending plan, with no 3D CAD and no labeled data. I built the Tracer Agent's dataset and ground truth plus a SolidWorks VBA tool that generates hundreds of drawings in minutes, and co-authored the MSEC 2026 poster.`,
-    why: `It put my manufacturing background to work in an AI project. The model could pass every number check and still propose a bend order no press brake could make, and catching that took someone who thinks like a manufacturing engineer.`,
+    why: `I got into the AIM lab through ME 340-1, Manufacturing Methods. I loved the labs — hands-on manufacturing is the thing I like most — and Zahra, the TA, invited me to join the lab because of it. This project then put that manufacturing instinct to work inside an AI pipeline: the model could pass every numerical check and still propose a bend order no press brake could physically make, and catching that took someone who thinks like a manufacturing engineer.`,
     learned: [
       `Constrain the generator, not the output. Changing only existing dimension values meant every generated drawing was valid by construction.`,
       `Define CAD features relative to their parent (hole = 0.3 × flange width) so they stay valid across the whole sampling range.`,
@@ -967,7 +972,7 @@ This demonstrated scalability awareness beyond prototype design.`
     tools: ['Multi-Agent LLM Orchestration', 'Vision-Language Models', 'Retrieval-Augmented Generation', 'Reference-Free Evaluation', 'SolidWorks API / VBA', 'Parametric CAD', 'Sheet-Metal Bend Analysis', 'Dataset Construction'],
     content: [
       {
-        text: `Research at the Advanced Intelligent Manufacturing Laboratory, Northwestern University. Presented at MSEC 2026 / NAMRC54 (State College, PA, June 2026) and supported by the NSF ERC-HAMMER (Award EEC-2133630) — the Hybrid Autonomous Manufacturing: Moving from Evolution to Revolution Engineering Research Center, a multi-institution collaboration across Northwestern, Ohio State, Case Western Reserve, NC A&T, and UT Knoxville.
+        text: `Research at the Advanced Intelligent Manufacturing Laboratory, Northwestern University. I joined the lab after taking ME 340-1 (Manufacturing Methods), where I enjoyed the labs enough that the course TA, Zahra Sadeghi, invited me in — and then spent the year as the only undergraduate on the project. Presented at MSEC 2026 / NAMRC54 (State College, PA, June 2026) and supported by the NSF ERC-HAMMER (Award EEC-2133630) — the Hybrid Autonomous Manufacturing: Moving from Evolution to Revolution Engineering Research Center, a multi-institution collaboration across Northwestern, Ohio State, Case Western Reserve, NC A&T, and UT Knoxville.
 
 Smart Sheet Smith turns a 2D sheet-metal engineering drawing into a verified, physics-grounded bending process plan — no 3D CAD model and no labeled training data required. I worked on the Tracer Agent and built the data foundation underneath it: the CAD parts, the drawings, the ground-truth geometry, the hand-checked bend math, and a SolidWorks VBA pipeline that generated hundreds of valid parametric drawings automatically.`,
         images: [
@@ -1073,7 +1078,9 @@ The complex-part result was the useful one. Interdependent features — a hole t
 
 • Domain judgment is the scarce input to an AI pipeline. The model could produce a bend sequence that satisfied every numerical check and still couldn't be made on a press brake. Catching that required thinking about tooling access and forming order — the part of the loop an ME contributes that isn't automatable yet.
 
-• Failure modes are the deliverable. Cataloguing why generations failed — off-page annotations, rebuild breaks on interdependent dimensions, the mm-to-meters unit conversion in the SolidWorks API that caused the most early bugs — is what let the next person configure the tool for a new part in an afternoon.`
+• Failure modes are the deliverable. Cataloguing why generations failed — off-page annotations, rebuild breaks on interdependent dimensions, the mm-to-meters unit conversion in the SolidWorks API that caused the most early bugs — is what let the next person configure the tool for a new part in an afternoon.
+
+• Being the only undergrad meant teaching myself whatever the work needed, SolidWorks VBA included. It was a lot of work, and what I valued most was that it never felt like undergrad work — the professor running the lab treated my findings seriously and Zahra treated me as an equal collaborator rather than a helper.`
       },
       {
         heading: 'Where It Goes Next',
@@ -1233,7 +1240,7 @@ Revenue opportunities include standard model sales, custom sizing, branded insta
     title: 'ExtendIt v2',
     context: 'Personal',
     tldr: `A full-size desk extension that slides out from under the desk and then lifts flush with the desktop, so a 52 × 25 in leaf never swings through your knees the way a hinged one would. The mechanism, load math and full bill of materials are done; parts are next.`,
-    why: `ExtendIt v1 was a class project sized for a lecture-hall seat, and I always wanted the version I'd actually use at my own desk. Scaling it up broke the hinge that made v1 work, which turned out to be the interesting part.`,
+    why: `v1 was a class project sized for a lecture-hall seat, and the idea turned out to be more useful than the context it was built for — I'd happily put one on my own desk. Scaling it up broke the hinge that made v1 work, which turned out to be the interesting part.`,
     learned: [
       `A mechanism that works small may not scale. The 180° flip is fine on a 9 in leaf and impossible on a 25 in one.`,
       `When one joint can't do the job, split the job. A prismatic slide takes the 28 in of travel and the linkage only does the 1.25 in lift, seating and lock.`,
@@ -1285,18 +1292,25 @@ The plunger is a requirement, not a nicety. I ran the numbers on the over-center
       },
       {
         heading: 'Checking the Motion',
-        text: `I swept the full lift, 30° to 95°, in 650 steps and checked every pair that could collide:
+        text: `Rather than eyeball it, I built a kinematic model of the mechanism driven by the real link geometry, so I could scrub through the whole open-and-close cycle and watch the pose, the lock states and the clearances update together. It's how I found most of what follows.
+
+I swept the full lift, 30° to 95°, in 650 steps and checked every pair that could collide:
 
 • The leaf's back edge stays in front of the desk face for the whole rise and only closes to the 1/16 in gap in the last few degrees.
 • The leaf peaks 0.010 in above flush at 90°, then settles — a soft click, not a step you'd feel.
 • Near the stop, height changes only 0.004 in per degree, so stop wear or a degree of slop never shows. Flush height gets set with slotted hanger brackets instead.
-• The tightest clearance anywhere in the swing is 0.31 in, between the link's top end and the leaf rail flange.`
+• The tightest clearance anywhere in the swing is 0.31 in, between the link's top end and the leaf rail flange.`,
+        images: [
+            { url: extendItV2Model, caption: 'The model at the locked-open pose: every lock holding, the leaf flush with the desktop, and the knee space untouched' }
+        ]
       },
       {
         heading: 'Loads, and the Failure That Isn’t the Mechanism',
         text: `With 100 lb leaning on the front edge, the mechanism keeps at least 1.6× margin everywhere — pin bearing stress is 1,020 psi against a limit near 56 ksi, so the pins are 50× oversized and the real constraints are the slides and the screws into the desk.
 
-The actual failure mode is the desk tipping forward, because the load sits 28 in in front of the front legs. That depends on what the desk weighs, not on how the leaf got there, so I put a tipping table in the spec: a bare 60 lb desk lifts its back legs under 13 lb at the leaf's front edge, while a 150 lb loaded desk takes 66 lb. The build ends with a luggage-scale tip test before anything goes on the leaf.`
+The actual failure mode is the desk tipping forward, because the load sits 28 in in front of the front legs. That depends on what the desk weighs, not on how the leaf got there, so I put a tipping table in the spec: a bare 60 lb desk lifts its back legs under 13 lb at the leaf's front edge, while a 150 lb loaded desk takes 66 lb. The build ends with a luggage-scale tip test before anything goes on the leaf.
+
+That constraint also decides who this is for. At full size it belongs on a heavy or fixed desk — a lecture-hall desk, a built-in, or a loaded workstation — rather than a light freestanding table. For anything lighter, the honest answers are a shorter leaf or a fold-down leg at the front corners, both of which are in the spec.`
       },
       {
         heading: 'Designed to Be Ordered, Not Machined',
@@ -1526,7 +1540,7 @@ Fully soft construction → no injury risk if thrown. Machine-washable component
         heading: 'Impact',
         text: `Both devices successfully deliver reduced reliance on expensive fragile sensory tech, increased personalization, support for autonomy, encouragement of tactile regulation, affordability for institutional scaling, and safety in high-mobility environments.
 
-Both devices are calming without overstimulation — addressing sensory overload at its source.`
+The handoff is the part I remember. The residents came to us for the final presentations and each chose their own pillow filling and texture patches — and then a lot of them just held onto their pillow for the rest of the afternoon, through everyone else's presentations. You don't get a clearer result than that.`
       },
       {
         heading: 'Future Iterations',
@@ -1835,7 +1849,7 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
     title: 'Iron Sand Casting',
     context: 'Class',
     tldr: `We built a coke-fired furnace and cast iron. When my binder-jet sand mold didn't arrive in time, I pressed a 3D-printed pattern of my name into sand by hand and poured an iron nameplate instead.`,
-    why: `Pouring molten iron from a furnace we built ourselves is about as hands-on as manufacturing gets.`,
+    why: `Pouring molten iron from a furnace we built ourselves is about as hands-on as manufacturing gets. I wanted to cast a bacteriophage, and I was genuinely disappointed when it didn't happen — but I wasn't going to stand at a pour I'd helped build the furnace for and come away with nothing.`,
     learned: [
       `Have a backup plan. When the mold didn't ship, a hand-pressed sand mold still got me a complete casting.`,
       `Ordering parts from outside adds schedule risk, so plan around the delivery date.`,
@@ -1856,7 +1870,9 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
       },
       {
         heading: "When the Mold Didn't Arrive",
-        text: `The binder-jet sand mold for the bacteriophage didn't ship in time for pour day. Rather than skip the pour, I fell back to a blank plaque mold and hammered a 3D-printed pattern of my name and major directly into the sand by hand to emboss the impression, then poured molten iron into it.`,
+        text: `The binder-jet sand mold for the bacteriophage didn't ship in time for pour day — I happened to be last in the queue and the vendor ran out of time. I was pretty crushed about it.
+
+Rather than skip the pour, I fell back to a blank plaque mold, hammered a 3D-printed pattern of my name and major directly into the sand by hand to emboss the impression, and poured molten iron into that instead. It wasn't what I'd designed, but I wasn't leaving without something I'd made.`,
         images: [
             { url: castPourCloseup, caption: 'Pouring molten iron into a mold' },
             { url: castTeamMolds, caption: 'Molds glowing after the pour' }
@@ -1864,7 +1880,9 @@ The device enhances autonomy, reduces frustration, and transforms passive classr
       },
       {
         heading: 'The Result',
-        text: `The pour produced a solid iron nameplate with my name and major embossed from the hand-pressed pattern — not the piece I originally set out to cast, but a complete one made entirely from furnace to finished plaque.`,
+        text: `The pour produced a solid iron nameplate with my name and major embossed from the hand-pressed pattern — not the piece I originally set out to cast, but a complete one made entirely from furnace to finished plaque. I still have it.
+
+I'm set to TA this class, and if they run another iron pour I'll be doing it again — with the bacteriophage mold ordered earlier this time.`,
         images: [
             { url: castNameplateFinished, caption: 'The finished cast iron nameplate' },
             { url: castMoldsCooling, caption: 'Freshly poured molds cooling' }
@@ -2090,7 +2108,12 @@ The part that mattered most was labelling every claim: *verified* for a peer-rev
 1. Knowing when a shared machine is free or done. Status apps have existed for about 20 years, and residents still walk down to check. Nothing handles the "finished but nobody emptied it" handoff, and no machine signal is built for deaf or blind students.
 2. Moving laundry. Stair trips dominate the effort — a single load meant about six trips in both of our interviews. Carry aids are designed for houses, not shared rooms with vendor machines.
 3. Reaching amenities on floors you don't live on. Crutch walking costs about twice the energy of walking, and accommodations are space-available only. Between "install an elevator" and a $38,000 stair-climbing chair there is nothing.
-4. Room space and storage. Hall rules ban the usual fixes, raised beds are a known injury source, and mobility aids have nowhere to live or charge.`
+4. Room space and storage. Hall rules ban the usual fixes, raised beds are a known injury source, and mobility aids have nowhere to live or charge.
+
+Scoring them the same way is what made the choice arguable instead of a matter of taste:`,
+        images: [
+          { url: smeProblemMatrix, caption: 'My comparison of the four problem spaces: strongest finding, market gap, how strong the evidence is, and fit with the competition brief' }
+        ]
       },
       {
         heading: 'Where the Evidence Points',
@@ -2184,7 +2207,12 @@ Each of us took the same set of candidate problem spaces and researched them ind
         heading: 'The Method',
         text: `Six research angles per problem space: social listening, academic and technical literature, existing solution and patent benchmarking, market and industry research, behavioral and workflow research, and regulatory and standards research. Fifteen to twenty-five sources each, written up as a structured report plus an evidence matrix.
 
-Every claim carries a label — *verified*, *user-reported*, *interpretation*, or *hypothesis* — and problem IDs stay consistent between each report and its matrix, so a finding can be traced back to the source it came from. My own primary research going in was an AEIOU observation I ran at the airport on October 9.`
+Every claim carries a label — *verified*, *user-reported*, *interpretation*, or *hypothesis* — and problem IDs stay consistent between each report and its matrix, so a finding can be traced back to the source it came from. My own primary research going in was an AEIOU observation I ran at the airport on October 9.
+
+Researching all three the same way is the whole point: it lets you put them side by side and argue about evidence instead of about which idea sounds best.`,
+        images: [
+          { url: capstoneProblemMatrix, caption: 'The three problem spaces compared on the things that actually decide it: evidence, the gap in the market, and whether we can reach real users' }
+        ]
       },
       {
         heading: 'Problem 1: Ear Pressure on a Plane',
@@ -2246,15 +2274,31 @@ What exists right now is the method and the evidence: three structured reports w
       },
       {
         heading: 'The Challenge',
-        text: `The LDU's rotor seal is a notorious failure point. When it fails, coolant floods into the drive unit — and because the motor and the inverter share that housing, a single seal can take out both. What starts as a worn seal ends as a catastrophic, extremely expensive repair, and it's common enough to be well known among owners.
+        text: `The large drive unit runs coolant through the rotor, and a PTFE rotor shaft seal is the only thing keeping that coolant out of the motor. It's a rubbing seal on a spinning shaft, so it wears — and as the seal and its sealing surface degrade, coolant works its way past it into the motor.
 
-The factory design puts the seal in the path of the coolant, so the seal is the only thing standing between normal operation and a flooded drive unit.`
+That's the part owners don't see coming. Nothing leaks onto the ground; the coolant goes inward, into the stator windings and on toward the inverter, and corrodes what it touches. The first symptom is often isolation faults or a seized motor, by which point the stator, rotor and inverter can all be damaged together — a repair bill in the thousands on a car that was driving normally a week earlier. It's common enough on Model S and X of this generation to be well known in owner forums and specialist shops.
+
+Tesla's own later revision deletes coolant from the rotor. The aftermarket mostly offers the same: coolant-delete kits, seal bypasses, or drilled weep holes.`
       },
       {
         heading: 'The Approach',
         text: `Rather than build a better seal, we're changing where the coolant goes: the part routes it away from the area where the factory seal is prone to failing. If coolant isn't sitting against that seal, a worn seal stops being a catastrophic event.
 
 Two things this deliberately isn't. It isn't a delete — the LDU coolant delete is a common shop fix, and deleting a system is the easy answer. We keep the function and replace the routing. And it isn't somebody else's kit: this is our own design, built to be better than the factory part rather than equivalent to it.`
+      },
+      {
+        heading: 'What I’m Working Through',
+        text: `The design problem is mostly about fit and sealing, not about the overall idea:
+
+• Pipe fit. The routing has to land in a drive unit that was never designed to have it, so the research is about what the LDU already gives us room for and where the new path can tie in.
+• The right seal. The factory part failed as a wear surface, so choosing a seal — material, type, and the surface it runs against — is the thing that decides whether our version actually lasts longer or just fails later.
+• Fluid. We've been looking at a Dexron-spec automatic transmission fluid for the testing.`
+      },
+      {
+        heading: 'How We’ll Test It',
+        text: `We talked about building a dedicated test stand, and decided against it. A stand would tell us about the stand; what we care about is whether the part survives a real drive unit in a real car, with real heat cycles and real vibration. So the plan is to install it in a car and run it.
+
+For prototyping, we picked up a desktop CNC so we can cut versions of the part in-house instead of waiting on a vendor between iterations.`
       },
       {
         heading: 'Status',
@@ -2268,7 +2312,7 @@ Two things this deliberately isn't. It isn't a delete — the LDU coolant delete
     context: 'Client',
     contextDetail: 'P1 Motor Club',
     tldr: `A large, mostly 3D-printed model of P1 Motor Club's racetrack property, built from the civil engineer's Civil 3D files to travel in a truck and help sell memberships. I'm testing print, paint and landscaping on a sample piece first.`,
-    why: `It combines cars and making: turning real site data into something people can stand around and point at.`,
+    why: `I come from a family of racecar drivers — my father and my sister both drive professionally. My dad founded Monticello Motor Club in 2005 and I grew up there, go-karting as a kid and later racing on the track. When he retired from MMC in 2019 and founded P1, I was one of a handful of drivers who tested the new track layout on a simulator and gave feedback on it. So I've seen this property as a drawing, as a simulation, and now I get to build it as an object.`,
     learned: [
       `Test a small piece before buying material for the whole model. The print, paint, grass and water all have to look right together.`,
     ],
@@ -2281,7 +2325,9 @@ Two things this deliberately isn't. It isn't a delete — the LDU coolant delete
     tools: ['3D Printing', 'AutoCAD / Civil 3D Data', 'Scale Modeling', 'Terrain Modeling', 'Painting & Finishing', 'Prototyping'],
     content: [
       {
-        text: `P1 Motor Club is building a private motorsports community on Florida's Treasure Coast, with racetracks, testing areas, and homes for car enthusiasts. The club asked me to build a physical model of the property that can travel to events in the back of a truck and help sell memberships. I'm designing and building it myself, and it's still in progress.`,
+        text: `P1 Motor Club is building a private motorsports community on Florida's Treasure Coast, with racetracks, testing areas, and homes for car enthusiasts. The club asked me to build a physical model of the property that can travel to events in the back of a truck and help sell memberships. I'm designing and building it myself, and it's still in progress.
+
+This one is personal. My father founded Monticello Motor Club in 2005 and I grew up on that track, first in go-karts and later racing. He retired from MMC in 2019 and founded P1, and when the new track was designed I was one of a few drivers who drove the layout in a simulator and gave feedback before it was built. Now that P1 is selling memberships, the model is the thing that puts the whole property in front of someone at an event.`,
         images: [
           { url: p1MasterPlan, caption: 'The P1 Motor Club property master plan (club rendering), the site the model represents' },
           { url: p1Logo }
@@ -2314,6 +2360,8 @@ Two things this deliberately isn't. It isn't a delete — the LDU coolant delete
     learned: [
       `Practice kerfs on scrap first to see how far the plywood will bend before committing to the real piece.`,
       `Looks and structure can be separate jobs. The brass tubing is just an accent; a hidden threaded rod carries the load.`,
+      `Pick isolation parts by their rated load, not by feel. Sizing the rubber mounts so the loaded stand sits mid-range is what makes them actually work.`,
+      `Layer cheap fixes instead of chasing one perfect one — rubber, felt and mass each catch something the others miss.`,
     ],
     category: 'Furniture Design · CNC Fabrication · Audio Equipment (Work in Progress)',
     image: turntableCadRender,
@@ -2338,7 +2386,14 @@ Two things this deliberately isn't. It isn't a delete — the LDU coolant delete
       },
       {
         heading: 'Vibration Isolation',
-        text: `Three strategies layered together: isolation feet, damping wool pads, and mass loading — placing the heaviest component, the record itself, on the lowest platform.`
+        text: `A turntable reads a groove with a stylus, so anything that shakes the platter ends up as noise in the music. Footfall and the speakers themselves both feed vibration back into the stand, so this is the part of the project with actual engineering in it.
+
+I layered three strategies rather than betting on one:
+• Isolation feet — natural rubber vibration-damping mounts, six of them, each rated for 19 lb, so the loaded stand sits in the middle of their working range instead of at the limit
+• Damping pads — firm F3 felt between the platforms and what sits on them, to kill the high-frequency ringing the rubber doesn't catch
+• Mass loading — the heaviest component, the records, goes on the lowest platform, which drops the center of mass and makes the whole thing harder to excite
+
+The brass tubing is the one piece that's purely visual. I wanted the look of brass structure without trusting brass tubing to carry a turntable, so a concealed 3/4"-10 steel threaded rod does the actual load-bearing and the brass is an accent around it.`
       },
       {
         heading: 'Status',
@@ -2489,9 +2544,8 @@ export function Portfolio() {
   const tabProjects = projects
     .filter(p => activeTab === 'All' || p.context === activeTab)
     .sort(byDisplayOrder);
-  const mainProjects = tabProjects.filter(p => !p.inProgress && p.filterCategory !== 'Small Projects');
+  const mainProjects = tabProjects.filter(p => !p.inProgress);
   const inProgressProjects = tabProjects.filter(p => p.inProgress);
-  const smallProjects = tabProjects.filter(p => !p.inProgress && p.filterCategory === 'Small Projects');
 
   const selectedProject = projects.find(p => p.id === selectedId);
 
@@ -2518,7 +2572,7 @@ export function Portfolio() {
 
   // Step through projects in the order they appear on the page (falls back to all projects
   // if the open one isn't in the current tab, e.g. when linked from the Gallery)
-  const orderedProjects = [...mainProjects, ...inProgressProjects, ...smallProjects];
+  const orderedProjects = [...mainProjects, ...inProgressProjects];
   const navList = orderedProjects.some(p => p.id === selectedId) ? orderedProjects : projects;
   const goToProject = (delta: number) => {
     const i = navList.findIndex(p => p.id === selectedId);
@@ -2586,7 +2640,7 @@ export function Portfolio() {
                   : 'text-[#1B2D5B]/40 hover:text-[#1B2D5B]/70'
               }`}
             >
-              {tab === 'All' ? 'All' : contextLabels[tab]}
+              {tab}
               {activeTab === tab && (
                 <motion.span
                   layoutId="portfolio-tab-underline"
@@ -2635,32 +2689,6 @@ export function Portfolio() {
                     project={project}
                     onSelect={setSelectedId}
                     index={i}
-                  />
-                ))}
-              </AnimatePresence>
-            </motion.div>
-          </div>
-        )}
-
-        {/* Small projects */}
-        {smallProjects.length > 0 && (
-          <div className={mainProjects.length + inProgressProjects.length > 0 ? 'mt-20' : ''}>
-            <div className="flex items-center gap-4 mb-8">
-              <h3 className="text-sm font-bold tracking-widest uppercase text-[#1B2D5B]">Small Projects</h3>
-              <div className="flex-1 h-px bg-[#1B2D5B]/15" />
-            </div>
-            <motion.div
-              layout
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-            >
-              <AnimatePresence mode='popLayout'>
-                {smallProjects.map((project, i) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    onSelect={setSelectedId}
-                    index={i}
-                    compact
                   />
                 ))}
               </AnimatePresence>
