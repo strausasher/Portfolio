@@ -443,7 +443,7 @@ export function PortfolioPdfPage() {
             num="03"
             kicker="Design for Reliability · Medical Equipment · Polymer Testing"
             title="Water Guard"
-            org="Client project — major Chicago aquarium · team of five"
+            org="Class project for a major Chicago aquarium · team of five"
             year="2025 – 2026"
             lead="A removable, reusable waterproofing system that protects a ~$1M portable CT scanner during aquatic animal imaging — replacing 45 minutes of plastic sheeting and painters tape with a pre-formed liner that installs in under four."
           />

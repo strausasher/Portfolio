@@ -317,7 +317,7 @@ import a311 from 'figma:asset/sketchbook-c4-p21.webp';
 import a312 from 'figma:asset/sketchbook-c4-p22.webp';
 import a313 from 'figma:asset/sketchbook-c5-p01.webp';
 import a314 from 'figma:asset/sketchbook-c5-p02.webp';
-import a315 from 'figma:asset/sme-problem-matrix.webp';
+import a315 from 'figma:asset/sme-alternatives-matrix.webp';
 import a316 from 'figma:asset/tracing-board-elevated.webp';
 import a317 from 'figma:asset/tracing-board-in-use.webp';
 import a318 from 'figma:asset/tracing-board-lit.webp';
@@ -642,7 +642,7 @@ export const imageDimensions: Record<string, [number, number]> = {
   [a312]: [944, 1612],
   [a313]: [1416, 1562],
   [a314]: [752, 1344],
-  [a315]: [1600, 550],
+  [a315]: [1600, 831],
   [a316]: [1800, 1350],
   [a317]: [1350, 1800],
   [a318]: [1350, 1800],

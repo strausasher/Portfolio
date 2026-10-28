@@ -6,11 +6,7 @@ import { Reveal } from './Reveal';
 import { dimsFor } from './imageDimensions';
 
 // Import assets
-import extendItThumb from 'figma:asset/baf09441eaec422eef72f951d09ce50d1e0cf702.webp';
-import extendItConcept from 'figma:asset/c304c5a140180875ee400ad12926e35368f74a41.webp';
 import extendItSketch from 'figma:asset/f232760bcf0145253c281f4b4f1f06048dce537f.webp';
-import extendItUserTest from 'figma:asset/72fc3068db2c54d65007e0d0de4e75aa2d7810bc.webp';
-import extendItLoadTest from 'figma:asset/61495f2f3972a37806c764376ced254c1023b957.webp';
 import extendItHero from 'figma:asset/baf09441eaec422eef72f951d09ce50d1e0cf702.webp';
 import extendItHinge from 'figma:asset/d57e0cf4c5c508756bddc826ab9044e1fd9a743e.webp';
 import extendItCupHolder from 'figma:asset/4beb1f92bb835754bb2566c92a7370ee22877fbb.webp';
@@ -20,7 +16,7 @@ import extendItV2HingeVsLinkage from 'figma:asset/extendit-v2-hinge-vs-linkage.w
 import extendItV2SideView from 'figma:asset/extendit-v2-side-view.webp';
 import extendItV2OverCenter from 'figma:asset/extendit-v2-over-center.webp';
 import extendItV2Model from 'figma:asset/extendit-v2-model.webp';
-import smeProblemMatrix from 'figma:asset/sme-problem-matrix.webp';
+import smeAlternativesMatrix from 'figma:asset/sme-alternatives-matrix.webp';
 import capstoneProblemMatrix from 'figma:asset/capstone-problem-matrix.webp';
 import ctScannerImg from 'figma:asset/4912cd11da20c60b00c965ea83b87634b57600b8.webp';
 import ctFrustum from 'figma:asset/3b5611915cfa8c0522559efe6b31ea2a9eb1adc0.webp';
@@ -36,7 +32,6 @@ import wgSlopeTest from '../../imports/waterguard/wg-slope-test.webp';
 import wgWeldLeakTest from '../../imports/waterguard/wg-weld-leak-test.webp';
 import wgRunoffSketch from '../../imports/waterguard/wg-runoff-sketch.webp';
 
-import bikeCaliperImg from 'figma:asset/0c930a2a913495aa9b1d94e33057b7d9868884a5.webp';
 import bikeInitialFEA from 'figma:asset/95c90a41bda86117a9907b3b13affa564ef736e5.webp';
 import bikeNeedsTable from 'figma:asset/67df7d20c56a35cc1886b1a1ac222d25f068f33f.webp';
 import bikePrintedCaliper from 'figma:asset/134ccdf2ef97521532df170a438af63ee9c27808.webp';
@@ -55,7 +50,6 @@ import brakeFrontRotorDwg from 'figma:asset/3d94ecf2fb9bc0ccd594db6d4135fcb6c4c6
 import brakeRearRotorDwg from 'figma:asset/fd3705c67233eed8d5e4aaf424c71b24f8685dc1.webp';
 import brakePedalForcePlot from 'figma:asset/89f206ac09798ea1c47f84428c7ec369962f1e78.webp';
 import brakeWhiteboardCalc from 'figma:asset/c5e02822aa53a05bfacebd326cbc09d041ca0b4d.webp';
-import stimSpinImg from 'figma:asset/05b77ea1a86341595dc1893c29562b5cdf00ccdf.webp';
 import stimSpinHandle from 'figma:asset/0618a99fac31a4b599e1bd742d40be07567a8984.webp';
 import stimSpinScience from 'figma:asset/633353b4b72dc0dbc1d456088ec370adeeb2d911.webp';
 import stimSpinDisney from 'figma:asset/b707207661364e701a223bac11e846c5d7451d6c.webp';
@@ -65,7 +59,6 @@ import stimSpinSketch from 'figma:asset/05940af68dd4baf865ad8f3c9cf984dd2f00c23d
 import stimSpinClicker from 'figma:asset/bc407c2a561416993c60bb74fbd2163f0984ffc6.webp';
 import stimSpinWhiteboard from 'figma:asset/842b7f02835e24e02409becfc9b36ec43e4de781.webp';
 import stimSpinKnob from 'figma:asset/6ed8612593887b9aed22bafeb70c6a707ef7b9e3.webp';
-import patchworkImg from 'figma:asset/d1b2c94414d2afe52ca117dcc2c5abc3119782e7.webp';
 import patchworkMaze from 'figma:asset/e83edb8bb8ec5cb0b40c79e5ae7b8e1359546baf.webp';
 import patchworkPillowDim from 'figma:asset/d83342724cbc50b362e5ca9d8593f60f456abcd8.webp';
 import patchworkMockup from 'figma:asset/2db359936a3d16f421f5cdfeb24d599ebbb304bb.webp';
@@ -74,7 +67,6 @@ import patchworkSensoryRoom from 'figma:asset/9ef7d8d4e2fe940d318007df98509c5907
 import patchworkBookCover from 'figma:asset/b0b82af46ce1e6db6a9a0a3fccd9728443f1195e.webp';
 import patchworkFinalPatches from 'figma:asset/patchwork-final-patches.webp';
 import patchworkFinalFront from 'figma:asset/patchwork-final-front.webp';
-import lampImg from 'figma:asset/6f4325245aa689e63a3b4eb0653b90c207882c29.webp';
 import lampLitGlow from 'figma:asset/lamp-lit-glow.webp';
 import lampHanging from 'figma:asset/lamp-hanging.webp';
 import lampHinged from 'figma:asset/04364e8a8e32e2ac680bc5eceae50dae3c413998.webp';
@@ -185,7 +177,7 @@ export interface ProjectSection {
 }
 
 // Where a project came from: the card label, and what the filter tabs filter on
-export type ProjectContext = 'Class' | 'Client' | 'Club' | 'Research' | 'Personal';
+export type ProjectContext = 'Class' | 'Club' | 'Research' | 'Personal';
 
 export interface Project {
   id: number;
@@ -208,7 +200,6 @@ export interface Project {
 
 const contextLabels: Record<ProjectContext, string> = {
   Class: 'Class Project',
-  Client: 'Client Project',
   Club: 'Club Project',
   Research: 'Research',
   Personal: 'Personal Project',
@@ -216,7 +207,6 @@ const contextLabels: Record<ProjectContext, string> = {
 
 const contextStyles: Record<ProjectContext, string> = {
   Class: 'bg-[#3B5998]/10 text-[#3B5998]',
-  Client: 'bg-[#1B2D5B]/12 text-[#1B2D5B]',
   Club: 'bg-[#B5651D]/12 text-[#8A4B12]',
   Research: 'bg-[#2E7D6B]/12 text-[#25645A]',
   Personal: 'bg-[#8E4A8A]/12 text-[#74396F]',
@@ -413,8 +403,8 @@ The highest-leverage next step would be CNC-machining the fixture from a single 
   {
     id: 10,
     title: 'Water Guard',
-    context: 'Client',
-    contextDetail: 'Major Chicago aquarium',
+    context: 'Class',
+    contextDetail: 'For a major Chicago aquarium',
     tldr: `A removable, reusable waterproof liner that protects a ~$1M CT scanner while it images aquatic animals. Aquarium staff installed our prototype in under 4 minutes, compared with 45+ minutes for their old plastic-and-tape method.`,
     why: `It's the project I'm proudest of. We had a real client, a nearly irreplaceable machine, and animals from small fish up to beluga whales. Staff told us they worried every scan that the scanner was never fully protected, and we got to hand them something that fixes that.`,
     learned: [
@@ -2093,12 +2083,13 @@ It's also the first version that looks like a product. The Project Delta logo is
     title: 'SME Dorm Accessibility Competition Project',
     context: 'Personal',
     contextDetail: 'SME at Northwestern',
-    tldr: `I'm leading a team of six in SME's national manufacturing competition, designing something that makes college residence halls more accessible (Purdue, April 2027). We've done the secondary research across four problem spaces and the evidence keeps pointing at one place: the laundry room.`,
+    tldr: `I'm leading a team of six in SME's national manufacturing competition, designing something that makes college residence halls more accessible (Purdue, April 2027). We researched four problem spaces, found they converged on the laundry room, and ran a weighted alternatives matrix to get from a board full of ideas down to three finalists.`,
     why: `Accessible design is where I started, with StimSpin and Patchwork Plush. This time I'm running the whole thing — picking the problem, raising the money, and leading five other people through to a built prototype.`,
     learned: [
       `Research the problem before you fall in love with a solution. Our first concept was a door-knock light; the evidence pushed us somewhere else entirely.`,
       `Label your evidence. Separating verified statistics from forum posts from my own interpretation made it obvious which problems we actually understood.`,
       `Look for where problems overlap. Three of our four problem spaces met at the laundry room, which gave us a sharper problem statement than any one of them.`,
+      `Set the criteria before you see the scores. We fixed and averaged the requirement weights across all six of us first, so nobody could tune the rules to favour their own idea.`,
       `Leading a team is mostly logistics: funding, registration deadlines, and making sure six people's independent research can actually be compared.`,
     ],
     category: 'Accessible Design · User Research · SME NSMIC (Work in Progress)',
@@ -2131,68 +2122,38 @@ The part that mattered most was labelling every claim: *verified* for a peer-rev
 3. Reaching amenities on floors you don't live on. Crutch walking costs about twice the energy of walking, and accommodations are space-available only. Between "install an elevator" and a $38,000 stair-climbing chair there is nothing.
 4. Room space and storage. Hall rules ban the usual fixes, raised beds are a known injury source, and mobility aids have nowhere to live or charge.
 
-Scoring them the same way is what made the choice arguable instead of a matter of taste:`,
+Researching all four to the same standard is what made the comparison arguable instead of a matter of taste.`
+      },
+      {
+        heading: 'Where the Evidence Pointed',
+        text: `Three of the four problems meet in the same room. The laundry room is the amenity students visit most often on a floor they don't live on, and it's what they carry the most to. Framing it that way gave us a much sharper problem statement than any one of the four on its own.
+
+We backed that up with primary research rather than more reading: interviews with students, observation in the halls, and questions to AccessibleNU and Residential Services about what may actually be attached to vendor machines and room walls.`
+      },
+      {
+        heading: 'Choosing What to Build',
+        text: `Then came the part I think matters most, because it's where a team usually just picks whatever the loudest person likes.
+
+We brainstormed on a shared Miro board and consolidated everything into one list of ideas. Each of us independently shortlisted our eight. Then, before scoring anything, all six of us separately split 70 points across the requirements we thought mattered, and we averaged those into weights — so the criteria were fixed by the whole team before anyone saw how their favourite idea would do.
+
+The weights are the interesting output on their own: accessibility impact came out at 15.3 and cost at 4.3, so the team had effectively decided that helping more students was worth more than three times what saving money was. Every surviving idea then got rated 1–5 on all seven requirements, for a weighted total out of 500. The top scorer reached 256.
+
+That left three finalists, one from each of three different problem spaces, and a ranked-choice vote to separate them.`,
         images: [
-          { url: smeProblemMatrix, caption: 'My comparison of the four problem spaces: strongest finding, market gap, how strong the evidence is, and fit with the competition brief' }
+          { url: smeAlternativesMatrix, caption: 'The alternatives matrix: the weights the team set before scoring, how every idea was run through them, and the three finalists that came out' }
         ]
       },
       {
-        heading: 'Where the Evidence Points',
-        text: `Three of the four problems meet in the same room. The laundry room is the amenity students visit most often on a floor they don't live on, and it's what they carry the most to. Framing it that way gives a much sharper problem statement than any one of the four on its own, and it's where we're focused now.
-
-What we still need is primary research, not more reading:
-• AccessibleNU, on temporary-injury and laundry-related accommodation requests
-• A map of Northwestern halls: elevator or not, and which floor laundry, mail and water are on
-• Observation of one busy laundry room on a weekend evening — wasted trips, loads left sitting, how people carry and unload
-• Interviews with students who lived in a hall while injured or with a mobility limit
-• Residential Services, on what may legally be attached to vendor machines and to room walls`
-      },
-      {
-        heading: 'Earlier Concept: The Challenge',
-        text: `Dorm rooms have no doorbells, so a knock is audible-only. Deaf and hard-of-hearing students miss it — and so does anyone asleep or wearing headphones. About 19% of undergraduates report a disability, and a missed knock can mean a locked-out roommate or a missed delivery. Commercial fixes exist, but they split into two devices and cost over $250: the Serene Innovations CentralAlert knock sensor plus a wearable pager comes to $261.72.`
-      },
-      {
         heading: 'Earlier Concept: Door Signal',
-        text: `One self-contained unit that mounts to the inside face of the door, senses a knock through the door panel, tells it apart from a slam, and answers with a wide, diffuse wash of colored light aimed at the wall and ceiling instead of a sound. A thin adhesive baseplate stays on the door while the device body clips on and off for charging, so the adhesive isn't disturbed every charge. It works with no phone, app, account, or Wi-Fi, and every control is physically distinct by size and shape, because identical buttons would themselves be an accessibility failure.`
-      },
-      {
-        heading: 'Telling a Knock from a Slam',
-        text: `Detecting an impulse is easy; rejecting the wrong ones is the real problem. A knock is a 5–20 ms high-frequency impulse delivered straight into the panel, while a door opening is a lower-frequency acceleration ending in a latch impact, and a neighbor's slam arrives attenuated through the frame as a single impulse.
+        text: `Before the research, our first idea was Door Signal: dorm doors have no doorbell, so a knock is audible-only — which excludes deaf and hard-of-hearing students, and anyone asleep or in headphones. The commercial fix is two devices and over $250. Ours was one unit on the inside of the door that senses a knock and answers with a wide wash of coloured light, with no phone, app or Wi-Fi, for about $50 in parts.
 
-The plan escalates only as far as testing demands:
-• First pass: a three-axis accelerometer in low-power motion-wake mode, requiring two or more impulses within about 1.5 s, since a knock is a pattern and a slam isn't
-• If that misses the false-positive target: a 6-axis IMU, where the gyroscope turns "is the door rotating?" into a direct measurement
-• If still short: a classifier trained on the IMU's on-chip ML core`
-      },
-      {
-        heading: 'Target Specifications',
-        text: `• Detection latency under 1 s after the final knock
-• Fewer than 1 false positive per 24 hours — above that, users disable the device
-• Fewer than 5% missed normal-force knocks, including light knocks from limited grip
-• Steady, non-strobing light, because of seizure and migraine risk
-• Over 5 months of battery life per charge; the power budget works out to about 175 days on a single 18650 cell
-• Tool-free, reversible adhesive installation that works on wood and steel doors`
-      },
-      {
-        heading: 'Secondary Goals',
-        text: `In priority order: on-device customization of color, brightness, and alert pattern; optional phone or smartwatch pairing over the microcontroller's built-in Bluetooth; and fire alarm detection. Fire alarms in sleeping areas use a standardized 520 Hz low-frequency, three-pulse signal, so a microphone could match that cadence and switch the device to a dedicated fire-alert light pattern — audible-only alarms have the same blind spot as a knock. It needs its own sensor and its own validation, so it's scoped as a goal rather than a requirement.`
-      },
-      {
-        heading: 'Cost',
-        text: `A single prototype is costed at about $50 on protoboard — an ESP32-C3 microcontroller, accelerometer, RGBW light strip with a printed diffuser, an 18650 battery with charging, and a PETG enclosure — against $261.72 for the commercial two-device setup.`
-      },
-      {
-        heading: 'Validation Plan',
-        text: `• Tape a phone logging accelerometer and gyroscope data to a dorm door and record knocks, door open and close, a neighbor's door, and hallway traffic on each door type
-• Test accelerometer-only separation first and escalate only if needed
-• Compare Command strip and VHB mounting by which one best preserves the high-frequency signal
-• Run a 72-hour breadboard test on a real door and count false positives against the target
-• Photograph the light wash from the desk and bed to confirm it's noticeable
-• Get feedback from students who would actually use it`
+The engineering problem was never detecting an impulse; it was rejecting the wrong ones. A knock is a 5–20 ms high-frequency impulse straight into the panel, a door opening is a lower-frequency acceleration ending in a latch click, and a neighbour’s slam arrives attenuated through the frame. The plan escalated only as far as testing demanded: a three-axis accelerometer requiring two impulses within 1.5 s, then a 6-axis IMU if that missed the target of under one false positive a day, then an on-chip classifier if it still fell short.
+
+We set it aside because the research pointed somewhere else — but the way of working carried over.`
       },
       {
         heading: 'Status',
-        text: `Registered and researching. Six of us have each finished secondary research across the four problem spaces, and we're converging on dorm laundry. Next is the primary research above, then a locked concept.
+        text: `Choosing between three finalists. The laundry cart leads the ranked vote, the machine tag is close behind — it was my own first choice — and the wheelchair storage dock is third. Nothing is locked yet.
 
 The deadlines shape everything: the concept has to be locked by the end of November, when SME submits it for ADA compliance review, and the build has to be a working prototype with a poster by April. Funding is in place — a $1,000 Segal Pam Daniels Flex Fund award covers registration, travel, hotel and materials, plus a $250 gift from SME Chicagoland.`
       }
@@ -2356,7 +2317,7 @@ A note on sourcing: the failure mechanism and the design intent here come from J
   {
     id: 27,
     title: 'P1 Motor Club Track Model',
-    context: 'Client',
+    context: 'Personal',
     contextDetail: 'P1 Motor Club',
     tldr: `A large, mostly 3D-printed model of P1 Motor Club's racetrack property, built from the civil engineer's Civil 3D files to travel in a truck and help sell memberships. I'm testing print, paint and landscaping on a sample piece first.`,
     why: `I come from a family of racecar drivers — my father and my sister both drive professionally. My dad founded Monticello Motor Club in 2005 and I grew up there, go-karting as a kid and later racing on the track. When he retired from MMC in 2019 and founded P1, I was one of a handful of drivers who tested the new track layout on a simulator and gave feedback on it. So I've seen this property as a drawing, as a simulation, and now I get to build it as an object.`,
@@ -2379,7 +2340,7 @@ A note on sourcing: the failure mechanism and the design intent here come from J
 This one is personal. My father founded Monticello Motor Club in 2005 and I grew up on that track, first in go-karts and later racing. He retired from MMC in 2019 and founded P1, and when the new track was designed I was one of a few drivers who drove the layout in a simulator and gave feedback before it was built. Now that P1 is selling memberships, the model is the thing that puts the whole property in front of someone at an event.`,
         images: [
           { url: p1MasterPlan, caption: 'The P1 Motor Club property master plan (club rendering), the site the model represents' },
-          { url: p1Logo }
+          { url: p1Logo, caption: 'The P1 Motor Club mark' }
         ]
       },
       {
@@ -2591,7 +2552,7 @@ const ProjectCard = forwardRef<HTMLDivElement, { project: Project; onSelect: (id
   );
 });
 
-const filterTabs: Array<'All' | ProjectContext> = ['All', 'Class', 'Client', 'Club', 'Research', 'Personal'];
+const filterTabs: Array<'All' | ProjectContext> = ['All', 'Class', 'Club', 'Research', 'Personal'];
 
 export function Portfolio() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
