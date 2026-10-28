@@ -1988,9 +1988,11 @@ I'm set to TA this class, and if they run another iron pour I'll be doing it aga
     tools: ['Enclosure Design', 'Autodesk Inventor', 'Siemens NX', 'SolidWorks', 'Design for 3D Printing', 'Multi-Color Printing', 'Heat-Set Inserts / Fasteners', 'Remote Team Collaboration'],
     content: [
       {
-        text: `Midwest EV is an independent EV repair and engineering business. Its main engineering project, Project Delta, brings driver assistance to Tesla Model S cars built before factory Autopilot. Those cars never got the hardware for it, so Project Delta builds on openpilot, an open-source driver-assistance system, and supplies the custom hardware, wiring harnesses and vehicle integration needed to connect it to these older cars. The work runs from the bench to road testing, and the project is now listed as a product on midwestev.com.
+        text: `Midwest EV is an independent EV repair and engineering business, founded in 2024, that has worked on over 100 cars. Its main engineering project, Project Delta, brings driver assistance to Tesla Model S cars built before factory Autopilot.
 
-I'm an engineer on the team, which works remotely across time zones, and the project is ongoing.`
+Those cars never got the hardware for it, so Project Delta builds on openpilot, an open-source driver-assistance system, and supplies everything needed to bridge it to an older car: a comma four camera on the windshield, a converter harness that plugs into the diagnostic CAN bus port, and the custom board and enclosure in between. The pitch is that it takes about five minutes to install — mount the camera, plug in the harness, drive — and it's now listed and priced on midwestev.com at $2,280, tested with the final kit on a Model S.
+
+The enclosure I design is the box in the middle of that harness: the part the customer actually holds, plugs in, and leaves in their car. I'm an engineer on the team, which works remotely across time zones.`
       },
       {
         heading: 'What I Own: The Enclosure',
@@ -2250,19 +2252,20 @@ What exists right now is the method and the evidence: three structured reports w
   },
   {
     id: 31,
-    title: 'Tesla Drive Unit Coolant Rerouting Kit',
+    title: 'Tesla Drive Unit Rotor Oil Cooling Kit',
     context: 'Personal',
     contextDetail: 'Midwest EV',
-    tldr: `A replacement oil and coolant routing part for Tesla large drive units, designed in-house at Midwest EV. The factory rotor seal is a known failure point, and when it lets go, coolant floods the drive unit and can take out the motor and the inverter together. Our part routes coolant away from that area, with a design meant to outlast the factory one rather than delete the system.`,
-    why: `It's a repair shop's problem turned into a product. Midwest EV sees what's left after this failure, and a part that prevents it is worth far more to an owner than the repair that follows it.`,
+    tldr: `Tesla's large drive unit cools its rotor with glycol coolant, behind a seal that was never designed for glycol and gets no lubrication from it. When that seal fails — and it does — coolant floods the motor and rusts the stator. Our kit runs oil through the rotor instead and routes the coolant around it, so the seal is lubricated and a leak is harmless.`,
+    why: `It's a repair shop's problem turned into a product. Midwest EV sees what's left of these drive units, and a part that prevents the failure is worth far more to an owner than the repair that follows it. It's also a rare case where the fix makes the car better rather than just less likely to break.`,
     learned: [
-      `The most valuable part to design is sometimes the one that prevents a repair rather than performing it.`,
-      `Designing a replacement for a factory part means working inside someone else's packaging — the coolant has to go somewhere the drive unit already has room for.`,
-      `"Delete the thing that fails" is the easy answer and usually the wrong one. Keeping the function and fixing the routing is harder and worth more.`,
+      `Find the root cause, not the symptom. The seal doesn't fail because it's worn out — it fails because it's sealing the wrong fluid, one that can't lubricate it.`,
+      `Change the fluid, not the part. Once the rotor runs oil, a leaking seal stops being a catastrophic failure, because oil in a motor is harmless where glycol is not.`,
+      `"Delete the thing that fails" is the easy answer. Tesla's own later revision deletes rotor cooling; keeping the cooling and fixing the fluid is harder and worth more.`,
+      `Heat is usually a catalyst, not a cause. Motor heat accelerates this failure but isn't what starts it.`,
     ],
-    category: 'Electric Vehicles · Drivetrain · Failure Prevention (Work in Progress)',
+    category: 'Electric Vehicles · Drivetrain · Thermal Management (Work in Progress)',
     image: '',
-    description: 'An in-house replacement for the oil and coolant routing in Tesla large drive units, designed to keep coolant away from the factory rotor seal — the failure point that floods and destroys drive units.',
+    description: "A kit that converts the Tesla large drive unit's rotor cooling from glycol coolant to oil, so the rotor seal is lubricated and a leak can't rust the motor — instead of deleting rotor cooling the way Tesla's own revision does.",
     filterCategory: 'Design',
     inProgress: true,
     date: '2026',
@@ -2274,35 +2277,50 @@ What exists right now is the method and the evidence: three structured reports w
       },
       {
         heading: 'The Challenge',
-        text: `The large drive unit runs coolant through the rotor, and a PTFE rotor shaft seal is the only thing keeping that coolant out of the motor. It's a rubbing seal on a spinning shaft, so it wears — and as the seal and its sealing surface degrade, coolant works its way past it into the motor.
+        text: `The LDU is an AC induction motor, and Tesla cools its rotor by running glycol coolant through the rotor shaft. One seal stands between that coolant and the inside of the motor.
 
-That's the part owners don't see coming. Nothing leaks onto the ground; the coolant goes inward, into the stator windings and on toward the inverter, and corrodes what it touches. The first symptom is often isolation faults or a seized motor, by which point the stator, rotor and inverter can all be damaged together — a repair bill in the thousands on a car that was driving normally a week earlier. It's common enough on Model S and X of this generation to be well known in owner forums and specialist shops.
+That seal fails, and the reason is more interesting than "it wears out":
+• It was never designed for glycol. That's the root problem — a seal running against the wrong fluid.
+• Coolant doesn't lubricate it. A rubbing seal on a spinning shaft needs lubrication to survive, and glycol gives it almost none. Lack of lubrication is what actually kills it.
+• Motor heat accelerates the whole thing, but it's a catalyst, not the cause.
 
-Tesla's own later revision deletes coolant from the rotor. The aftermarket mostly offers the same: coolant-delete kits, seal bypasses, or drilled weep holes.`
+When it lets go, nothing drips onto the ground. The coolant goes inward — into the stator windings and on toward the inverter — and rusts what it touches. By the time there's a symptom, usually an isolation fault or a seized motor, the stator, rotor and inverter can all be gone together. On a Model S or X of this generation that's a four-figure repair on a car that drove fine last week.`
       },
       {
-        heading: 'The Approach',
-        text: `Rather than build a better seal, we're changing where the coolant goes: the part routes it away from the area where the factory seal is prone to failing. If coolant isn't sitting against that seal, a worn seal stops being a catastrophic event.
+        heading: 'The Approach: Change the Fluid, Not the Seal',
+        text: `The obvious fix is a better seal. We're doing something else: we run Dexron-spec oil through the rotor instead of coolant, and route the coolant around it.
 
-Two things this deliberately isn't. It isn't a delete — the LDU coolant delete is a common shop fix, and deleting a system is the easy answer. We keep the function and replace the routing. And it isn't somebody else's kit: this is our own design, built to be better than the factory part rather than equivalent to it.`
+That single change does three things at once:
+
+1. The seal finally gets lubricated. Oil is what a rubbing seal wants, so the thing that was killing it stops happening. The seal lasts because it's doing a job it was built for.
+2. A leak stops being catastrophic. Oil is non-conductive and non-corrosive, so if the seal does eventually weep, oil in the motor is harmless — where glycol in the motor is the end of the drive unit.
+3. The rotor stays thermally managed. This is the part a delete gives up.`
+      },
+      {
+        heading: 'Why Keeping Rotor Cooling Matters',
+        text: `Tesla's own later revision solves the seal problem by deleting rotor cooling entirely — coolant bypasses the rotor and goes straight to the inverter and gearbox. Most aftermarket kits do the same, and Midwest EV already offers the coolant delete as a repair service, so we know exactly what that option gives you. It works, and it throws away something worth keeping.
+
+In an induction motor, torque comes from the rotating field slipping past the rotor and inducing current in it. Those induced currents heat the rotor, and as the rotor heats up its resistance climbs — so more of the energy you put in ends up as heat in the rotor instead of torque at the wheels. Let the rotor run hot and you're effectively induction-heating it.
+
+Keeping the rotor actively cooled holds that resistance down, which is where the efficiency gain lives. Our working figure is a substantial one — on the order of a 40% improvement in that loss path — and quantifying it honestly is part of what the testing is for. I'd rather measure it than quote it.`
       },
       {
         heading: 'What I’m Working Through',
-        text: `The design problem is mostly about fit and sealing, not about the overall idea:
-
-• Pipe fit. The routing has to land in a drive unit that was never designed to have it, so the research is about what the LDU already gives us room for and where the new path can tie in.
-• The right seal. The factory part failed as a wear surface, so choosing a seal — material, type, and the surface it runs against — is the thing that decides whether our version actually lasts longer or just fails later.
-• Fluid. We've been looking at a Dexron-spec automatic transmission fluid for the testing.`
+        text: `• Pipe fit. The oil line has to land in a drive unit that was never designed to have it, and the coolant has to get cleanly around it, so the work is about what the LDU already gives us room for and where each path can tie in.
+• The right seal. We're now sealing oil instead of glycol, which changes the material and the type — and the whole premise is that this seal outlasts the factory one, so it's the decision that matters most.
+• Scope. This is aimed at cars that originally ran coolant through the rotor. Whether the already-deleted "dry" cars can be retrofitted is still an open question.`
       },
       {
         heading: 'How We’ll Test It',
-        text: `We talked about building a dedicated test stand, and decided against it. A stand would tell us about the stand; what we care about is whether the part survives a real drive unit in a real car, with real heat cycles and real vibration. So the plan is to install it in a car and run it.
+        text: `We talked about building a dedicated test stand and decided against it. A stand would tell us about the stand; what we care about is whether the part survives a real drive unit in a real car, with real heat cycles and real vibration. So the plan is to install it and drive it.
 
-For prototyping, we picked up a desktop CNC so we can cut versions of the part in-house instead of waiting on a vendor between iterations.`
+For prototyping we picked up a desktop CNC, so we can cut a version of the part in-house and iterate in an afternoon instead of waiting on a vendor between revisions.`
       },
       {
         heading: 'Status',
-        text: `In progress. The current CAD is at V5, modeled in Inventor.`
+        text: `In progress. The current CAD is at V5, modeled in Inventor.
+
+A note on sourcing: the failure mechanism and the design intent here come from Jordan and Rahim at Midwest EV, who have pulled these drive units apart. Where I could, I checked their account against independent sources — the rotor-shaft coolant path, the seal as the known weak point, Tesla's rotor-cooling delete revision, and oil being the non-conductive, non-corrosive alternative all hold up. The efficiency figure is ours and is not yet validated, which is why it's a target to measure rather than a claim.`
       }
     ]
   },
@@ -2625,7 +2643,6 @@ export function Portfolio() {
         
         <Reveal className="text-center mb-16">
           <h2 className="text-4xl font-bold text-[#1B2D5B] mb-4 tracking-wide">PORTFOLIO</h2>
-          <p className="text-[#1B2D5B]/50 font-light text-lg">Engineering, design, and art</p>
         </Reveal>
 
         {/* Filter Tabs */}
