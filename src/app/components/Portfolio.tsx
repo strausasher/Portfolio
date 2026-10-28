@@ -154,6 +154,11 @@ import sensorFinished2 from 'figma:asset/sensor-finished-2.webp';
 // P1 Motor Club Track Model
 import p1MasterPlan from 'figma:asset/p1-master-plan.webp';
 import p1Logo from 'figma:asset/p1-logo.webp';
+import p1SurveyPlan from 'figma:asset/p1-survey-plan.webp';
+import turntableKerfTest from 'figma:asset/turntable-kerf-test.webp';
+import deltaEnclosurePrintedIrl from 'figma:asset/delta-enclosure-printed-irl.webp';
+import projectorMountRoom from 'figma:asset/projector-mount-room.webp';
+import projectorMountSetscrew from 'figma:asset/projector-mount-setscrew.webp';
 
 // Midwest EV — enclosure and PCB
 import deltaEnclosureTriangleCad from 'figma:asset/delta-enclosure-triangle-cad.webp';
@@ -1894,21 +1899,22 @@ I'm set to TA this class, and if they run another iron pour I'll be doing it aga
     id: 22,
     title: 'Snap-Fit Projector Mounts',
     context: 'Personal',
-    tldr: `Two 3D-printed PETG projector mounts: a snap-fit stand that clips onto my bed frame for movies, and a clamp-on stand for projecting maps onto the table at D&D game nights.`,
+    tldr: `Three 3D-printed PETG projector mounts for three different rooms: a snap-fit stand that clips onto my bed frame for movies, a clamp-on stand for projecting maps onto the table at D&D game nights, and a set-screw mount that grips a post in my new room.`,
     why: `I wanted movies from bed and maps on the table for game nights, and it was a good excuse to design my first snap-fit.`,
     learned: [
       `A quick wood mockup clamped in place is a cheap way to check fit before printing.`,
       `My first compliant mechanism taught me that the arm's angle and thickness decide whether it clips on and holds.`,
+      `The right joint depends on what you're attaching to, not on the part. A snap-fit fits one profile perfectly; a set screw fits anything and adjusts.`,
     ],
     category: 'Compliant Mechanisms · 3D Printing · Product Design',
     image: projBedClipFinished,
-    description: 'Two PETG 3D-printed projector mounts — a cantilever snap-fit stand that clips onto a bed frame, and a clamp-on stand that slides onto a table edge for game nights.',
+    description: 'Three PETG 3D-printed projector mounts — a cantilever snap-fit clip for a bed frame, a clamp-on stand for a table edge, and a set-screw mount that grips a vertical post.',
     filterCategory: 'Small Projects',
     date: '2026',
     tools: ['Compliant Mechanism Design', '3D Printing (PETG)', 'Snap-Fit Design', 'Product Design', 'CAD Modeling'],
     content: [
       {
-        text: `Designed and 3D-printed two PETG projector mounts for two different mounting problems. The bed-mount stand was my first true compliant mechanism — I had never designed a snap-fit before this.`,
+        text: `Three PETG projector mounts for three different mounting problems, built as I moved rooms. The bed-mount stand was my first true compliant mechanism — I had never designed a snap-fit before this.`,
         images: [
             { url: projPlacementIdea, caption: 'Holding the projector up to plan where it would mount' },
             { url: projConceptSketch, caption: 'Early concept sketch covering both the bed-clip and table-clamp designs' }
@@ -1930,6 +1936,16 @@ I'm set to TA this class, and if they run another iron pour I'll be doing it aga
         text: `Slides onto a tabletop edge and clamps down to hold the projector steady — built so we could project maps and displays onto the table for Dungeons & Dragons game nights.`,
         images: [
             { url: projCadTableClamp, caption: 'CAD model of the table-clamp bracket' }
+        ]
+      },
+      {
+        heading: 'Third Version: Set-Screw Mount',
+        text: `I moved rooms, and the new one didn't give me a bed frame edge or a table edge to clip onto — so the third version drops the compliant clip entirely and clamps to a vertical post with a set screw.
+
+That's a deliberate trade. A snap-fit is satisfying because it needs no hardware, but it only fits the one profile you designed it around, and it has a fixed grip. A set screw gives up the elegance and buys adjustability: it holds at any height on the post, takes whatever tolerance the post actually has, and can be re-aimed without reprinting anything. Three versions in, the lesson is that the right joint depends less on the part than on what you're attaching it to.`,
+        images: [
+            { url: projectorMountRoom, caption: 'The set-screw mount in the new room, holding the projector on a vertical post' },
+            { url: projectorMountSetscrew, caption: 'The mount up close: clamped to the post, with a printed shelf below it' }
         ]
       }
     ]
@@ -2013,7 +2029,8 @@ It's also the first version that looks like a product. The Project Delta logo is
         images: [
           { url: deltaEnclosureV11Logo, caption: 'V1.1 in Inventor: the raised Project Delta logo on the face, and the USB-C opening on the front end' },
           { url: deltaEnclosureV11Back, caption: 'V1.1, open back end: the board slides in on internal rails, and the four corner holes take the rear cover screws' },
-          { url: deltaEnclosureV11Slicer, caption: 'V1.1 sliced for a two-color print, with the rear cover and its cable slot beside it' }
+          { url: deltaEnclosureV11Slicer, caption: 'V1.1 sliced for a two-color print, with the rear cover and its cable slot beside it' },
+          { url: deltaEnclosurePrintedIrl, caption: 'V1.1 printed: black body, blue logo, the finished part in hand' }
         ]
       },
       {
@@ -2302,7 +2319,7 @@ That single change does three things at once:
 
 In an induction motor, torque comes from the rotating field slipping past the rotor and inducing current in it. Those induced currents heat the rotor, and as the rotor heats up its resistance climbs — so more of the energy you put in ends up as heat in the rotor instead of torque at the wheels. Let the rotor run hot and you're effectively induction-heating it.
 
-Keeping the rotor actively cooled holds that resistance down, which is where the efficiency gain lives. Our working figure is a substantial one — on the order of a 40% improvement in that loss path — and quantifying it honestly is part of what the testing is for. I'd rather measure it than quote it.`
+Keeping the rotor actively cooled holds that resistance down, which is where the efficiency gain lives. How much it's worth in practice is something I'd rather measure on the car than estimate, so putting a number on it is part of what the testing is for.`
       },
       {
         heading: 'What I’m Working Through',
@@ -2333,6 +2350,8 @@ A note on sourcing: the failure mechanism and the design intent here come from J
     why: `I come from a family of racecar drivers — my father and my sister both drive professionally. My dad founded Monticello Motor Club in 2005 and I grew up there, go-karting as a kid and later racing on the track. When he retired from MMC in 2019 and founded P1, I was one of a handful of drivers who tested the new track layout on a simulator and gave feedback on it. So I've seen this property as a drawing, as a simulation, and now I get to build it as an object.`,
     learned: [
       `Test a small piece before buying material for the whole model. The print, paint, grass and water all have to look right together.`,
+      `Read the source data before planning the build. Pulling the real extents and elevations out of the survey told me this is a flat model at scale, which decides where the effort goes.`,
+      `Scale is set by the constraint you can't move. The truck bed fixes the scale at roughly 1:600, and everything else follows from that.`,
     ],
     category: 'Scale Modeling · 3D Printing · Civil 3D to Physical (Work in Progress)',
     image: p1MasterPlan,
@@ -2357,7 +2376,14 @@ This one is personal. My father founded Monticello Motor Club in 2005 and I grew
       },
       {
         heading: 'From Civil Drawings to a Physical Model',
-        text: `The model is built from AutoCAD and Civil 3D files supplied by the project's lead civil engineer, so the track layout and the terrain come from the real site data instead of being approximated by eye.`
+        text: `The model is built from the project's lead civil engineer's Civil 3D files, exported as LandXML, so the track layout and the terrain come from the real survey instead of being approximated by eye. What's in there: 42 track and site alignments, 39 contours and about 3,900 survey points on NAD83 Florida State Plane coordinates.
+
+Reading the actual numbers out of it changed how I'm thinking about the build. The site is roughly 2,270 × 4,160 ft — about 0.43 by 0.79 miles — and it has to end up short enough to ride in a truck bed, which puts the model somewhere near 1:600 scale.
+
+The other number that matters is relief. The whole property only moves from about 3.5 ft to 31 ft of elevation: 27 ft of range across two thirds of a mile. At 1:600 that's half an inch of height across the entire model. So this is essentially a flat model, and everything that makes it read as a real place has to come from the track surface, the landscaping and the finish rather than from terrain.`,
+        images: [
+          { url: p1SurveyPlan, caption: 'The site plotted from the survey data itself: track and site alignments in blue, existing ground contours in grey' }
+        ]
       },
       {
         heading: 'Build Approach',
@@ -2399,7 +2425,8 @@ This one is personal. My father founded Monticello Motor Club in 2005 and I grew
         heading: 'Design',
         text: `The stand will be kerf-cut with a V-tapered bit to let a single sheet of walnut veneer plywood bend into the S-curve, forming three continuous platforms in one piece. Brass tubing runs through it as an accent — it isn't structural; a concealed threaded rod inside does the actual load-bearing.`,
         images: [
-            { url: turntablePracticeKerfs, caption: 'Practice kerf cuts on scrap walnut plywood, testing the bend before committing to the real piece' }
+            { url: turntablePracticeKerfs, caption: 'Practice kerf cuts on scrap walnut plywood, testing the bend before committing to the real piece' },
+            { url: turntableKerfTest, caption: 'Bending a kerf-cut test piece by hand at the CNC: how tight a radius the cuts allow before the face starts to break' }
         ]
       },
       {
