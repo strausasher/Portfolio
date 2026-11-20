@@ -147,6 +147,13 @@ import sensorFinished2 from 'figma:asset/sensor-finished-2.webp';
 import p1MasterPlan from 'figma:asset/p1-master-plan.webp';
 import p1Logo from 'figma:asset/p1-logo.webp';
 import p1SurveyPlan from 'figma:asset/p1-survey-plan.webp';
+import p1RenderModel from 'figma:asset/p1-render-model.webp';
+import p1RenderCircuit from 'figma:asset/p1-render-circuit.webp';
+import p1RenderConfigurations from 'figma:asset/p1-render-configurations.webp';
+import p1RenderRelief4x from 'figma:asset/p1-render-relief-4x.webp';
+import teslaManifoldCam from 'figma:asset/tesla-manifold-cam.webp';
+import smeLaundryTagBreadboard from 'figma:asset/sme-laundry-tag-breadboard.webp';
+import smeLaundryTagBenchData from 'figma:asset/sme-laundry-tag-bench-data.webp';
 import deltaOilPartIso from 'figma:asset/delta-oil-part-iso.webp';
 import deltaOilPartBack from 'figma:asset/delta-oil-part-back.webp';
 import turntableKerfTest from 'figma:asset/turntable-kerf-test.webp';
@@ -213,7 +220,7 @@ const contextStyles: Record<ProjectContext, string> = {
 };
 
 // Display order on the site: projects that show the most iteration and learning come first
-const displayOrder = [15, 11, 10, 12, 9, 16, 13, 14, 17, 25, 29, 28, 31, 26, 30, 27, 23, 20, 22, 24, 21];
+const displayOrder = [15, 11, 10, 12, 9, 16, 13, 14, 17, 25, 28, 31, 26, 30, 27, 23, 20, 22, 24, 21];
 const byDisplayOrder = (a: Project, b: Project) => {
   const rank = (p: Project) => {
     const i = displayOrder.indexOf(p.id);
@@ -1100,7 +1107,7 @@ Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northweste
     title: 'ExtendIt',
     context: 'Class',
     contextDetail: 'Human-Centered Product Design',
-    tldr: `A fold-away desk extension for lecture-hall seats that adds 81 sq in of workspace. After 22 interviews and 7 mockups, 8 of 10 users preferred it over our other concepts, and it held 33.5 lb with only ⅜″ of deflection. I've since designed v2, a full-size version that slides out and lifts flush on a linkage instead of flipping on a hinge.`,
+    tldr: `A fold-away desk extension for lecture-hall seats that adds 81 sq in of workspace. After 22 interviews and 7 mockups, 8 of 10 users preferred it over our other concepts, and it held 33.5 lb with only ⅜″ of deflection. I've since taken it full size as v2, which slides out and lifts flush on a linkage instead of flipping on a hinge — mechanism, load math and bill of materials done, parts next.`,
     why: `Every student knows the laptop, tablet and notebook on a tiny desk problem. I wanted to see if we could fix it with something simple enough to install on the desks lecture halls already have.`,
     learned: [
       `Test cheap versions early. Seven rough mockups with 10 users each taught us more than one polished prototype would have.`,
@@ -1108,13 +1115,17 @@ Authors: Zahra Sadeghi, Ashton Dy, Asher Straus, Xiangyu Shi, Qi Zhu (Northweste
       `Off-the-shelf parts often need changing. We ground the hinge's 90° detent off by hand to get smooth motion.`,
       `Build a separate test rig so load testing doesn't destroy the prototype.`,
       `A mechanism that works small may not scale. On a full-size leaf, the 180° hinge would swing through your knees, which is why v2 slides out and lifts instead.`,
+      `When one joint can't do the job, split the job. In v2 a prismatic slide takes the 28 in of travel and the linkage only does the 1.25 in lift, seating and lock.`,
+      `Design the lock before the motion feels finished. Over-center alone unlatches under a 2 lb pull, so the plunger isn't optional.`,
+      `Check the failure that isn't in your part. The v2 mechanism has margin to spare; the desk tipping over is the real limit.`,
     ],
-    category: 'Human-Centered Design · Product Development', 
+    category: 'Human-Centered Design · Product Development · Mechanism Design (v2 in Progress)', 
     image: extendItHero,
     description: 'A permanently installed hinged desk extender that increases usable workspace by 81 sq. in. — preferred by 8/10 users over alternative concepts.',
-    tools: ['Human-Centered Design', 'Mechanical Design', 'Structural Load Testing', 'User Research', 'Rapid Iteration', 'Cost Modeling', 'Product-Market Fit Evaluation'],
-    date: '2024',
+    tools: ['Human-Centered Design', 'Mechanical Design', 'Structural Load Testing', 'User Research', 'Rapid Iteration', 'Cost Modeling', 'Product-Market Fit Evaluation', 'Mechanism Design', 'Four-Bar Linkage', 'SolidWorks', 'Sheet Metal Design', 'Design for Manufacture', 'Load & Stress Analysis', 'Python (Motion Sweep)', 'Bill of Materials', '3D Printing'],
+    date: '2024–2026',
     filterCategory: 'Design',
+    inProgress: true,
     content: [
       {
         text: `Lecture hall desks are too small to accommodate modern student workflows (laptop + tablet + notebook). Through user research and prototyping, our team designed ExtendIt — a permanently installed hinged desk extender that increases usable workspace by 81 sq. in. without encroaching on adjacent seating.
@@ -1227,33 +1238,10 @@ Revenue opportunities include standard model sales, custom sizing, branded insta
         ]
       },
       {
-        heading: 'Where It Went Next',
-        text: `ExtendIt stuck with me, so I took it full size. ExtendIt v2 is a 52 × 25 in extension for a real desk, and it drops the hinge entirely for a slide-and-lift linkage. It's a separate project in this portfolio.`
-      }
-    ]
-  },
-  {
-    id: 29,
-    title: 'ExtendIt v2',
-    context: 'Personal',
-    tldr: `A full-size desk extension that slides out from under the desk and then lifts flush with the desktop, so a 52 × 25 in leaf never swings through your knees the way a hinged one would. The mechanism, load math and full bill of materials are done; parts are next.`,
-    why: `v1 was a class project sized for a lecture-hall seat, and the idea turned out to be more useful than the context it was built for — I'd happily put one on my own desk. Scaling it up broke the hinge that made v1 work, which turned out to be the interesting part.`,
-    learned: [
-      `A mechanism that works small may not scale. The 180° flip is fine on a 9 in leaf and impossible on a 25 in one.`,
-      `When one joint can't do the job, split the job. A prismatic slide takes the 28 in of travel and the linkage only does the 1.25 in lift, seating and lock.`,
-      `Design the lock before the motion feels finished. Over-center alone unlatches under a 2 lb pull, so the plunger isn't optional.`,
-      `Check the failure that isn't in your part. The mechanism has margin to spare; the desk tipping over is the real limit.`,
-    ],
-    category: 'Mechanism Design · Furniture · Design for Manufacture (Work in Progress)',
-    image: extendItV2SideView,
-    description: 'A full-size desk extension that slides out and lifts flush on a parallelogram linkage, keeping the leaf level the whole way instead of flipping it on a hinge.',
-    filterCategory: 'Design',
-    inProgress: true,
-    date: '2026',
-    tools: ['Mechanism Design', 'Four-Bar Linkage', 'SolidWorks', 'Sheet Metal Design', 'Design for Manufacture', 'Load & Stress Analysis', 'Python (Motion Sweep)', 'Bill of Materials', '3D Printing'],
-    content: [
-      {
-        text: `ExtendIt v2 is the full-size version of my ExtendIt desk extension: a 52 × 25 in leaf that lives under a standard 60 × 30 in desk, slides straight out, then rises 1.25 in and seats flush with the desktop. The leaf stays level the entire time.
+        heading: 'v2: Taking It Full Size',
+        text: `ExtendIt stuck with me, so I took it full size. v2 is a 52 × 25 in leaf that lives under a standard 60 × 30 in desk, slides straight out, then rises 1.25 in and seats flush with the desktop. The leaf stays level the entire time.
+
+v1 was a class project sized for a lecture-hall seat, and the idea turned out to be more useful than the context it was built for — I'd happily put one on my own desk. Scaling it up broke the hinge that made v1 work, which turned out to be the interesting part.
 
 The design, the numbers and the bill of materials are finished. Nothing is built yet.`,
         images: [
@@ -1261,7 +1249,7 @@ The design, the numbers and the bill of materials are finished. Nothing is built
         ]
       },
       {
-        heading: 'The Challenge: Why the Hinge Had To Go',
+        heading: 'v2: Why the Hinge Had To Go',
         text: `v1 flips its leaf 180° on a hinge. That's fine for a 9 in lecture-hall leaf, but geometry punishes it at full size: a leaf stowed flat under the desk can only end up flush after rotating about a pivot at the desk edge, so its far edge sweeps a full leaf-length arc underneath. On a 25 in leaf at a 29 in desk, that edge passes 2.6 in above the floor, straight through your knees and your chair.
 
 A plain four-bar can't fix it either. A coupler that has to translate 25+ in needs links at least half that long, and the only place to anchor them is below the path, where the arc bulges up into the desk underside while the leaf is still stowed.`,
@@ -1270,7 +1258,7 @@ A plain four-bar can't fix it either. A coupler that has to translate 25+ in nee
         ]
       },
       {
-        heading: 'My Solution: Split the Motion in Two',
+        heading: 'v2: Split the Motion in Two',
         text: `So I stopped asking one joint to do everything:
 
 1. Locking drawer slides carry the leaf straight out, 28.13 in of travel, still tucked under the desk line.
@@ -1279,7 +1267,7 @@ A plain four-bar can't fix it either. A coupler that has to translate 25+ in nee
 Because the leaf is the coupler of a parallelogram, it never rotates. The only vertical motion in the whole cycle is that final 1.25 in rise, against the hinged version's 26 in swing toward the floor.`
       },
       {
-        heading: 'Three Locks, Because One Isn’t Enough',
+        heading: 'v2: Three Locks, Because One Isn’t Enough',
         text: `Open, the leaf is held three ways: the slide's own lock-out at full extension, the links resting 5° past vertical so the load pushes them into a stop, and a hand-retractable plunger whose pin drops into a lobe on the front-left link.
 
 The plunger is a requirement, not a nicety. I ran the numbers on the over-center geometry: at 5° past vertical, a forward pull of only about 2 lb is enough to unlatch it. With the plunger engaged, a 50 lb forward pull puts roughly 100 lb on a 1/4 in steel pin rated near 2,000 lb in shear.`,
@@ -1288,7 +1276,7 @@ The plunger is a requirement, not a nicety. I ran the numbers on the over-center
         ]
       },
       {
-        heading: 'Checking the Motion',
+        heading: 'v2: Checking the Motion',
         text: `Rather than eyeball it, I built a kinematic model of the mechanism driven by the real link geometry, so I could scrub through the whole open-and-close cycle and watch the pose, the lock states and the clearances update together. It's how I found most of what follows.
 
 I swept the full lift, 30° to 95°, in 650 steps and checked every pair that could collide:
@@ -1302,7 +1290,7 @@ I swept the full lift, 30° to 95°, in 650 steps and checked every pair that co
         ]
       },
       {
-        heading: 'Loads, and the Failure That Isn’t the Mechanism',
+        heading: 'v2: Loads, and the Failure That Isn’t the Mechanism',
         text: `With 100 lb leaning on the front edge, the mechanism keeps at least 1.6× margin everywhere — pin bearing stress is 1,020 psi against a limit near 56 ksi, so the pins are 50× oversized and the real constraints are the slides and the screws into the desk.
 
 The actual failure mode is the desk tipping forward, because the load sits 28 in in front of the front legs. That depends on what the desk weighs, not on how the leaf got there, so I put a tipping table in the spec: a bare 60 lb desk lifts its back legs under 13 lb at the leaf's front edge, while a 150 lb loaded desk takes 66 lb. The build ends with a luggage-scale tip test before anything goes on the leaf.
@@ -1310,7 +1298,7 @@ The actual failure mode is the desk tipping forward, because the load sits 28 in
 That constraint also decides who this is for. At full size it belongs on a heavy or fixed desk — a lecture-hall desk, a built-in, or a loaded workstation — rather than a light freestanding table. For anything lighter, the honest answers are a shorter leaf or a fold-down leg at the front corners, both of which are in the spec.`
       },
       {
-        heading: 'Designed to Be Ordered, Not Machined',
+        heading: 'v2: Designed to Be Ordered, Not Machined',
         text: `Every part is cut plate, bought stock, or printed — nothing needs a mill:
 
 • Carriage rails and lift links: waterjet 6061-T6
@@ -1323,7 +1311,7 @@ One detail I'm happy with: the plunger hole isn't dimensioned at all. The block 
 Total BOM is about $850–1,150, roughly a third of it the locking slides.`
       },
       {
-        heading: 'Status & Build Plan',
+        heading: 'v2: Status & Build Plan',
         text: `Designed, calculated and specified; nothing cut yet. The plan, in order:
 
 1. Model the assembly in SolidWorks and run a motion study with interference detection
@@ -2091,14 +2079,16 @@ It's also the first version that looks like a product. The Project Delta logo is
       `Look for where problems overlap. Three of our four problem spaces met at the laundry room, which gave us a sharper problem statement than any one of them.`,
       `Set the criteria before you see the scores. We fixed and averaged the requirement weights across all six of us first, so nobody could tune the rules to favour their own idea.`,
       `Leading a team is mostly logistics: funding, registration deadlines, and making sure six people's independent research can actually be compared.`,
+      `Build the cheap version of the sensing before arguing about the concept. One evening of breadboard testing told us the machine tag's margin is enormous and that the real problem is the machine next door, which no amount of discussion would have settled.`,
+      `Report the target you missed. My noise floor came in at 19 mg against a 5 mg goal — worth knowing, because it says the mount matters more than the sensor.`,
     ],
-    category: 'Accessible Design · User Research · SME NSMIC (Work in Progress)',
-    image: '',
+    category: 'Accessible Design · User Research · Prototyping · SME NSMIC (Work in Progress)',
+    image: smeLaundryTagBreadboard,
     description: "I'm leading Northwestern's team in SME's National Student Manufacturing Innovation Challenge: designing and building something that makes college residence halls more accessible. We've finished secondary research across four problem spaces and are converging on dorm laundry.",
     filterCategory: 'Design',
     inProgress: true,
     date: '2026–2027',
-    tools: ['Accessible Design', 'Secondary Research', 'User Interviews', 'Evidence Matrices', 'Team Leadership', 'Grant Writing & Budgeting', 'Concept Development', 'Embedded Systems (early concept)'],
+    tools: ['Accessible Design', 'Secondary Research', 'User Interviews', 'Evidence Matrices', 'Team Leadership', 'Grant Writing & Budgeting', 'Concept Development', 'Embedded Systems', 'ESP32 / Arduino', 'Accelerometer Data Logging', 'Signal Analysis'],
     content: [
       {
         text: `This is my team's entry for the National Student Manufacturing Innovation Challenge (NSMIC), hosted by SME's student chapter at Purdue on April 17–18, 2027. Teams of four to six students design and build a working prototype that makes everyday objects in college residence halls more accessible.
@@ -2152,33 +2142,66 @@ The engineering problem was never detecting an impulse; it was rejecting the wro
 We set it aside because the research pointed somewhere else — but the way of working carried over.`
       },
       {
+        heading: 'Prototyping the Machine Tag',
+        text: `Rather than keep arguing the three finalists on paper, I built the sensing end of one of them. The machine tag is a small device that rides on a dorm washer or dryer and works out, from vibration alone, whether the machine is running or finished — no app, no Wi-Fi, no cooperation from a laundry vendor.
+
+The bench rig is a Seeed XIAO ESP32C3, an LIS3DH three-axis accelerometer over I2C, and a microSD module over SPI. It samples at 100 Hz and writes two files per power-up: every raw sample, and a one-line-per-second summary carrying RMS in milli-g with gravity removed. That second file is the one that matters — it turns a cycle into something you can actually look at.`,
+        images: [
+          { url: smeLaundryTagBreadboard, caption: 'The bench rig: XIAO ESP32C3, LIS3DH accelerometer on I2C, microSD logger on SPI' }
+        ]
+      },
+      {
+        heading: 'What the Bench Tests Actually Said',
+        text: `I ran it through a scripted sequence — sit still, tap the table, shake the table, sit still again, wave the board around — so every level has something to be compared against.
+
+• Hands off: about 19 mg, steady, at 98–99 samples a second against a 100 Hz target.
+• Deliberate taps: about 24 mg.
+• Shaking the table: 70–580 mg.
+• Waving the board: 480–1150 mg.
+
+Two honest readings of that. The first is a miss: I had set a noise floor target of under 5 mg and got 19, because a breadboard resting loose on a wooden table is not a mounted sensor. The second is the one that matters: taps at 24 mg are barely separable from a 19 mg floor, but anything at machine scale sits one to two orders of magnitude above it, and the quiet periods are flat and unambiguous.
+
+So the running-versus-finished decision has enormous margin, and sensitivity was never going to be the hard part. The hard part is the machine next to yours, which is why the test plan logs an idle machine sitting beside a running one before it trusts anything.`,
+        images: [
+          { url: smeLaundryTagBenchData, caption: 'The bench run on a log scale: the quiet floor, taps that barely clear it, and table-shake and board-wave an order of magnitude above' }
+        ]
+      },
+      {
         heading: 'Status',
         text: `Choosing between three finalists. The laundry cart leads the ranked vote, the machine tag is close behind — it was my own first choice — and the wheelchair storage dock is third. Nothing is locked yet.
 
-The deadlines shape everything: the concept has to be locked by the end of November, when SME submits it for ADA compliance review, and the build has to be a working prototype with a poster by April. Funding is in place — a $1,000 Segal Pam Daniels Flex Fund award covers registration, travel, hotel and materials, plus a $250 gift from SME Chicagoland.`
+The deadlines shape everything: the concept has to be locked by the end of November, when SME submits it for ADA compliance review, and the build has to be a working prototype with a poster by April. Funding is in place — a $1,000 Segal Pam Daniels Flex Fund award covers registration, travel, hotel and materials, plus a $250 gift from SME Chicagoland.
+
+The machine tag is bench-tested but has never been on a machine. Next is a real cycle on a dorm washer, logging ten minutes past the end — that quiet tail is what a "done" detector has to learn from.`
       }
     ]
   },
   {
     id: 30,
-    title: 'MaDE Capstone: Problem Discovery',
+    title: 'MaDE Capstone: Freezing of Gait',
     context: 'Class',
     contextDetail: 'MaDE Capstone',
-    tldr: `My senior capstone, in its needs-finding phase — so this one is about method rather than a product. I researched three candidate problem spaces end to end against a common standard of evidence: ear pressure on a plane, seeing the bottom of what you're cooking, and opening a door with your feet. The team hasn't picked one yet.`,
+    tldr: `My senior capstone. I researched three candidate problem spaces end to end against a common standard of evidence — ear pressure on a plane, seeing the bottom of what you're cooking, opening a door with your feet — and the team has since converged somewhere else entirely: freezing of gait in Parkinson's disease. I then benchmarked the six cueing devices on the market and found that the gap isn't a missing device, it's that cueing is a prosthesis rather than a treatment.`,
     why: `This is the year-long project I finish my degree with, so the problem we pick matters more than anything we build afterward. I'd rather spend October proving which problem is real than spend March discovering ours wasn't.`,
     learned: [
       `A product being popular doesn't mean it works. The best-selling flight earplugs failed to prevent barotrauma in a double-blind trial — which is exactly the kind of gap worth designing into.`,
       `Nobody describes a problem the way you framed it. No source called it "can't see the bottom of the pot"; people say their food scorched. The framing has to come from the evidence, not from the solution you have in mind.`,
       `Prevalence data is the thing you're usually missing. The hands-full door case is the most relevant to students and has no numbers at all.`,
       `Labeling evidence by strength makes prioritization almost mechanical.`,
+      `A device existing is not the same as a device working. Six cueing products are on the market and the 2026 meta-analysis of nine RCTs found no significant reduction in freezing severity.`,
+      `Separate what a company claims from what a trial measured. Path Finder's "50% reduction" is the manufacturer's own number; the laser-shoe trial it resembles came back null.`,
+      `Lab accuracy doesn't survive real life. Freeze detection reports 73–100% sensitivity on scripted tasks, and training on-medication then testing off-medication drops it from 84% to 57%.`,
+      `Sometimes the real constraint is social. Stigma makes a laser on the pavement a worse answer than a vibration under a shirt, whatever the numbers say.`,
+      `Cold outreach works if you make it easy to say yes. Fifteen minutes, a specific question, and no ask beyond their time — that is what got a clinician who had never heard of me onto a call.`,
+      `One expert redirects more than a week of reading. The most valuable thing out of the first interview wasn't an answer, it was the two labs he told us to go talk to instead.`,
     ],
-    category: 'Needs-Finding · Secondary Research · Product Development (Work in Progress)',
-    image: '',
-    description: 'My year-long MaDE senior capstone, currently in needs-finding. I researched three candidate problem spaces against a common method and recommended which one the team should take forward.',
+    category: 'Needs-Finding · Competitive Benchmarking · Expert Interviews (Work in Progress)',
+    image: capstoneProblemMatrix,
+    description: 'My year-long MaDE senior capstone. I researched candidate problem spaces against a common standard of evidence, and once the team converged on freezing of gait in Parkinson\'s disease I benchmarked every cueing device on the market against what the trials actually show.',
     filterCategory: 'Design',
     inProgress: true,
     date: '2026–2027',
-    tools: ['Needs-Finding', 'Secondary Research', 'Evidence Matrices', 'AEIOU Observation', 'Patent & Solution Benchmarking', 'Literature Review', 'Opportunity Framing'],
+    tools: ['Needs-Finding', 'Secondary Research', 'Evidence Matrices', 'AEIOU Observation', 'Patent & Solution Benchmarking', 'Competitive Benchmarking', 'Literature Review', 'Expert Interviews', 'Cold Outreach', 'Opportunity Framing'],
     content: [
       {
         text: `The MaDE capstone runs the full year: needs-finding in the fall, product development in the winter. We're a team of five, and right now the job is to pick the right problem.
@@ -2223,16 +2246,87 @@ The most promising directions inside it are timing cues for when to equalize, as
 That's a recommendation, not a decision. The team is still researching, and I'd rather it be argued out on evidence than settled because I wrote the longest report.`
       },
       {
-        heading: 'Status',
-        text: `Needs-finding, fall quarter. Nothing is chosen and nothing is built — we won't lock a problem until the end of the quarter, and there's no product until the end of the year.
+        heading: 'Where the Team Actually Went: Freezing of Gait',
+        text: `None of my three. The team converged on freezing of gait in Parkinson's disease — the moment a person's feet stop responding mid-step, most often while turning or starting to walk, and the single biggest predictor of falls in the disease.
 
-What exists right now is the method and the evidence: three structured reports with matrices, shared with the team, each ending in the specific primary research it would take to be sure. That's the part I'd want someone to look at.`
+That's the right outcome from the method working. My reports argued ear pressure on evidence, and the team found a problem with a sharper user group, a clearer consequence and far more unmet need. Being talked out of your own recommendation by better evidence is the point of researching all of them the same way.
+
+The condition itself: somewhere above 30% of people with Parkinson's experience freezing, rising with progression, and around 50% in older cohorts. Every figure we use is a range, because the sources disagree — a habit we picked up after our midterm feedback caught us repeating a statistic nobody could source.`
+      },
+      {
+        heading: 'Benchmarking What Already Exists',
+        text: `My next assignment was the device landscape: what exists for freezing of gait, and why isn't it used? I wrote it up as a benchmarking brief covering six form factors.
+
+• Path Finder (Walk With Path) — shoe-clipped laser projecting a green line to step over. 50% freezing reduction and 35% fewer falls, but that's the manufacturer's claim.
+• NexStride — clamps to a cane or walker, combines a laser line with an audio metronome. No independent trial found.
+• CUE1 (Charco Neurotech) — sternum-worn vibrotactile, hidden under clothing. Backed by a multi-site double-blind RCT preprint.
+• Cue2Walk — leg-worn, detects a freeze and only then fires a cue. CE-marked, no FDA clearance found.
+• Instrumented insoles — plantar-pressure sensing, research stage. 96% sensitivity, but on scripted clinical tasks.
+• Smartphone music cueing — tempo matched to step rate. No hardware, nothing visible, scales cheaply.`
+      },
+      {
+        heading: 'What the Trials Actually Show',
+        text: `This is where benchmarking earned its keep. The products look like a solved problem; the evidence doesn't agree.
+
+• A 2026 meta-analysis of nine RCTs found external cueing did not significantly reduce freezing severity — SMD −0.30, CI −0.68 to 0.09, certainty rated low.
+• The same meta-analysis found cueing did improve Timed Up and Go, especially gait initiation and turning. So it helps something, just not the thing it's sold for.
+• The DeFOG on-demand cueing RCT (2024) came back null between groups at four weeks.
+• Laser shoes (2025): no walking improvement at any disease severity.
+• RESCUE (2006): whatever gait gains cueing produced were not sustained once the device came off.
+
+So cueing props gait up while it runs and doesn't retrain it.`
+      },
+      {
+        heading: 'Five Reasons People Stop Wearing Them',
+        text: `1. A pause looks like a freeze. An accelerometer can't distinguish a voluntary stop, and detection fails outright when there's no motion to read. False alarms teach people to ignore the device.
+2. The benefit doesn't survive the device coming off — a permanent dependency, not a therapy.
+3. It's visible, and visibility carries stigma. A laser on the pavement announces the condition, and stigma is worst outdoors, exactly where freezing is most dangerous.
+4. Complexity defeats the user. Charging, pairing and settings all land on someone with a movement disorder and reduced dexterity.
+5. The trap: continuous cueing is intrusive enough to abandon, and on-demand cueing needs the detection in failure mode 1 to work.
+
+And a sixth, non-technical one: you can't abandon what you can't buy. Cue2Walk has no FDA clearance, and CUE1 was reported unavailable in the US pending FDA — for a US project, the most interesting devices aren't reachable by the people we'd design for.`
+      },
+      {
+        heading: 'The Gap We’re Designing Into',
+        text: `The gap isn't "there's no cueing device." It's that cueing is a prosthesis rather than a treatment, and the detection that would make it bearable isn't reliable outside a lab.
+
+Three framings survived the research:
+
+• Detection in free living — nobody has shown real-world accuracy on a large, diverse cohort. It's the actual bottleneck, and it's a research problem, likely a tar pit for a two-quarter build.
+• Invisible by default — treat stigma as the primary design constraint rather than an afterthought, which pushes toward tactile and audio over projected light.
+• Zero-maintenance interaction — no pairing, no charging ritual, no settings, for hands that shake.
+
+The second and third are design problems we could actually address in a quarter. That's the recommendation I took back to the team.`
+      },
+      {
+        heading: 'Getting Out of the Literature',
+        text: `Secondary research can tell you what has been published. It can't tell you what a clinic actually does on a Tuesday, and that gap is where our benchmarking kept bottoming out — the trials measure freezing severity, but nobody writes down why a lab does or doesn't reach for a device.
+
+So I started cold-contacting clinicians, motion-lab staff and researchers for fifteen-minute calls. The rules I set for myself: only addresses published on an official page, the person's own institution or a paper's correspondence line, never a guessed or pattern-matched address; anyone I can't reach that way gets logged with a phone or web-form route instead. No patients, ever, and nothing being sold. Everything goes in one tracker so the team can see who has been asked, who replied and what the next action is.`
+      },
+      {
+        heading: 'What the First Interview Changed',
+        text: `The first one landed in November: forty-five minutes, recorded with permission, with a board-certified pediatric physical therapist who is the movement scientist at a hospital motion analysis centre, sits on the body that accredits motion labs, and co-authored the professional clinical practice guideline on instrumented gait analysis. Close to the centre of the field we had been reading about.
+
+It did three things our reading could not.
+
+It gave us the clinic as it actually runs — how a gait analysis session is staffed and paced, what the instrumentation costs in time rather than dollars, why the lab doesn't scale, what has to be true before video could replace it, and where machine learning genuinely sits today versus where papers imply it sits.
+
+It corrected our aim. His centre is pediatric, and Parkinson's there is vanishingly rare — he could count the pediatric cases on one hand. Useful in itself: it says the freezing-of-gait population and the instrumented-gait-analysis infrastructure we had been treating as one problem space are largely two.
+
+And it handed us the next two doors: a biomedical informatics group doing 2D video pose estimation whose model was originally built on freezing of gait, and a Parkinson's lab inside our own university. Both are warmer introductions than anything cold outreach was going to produce.`
+      },
+      {
+        heading: 'Status',
+        text: `Fall quarter: needs-finding, competitive benchmarking, and now the first expert interviews. Nothing is built; the product comes in the winter and spring.
+
+What exists right now is the method and the evidence — the structured reports with matrices, the benchmarking brief with every claim labelled by what kind of evidence stands behind it and a list of the figures we're not allowed to put on a slide until they're sourced, and the first interview written up alongside its transcript. The outreach continues, now following the referrals rather than starting cold.`
       }
     ]
   },
   {
     id: 31,
-    title: 'Tesla Drive Unit Rotor Oil Cooling Kit',
+    title: 'Tesla Drive Unit Rotor Oil Cooling Manifold Kit',
     context: 'Personal',
     contextDetail: 'Midwest EV',
     tldr: `Tesla's large drive unit cools its rotor with glycol coolant, behind a seal that was never designed for glycol and gets no lubrication from it. When that seal fails — and it does — coolant floods the motor and rusts the stator. Our kit runs oil through the rotor instead and routes the coolant around it, so the seal is lubricated and a leak is harmless.`,
@@ -2244,13 +2338,13 @@ What exists right now is the method and the evidence: three structured reports w
       `Heat is usually a catalyst, not a cause. Motor heat accelerates this failure but isn't what starts it.`,
     ],
     category: 'Electric Vehicles · Drivetrain · Thermal Management (Work in Progress)',
-    image: '',
+    image: teslaManifoldCam,
     description: "A kit that converts the Tesla large drive unit's rotor cooling from glycol coolant to oil, so the rotor seal is lubricated and a leak can't rust the motor — instead of deleting rotor cooling the way Tesla's own revision does.",
     filterCategory: 'Design',
     inProgress: true,
     date: '2026',
     link: { url: 'https://midwestev.com/products.html', label: 'Midwest EV' },
-    tools: ['Autodesk Inventor', 'Drivetrain Systems', 'Design for Sealing', 'Design for Machining', 'Desktop CNC', 'Reverse Engineering', 'EV Repair'],
+    tools: ['Autodesk Inventor', 'Drivetrain Systems', 'Design for Sealing', 'Design for Machining', 'CAM & Toolpath Programming', 'Desktop CNC', 'Reverse Engineering', 'EV Repair'],
     content: [
       {
         text: `The second project I work on at Midwest EV, alongside the Project Delta enclosure. This one is a replacement part for the large drive unit (LDU) used in Tesla Model S and Model X.`
@@ -2295,6 +2389,15 @@ The whole thing is 63 faces, nearly all cylindrical with 1–2 mm fillets — si
         ]
       },
       {
+        heading: 'Programming It to Cut',
+        text: `Designing it for our own desktop CNC means I write the toolpaths too, so machinability stops being an abstraction — every fillet I put in CAD is a tool I have to own and a path I have to program.
+
+The body is 63 faces and almost all of them are cylindrical, which is exactly what makes it programmable: the flange face, the raised central boss and the offset side bore are all circular work, so most of the part comes off facing, boring and contouring passes rather than anything that needs a fourth axis. Simulating the whole program before cutting is the cheap part — on a desktop machine a crash costs a fixture and a day, and the whole point of cutting in-house is to iterate on versions faster than a shop could quote one.`,
+        images: [
+          { url: teslaManifoldCam, caption: 'The CAM program for the manifold body: cutting passes over the flange face and the central bore, with rapid moves in yellow, simulated before anything is cut' }
+        ]
+      },
+      {
         heading: 'What I’m Working Through',
         text: `• Pipe fit. The oil line has to land in a drive unit that was never designed to have it, and the coolant has to get cleanly around it, so the work is about what the LDU already gives us room for and where each path can tie in.
 • The right seal. We're now sealing oil instead of glycol, which changes the material and the type — and the whole premise is that this seal outlasts the factory one, so it's the decision that matters most.
@@ -2323,11 +2426,11 @@ A note on sourcing: the failure mechanism and the design intent here come from J
     why: `I come from a family of racecar drivers — my father and my sister both drive professionally. My dad founded Monticello Motor Club in 2005 and I grew up there, go-karting as a kid and later racing on the track. When he retired from MMC in 2019 and founded P1, I was one of a handful of drivers who tested the new track layout on a simulator and gave feedback on it. So I've seen this property as a drawing, as a simulation, and now I get to build it as an object.`,
     learned: [
       `Test a small piece before buying material for the whole model. The print, paint, grass and water all have to look right together.`,
-      `Read the source data before planning the build. Pulling the real extents and elevations out of the survey told me this is a flat model at scale, which decides where the effort goes.`,
+      `Read the source data before planning the build. The survey has 27.5 ft of relief across 0.8 mi, which is real grading on the ground and half an inch at model scale — so the effort belongs in the surface finish, not the terrain.`,
       `Scale is set by the constraint you can't move. The truck bed fixes the scale at roughly 1:600, and everything else follows from that.`,
     ],
     category: 'Scale Modeling · 3D Printing · Civil 3D to Physical (Work in Progress)',
-    image: p1MasterPlan,
+    image: p1RenderModel,
     description: 'A large-scale, mostly 3D-printed model of the P1 Motor Club racetrack property, built from the project civil engineer\'s Civil 3D files and sized to ride in the back of a truck as a sales tool for memberships.',
     filterCategory: 'Design',
     inProgress: true,
@@ -2344,6 +2447,18 @@ This one is personal. My father founded Monticello Motor Club in 2005 and I grew
         ]
       },
       {
+        heading: 'One Pavement, Three Configurations',
+        text: `Pulling the alignments apart answered something the drawings don't say out loud: this isn't three separate tracks. It's one continuous pavement that can be driven three ways — a west loop, an east loop, and a short crossover that joins them into a full lap.
+
+The numbers come straight out of the file. The full centreline runs 13,824 ft, split 8,968 ft west, 4,194 ft east and 662 ft across the crossover, and the three add up exactly. The pavement is 36 ft wide — measured, not assumed, because the inner edge, centreline and outer edge sit at exactly 18, 18 and 36 ft offsets from one another.
+
+That matters for the build. Printing the circuit as one piece and the three configurations as separately finished segments are different jobs, and the crossover is under 5% of the total length, so whatever marks it has to work at a few millimetres.`,
+        images: [
+          { url: p1RenderCircuit, caption: 'The circuit on its own, lifted off the land: 13,824 ft of centreline as one closed ribbon' },
+          { url: p1RenderConfigurations, caption: 'The three driving configurations on the site — west loop in blue, east loop in orange, and the short crossover in green between them' }
+        ]
+      },
+      {
         heading: 'The Brief',
         text: `The model should be as large as possible while still fitting in the back of a truck. It is built as one rigid piece — it doesn't come apart for transport and has no moving parts — so it has to survive being driven around and look good when it arrives.`
       },
@@ -2351,11 +2466,13 @@ This one is personal. My father founded Monticello Motor Club in 2005 and I grew
         heading: 'From Civil Drawings to a Physical Model',
         text: `The model is built from the project's lead civil engineer's Civil 3D files, exported as LandXML, so the track layout and the terrain come from the real survey instead of being approximated by eye. What's in there: 42 track and site alignments, 39 contours and about 3,900 survey points on NAD83 Florida State Plane coordinates.
 
-Reading the actual numbers out of it changed how I'm thinking about the build. The site is roughly 2,270 × 4,160 ft — about 0.43 by 0.79 miles — and it has to end up short enough to ride in a truck bed, which puts the model somewhere near 1:600 scale.
+Reading the actual numbers out of it changed how I'm thinking about the build. The surveyed area — the Treasure Coast Circuit and the ground around it, 195 acres — is roughly 2,270 × 4,160 ft, about 0.43 by 0.79 miles, and it has to end up short enough to ride in a truck bed, which puts the model somewhere near 1:600 scale. That's a fraction of the full club property, so the first scoping decision is how much of the master plan the model actually covers.
 
-The other number that matters is relief. The whole property only moves from about 3.5 ft to 31 ft of elevation: 27 ft of range across two thirds of a mile. At 1:600 that's half an inch of height across the entire model. So this is essentially a flat model, and everything that makes it read as a real place has to come from the track surface, the landscaping and the finish rather than from terrain.`,
+The other number that matters is relief. The surveyed area only moves from about 3.5 ft to 31 ft of elevation: 27.5 ft of range across two thirds of a mile. The ground isn't actually flat — there are 39 contours, 42 breaklines and a real 3D profile on the track itself — but at 1:600 that entire range is half an inch of height. So it reads as a flat model, and everything that makes it look like a real place has to come from the track surface, the landscaping and the finish rather than from terrain.`,
         images: [
-          { url: p1SurveyPlan, caption: 'The site plotted from the survey data itself: track and site alignments in blue, existing ground contours in grey' }
+          { url: p1SurveyPlan, caption: 'The site plotted from the survey data itself: track and site alignments in blue, existing ground contours in grey' },
+          { url: p1RenderModel, caption: 'The model geometry built from that survey. It really is this thin — 29.5 ft of slab depth across 4,158 ft is under 1%, and the circuit is a hairline at true scale' },
+          { url: p1RenderRelief4x, caption: 'The same geometry with the vertical axis exaggerated 4×, the only way to see the grading and the pond basins at all. Elevations are from the June survey, which the surveyor has since flagged as superseded by field changes' }
         ]
       },
       {
